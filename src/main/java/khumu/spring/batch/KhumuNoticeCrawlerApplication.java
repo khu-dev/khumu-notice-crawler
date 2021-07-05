@@ -1,0 +1,13 @@
+package khumu.spring.batch;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class KhumuNoticeCrawlerApplication {
+
+    public static void main(String[] args) {
+        SpringApplication.run(KhumuNoticeCrawlerApplication.class, args);
+    }
+
+}
