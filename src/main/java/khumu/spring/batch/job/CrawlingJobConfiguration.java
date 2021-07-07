@@ -1,11 +1,10 @@
 package khumu.spring.batch.job;
 
-import khumu.spring.batch.dto.WebExtractive;
-import khumu.spring.batch.dto.WebUrl;
+import khumu.spring.batch.data.entity.Announcement;
+import khumu.spring.batch.data.entity.WebUrl;
 import lombok.extern.slf4j.XSlf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -62,8 +61,8 @@ public class CrawlingJobConfiguration {
 
     @Bean
     @StepScope
-    private ItemWriter<WebExtractive> csBoardItemWriter() throws Exception {
-        JpaItemWriter itemWriter = new JpaItemWriterBuilder<WebExtractive>()
+    private ItemWriter<Announcement> csBoardItemWriter() throws Exception {
+        JpaItemWriter itemWriter = new JpaItemWriterBuilder<Announcement>()
                 .entityManagerFactory(entityManagerFactory)
                 .build();
         itemWriter.afterPropertiesSet();
@@ -72,8 +71,8 @@ public class CrawlingJobConfiguration {
 
     @Bean
     @StepScope
-    private ItemProcessor<WebUrl, WebExtractive> csBoarddItemProcessor() {
-        return item -> new WebExtractive(){
+    private ItemProcessor<WebUrl, Announcement> csBoarddItemProcessor() {
+        return item -> new Announcement(){
             String target = item.getUrl();
             Document connectcheck;
             try {

@@ -1,5 +1,6 @@
-package khumu.spring.batch.dto;
+package khumu.spring.batch.data.entity;
 
+import khumu.spring.batch.data.entity.WebUrl;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -10,7 +11,7 @@ import javax.persistence.*;
 @Setter
 @Entity
 @NoArgsConstructor
-public class WebExtractive {
+public class Announcement {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
@@ -23,7 +24,7 @@ public class WebExtractive {
     @JoinColumn(name = "weburl_id", foreignKey = @ForeignKey(name = "FK_WEBURL"))
     private WebUrl webUrl;
 
-    public WebExtractive(String title, String sublink, String date) {
+    public Announcement(String title, String sublink, String date) {
         this.title = title;
         this.sublink = sublink;
         this.date = date;

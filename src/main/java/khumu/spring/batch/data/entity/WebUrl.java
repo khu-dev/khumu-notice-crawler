@@ -1,4 +1,4 @@
-package khumu.spring.batch.dto;
+package khumu.spring.batch.data.entity;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +19,10 @@ public class WebUrl {
 
     private String name;
     private String url;
-    private int pagenum;
+    private int lastid;
 
     @OneToMany(mappedBy = "weburl", cascade = CascadeType.ALL)
-    private List<WebExtractive> pageinfo = new ArrayList<>();
+    private List<Announcement> pageinfo = new ArrayList<>();
 
     public WebUrl(String name, String url) {
         this.name = name;
