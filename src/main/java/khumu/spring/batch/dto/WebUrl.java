@@ -14,7 +14,7 @@ public class WebUrl {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    private Long id;
 
     private String name;
     private String url;
