@@ -15,12 +15,15 @@
 - Jsoup Version 1.13.1
 - MySql DB
 
+## DataBase
+![[MySQL_Data_Table]](drawSQL-export-2021-07-07_22_50.png)
+
 ## Acknowledgements
 
  - [Spring Batch Official Documents](https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/)
  - [Spring Batch Official API-Doc](https://docs.spring.io/spring-batch/docs/4.3.x/api/index.html)
  - [Jsoup Official Documents](https://jsoup.org/apidocs/)
-  
+
 ## Authors
 
 Created by [@Marhead](https://github.com/Marhead) - Feel free to contact me!

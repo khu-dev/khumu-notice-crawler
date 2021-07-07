@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Getter
+@Table(name = "weburl")
 @Entity(name = "WebUrl")
 @NoArgsConstructor
 public class WebUrl {
