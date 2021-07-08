@@ -17,15 +17,15 @@ public class WebUrl {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
+    private String author;
     private String url;
     private int lastid;
 
     @OneToMany(mappedBy = "weburl", cascade = CascadeType.ALL)
     private List<Announcement> pageinfo = new ArrayList<>();
 
-    public WebUrl(String name, String url) {
-        this.name = name;
+    public WebUrl(String author, String url) {
+        this.author = author;
         this.url = url;
     }
 
