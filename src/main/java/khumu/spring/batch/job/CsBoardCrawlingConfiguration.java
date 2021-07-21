@@ -85,11 +85,11 @@ public class CsBoardCrawlingConfiguration {
                 String page = item.getUrl() + i;
 
                 Document document = Jsoup.connect(page).get();
-                String title = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").text();
-                String sublink = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").select().text();
-                String date = document.select().text();
-                String author = document.select().text();
-
+                // String title = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").text();
+                String title = document.select("div.con_area").select("thead").text();
+                String sublink = page;
+                // String sublink = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").select().text();
+                String date = document.select("div.con_area").select("tr.height").select("td").text();
             }
         };
     }

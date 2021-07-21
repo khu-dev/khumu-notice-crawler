@@ -88,11 +88,9 @@ public class SWBoardCrawlingConfiguration {
                 String page = item.getUrl() + i;
 
                 Document document = Jsoup.connect(page).get();
-                String title = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").text();
-                String sublink = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").select().text();
-                String date = document.select().text();
-                String author = document.select().text();
-
+                String title = document.select("div.colgroup").select("span.bo_v_tit").text();
+                String sublink = page;
+                String date = document.select("div.colgroup").select("strong.if_date").text();
             }
         };
     }
