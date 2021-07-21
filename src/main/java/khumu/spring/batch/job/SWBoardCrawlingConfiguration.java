@@ -2,7 +2,7 @@ package khumu.spring.batch.job;
 
 import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.WebUrl;
-import lombok.extern.slf4j.XSlf4j;
+import lombok.extern.slf4j.Slf4j;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.batch.core.Job;
@@ -11,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.configuration.annotation.StepScope;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.ItemReader;
@@ -22,46 +23,47 @@ import org.springframework.batch.item.database.builder.JpaItemWriterBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
+import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import java.io.IOException;
 
-@XSlf4j
+@Slf4j
 @Configuration
-public class CrawlingJobConfiguration {
+public class SWBoardCrawlingConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
-    
-    public CrawlingJobConfiguration(JobBuilderFactory jobBuilderFactory,
-                                    StepBuilderFactory stepBuilderFactory,
-                                    EntityManagerFactory entityManagerFactory) {
+
+    public SWBoardCrawlingConfiguration(JobBuilderFactory jobBuilderFactory,
+                                        StepBuilderFactory stepBuilderFactory,
+                                        EntityManagerFactory entityManagerFactory) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
         this.entityManagerFactory = entityManagerFactory;
     }
-    
+
     @Bean
-    public Job csBoardJob() {
-        return this.jobBuilderFactory.get("csBoardJob")
+    public Job swBoardJob() {
+        return this.jobBuilderFactory.get("swBoardJob")
                 .incrementer(new RunIdIncrementer())
-                .start(this.csBoardStep())
+                .start(this.swBoardStep())
                 .build();
     }
 
     @Bean
     @JobScope
-    private Step csBoardStep() {
-        return this.stepBuilderFactory.get("csBoardStep")
+    public Step swBoardStep() {
+        return this.stepBuilderFactory.get("swBoardStep")
                 .chunk(1)
-                .reader(this.csBoardItemReader())
-                .processor(this.csBoarddItemProcessor())
-                .writer(this.csBoardItemWriter())
+                .reader(this.swBoardItemReader())
+                .processor(this.swBoardItemProcessor())
+                .writer(this.swBoardItemWriter())
                 .build();
     }
 
     @Bean
     @StepScope
-    private ItemWriter<Announcement> csBoardItemWriter() throws Exception {
+    public ItemWriter<Announcement> swBoardItemWriter() throws Exception {
         JpaItemWriter itemWriter = new JpaItemWriterBuilder<Announcement>()
                 .entityManagerFactory(entityManagerFactory)
                 .build();
@@ -71,13 +73,14 @@ public class CrawlingJobConfiguration {
 
     @Bean
     @StepScope
-    private ItemProcessor<WebUrl, Announcement> csBoarddItemProcessor() {
-        return item -> new Announcement(){
+    public ItemProcessor<WebUrl, Announcement> swBoardItemProcessor() throws Exception {
+        return item -> new Announcement() {
             String target = item.getUrl();
             Document connectcheck;
             try {
                 connectcheck = Jsoup.connect(target + "1").get();
-            } catch (IOException e) {
+            } catch (
+            IOException e) {
                 e.printStackTrace();
             }
             for (int i = 0; i < 10; i++) {
@@ -90,18 +93,17 @@ public class CrawlingJobConfiguration {
                 String date = document.select().text();
                 String author = document.select().text();
 
-
             }
         };
     }
 
     @Bean
     @StepScope
-    private ItemReader<WebUrl> csBoardItemReader() throws Exception {
+    public ItemReader<WebUrl> swBoardItemReader() throws Exception {
         JpaCursorItemReader itemReader = new JpaCursorItemReaderBuilder<WebUrl>()
-                .name("csBoardItemReader")
+                .name("swBoardItemReader")
                 .entityManagerFactory(entityManagerFactory)
-                .queryString("select p from Weburl")
+                .queryString("select p from WebUrl")
                 .build();
         itemReader.afterPropertiesSet();
         return itemReader;
