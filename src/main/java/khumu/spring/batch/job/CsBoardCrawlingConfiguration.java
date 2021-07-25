@@ -54,7 +54,7 @@ public class CsBoardCrawlingConfiguration {
         return this.stepBuilderFactory.get("csBoardStep")
                 .chunk(1)
                 .reader(this.csBoardItemReader())
-                .processor(this.csBoarddItemProcessor())
+                .processor(this.csBoardItemProcessor())
                 .writer(this.csBoardItemWriter())
                 .build();
     }
@@ -71,16 +71,17 @@ public class CsBoardCrawlingConfiguration {
 
     @Bean
     @StepScope
-    public ItemProcessor<WebUrl, Announcement> csBoarddItemProcessor() {
+    public ItemProcessor<WebUrl, Announcement> csBoardItemProcessor() {
         return item -> new Announcement(){
             String target = item.getUrl();
-            Document connectcheck;
+            String lastid = item.getLastID().toString();
+
             try {
-                connectcheck = Jsoup.connect(target + "1").get();
+                Document connectcheck = Jsoup.connect(target + lastid).get();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < lastid; i++) {
 
                 String page = item.getUrl() + i;
 

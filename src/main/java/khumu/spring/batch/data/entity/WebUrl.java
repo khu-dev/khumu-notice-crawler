@@ -33,6 +33,8 @@ public class WebUrl {
         return url;
     }
 
+    public Integer getLastID() {return lastid; }
+
     public void setUrl(String url) {
         this.url = url;
     }
