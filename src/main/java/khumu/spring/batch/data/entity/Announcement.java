@@ -19,11 +19,10 @@ public class Announcement {
     private String title;
     private String sublink;
     private String date;
-    private String author;
 
     @ManyToOne
     @JoinColumn(name = "weburl_id", foreignKey = @ForeignKey(name = "FK_WEBURL"))
-    private WebUrl webUrl;
+    private String author;
 
     public Announcement(String title, String sublink, String date) {
         this.title = title;

@@ -18,24 +18,35 @@ public class WebUrl {
     private Long id;
 
     private String author;
-    private String url;
+    private String fronturl;
+    private String backurl;
     private int lastid;
 
     @OneToMany(mappedBy = "weburl", cascade = CascadeType.ALL)
     private List<Announcement> pageinfo = new ArrayList<>();
 
-    public WebUrl(String author, String url) {
+    public WebUrl(String author, String fronturl, String backurl) {
         this.author = author;
-        this.url = url;
+        this.fronturl = fronturl;
+        this.backurl = backurl;
     }
 
-    public String getUrl() {
-        return url;
+    public String getFrontUrl() {
+        return fronturl;
+    }
+    public String getBackUrl() { return backurl; }
+
+    public int getLastID() { return lastid; }
+
+    public void setFrontUrl(String fronturl) {
+        this.fronturl = fronturl;
     }
 
-    public Integer getLastID() {return lastid; }
+    public void setBackurl(String backurl) {
+        this.backurl = backurl;
+    }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setLastid(int lastid) {
+        this.lastid = lastid;
     }
 }

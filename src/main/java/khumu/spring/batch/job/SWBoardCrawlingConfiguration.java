@@ -75,22 +75,23 @@ public class SWBoardCrawlingConfiguration {
     @StepScope
     public ItemProcessor<WebUrl, Announcement> swBoardItemProcessor() throws Exception {
         return item -> new Announcement() {
-            String target = item.getUrl();
-            Document connectcheck;
-            try {
-                connectcheck = Jsoup.connect(target + "1").get();
-            } catch (
-            IOException e) {
-                e.printStackTrace();
-            }
-            for (int i = 0; i < 10; i++) {
+            String fronturl = item.getFrontUrl();
+            String backurl = item.getBackUrl();
+            int lastid = item.getLastID();
 
-                String page = item.getUrl() + i;
-
+            while(true) {
+                String page = fronturl + lastid + backurl;
+                lastid++;
                 Document document = Jsoup.connect(page).get();
-                String title = document.select("div.colgroup").select("span.bo_v_tit").text();
+
+                String title = document.select("#bo_v_title").text();
+                if(title == "Null") {
+                    lastid--;
+                    item.setLastid(lastid);
+                    break;
+                }
                 String sublink = page;
-                String date = document.select("div.colgroup").select("strong.if_date").text();
+                String date = document.select(".if_date").text();
             }
         };
     }

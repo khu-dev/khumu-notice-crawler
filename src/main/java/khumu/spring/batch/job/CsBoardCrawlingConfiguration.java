@@ -73,23 +73,22 @@ public class CsBoardCrawlingConfiguration {
     @StepScope
     public ItemProcessor<WebUrl, Announcement> csBoardItemProcessor() {
         return item -> new Announcement(){
-            String target = item.getUrl();
-            String lastid = item.getLastID().toString();
+            String fronturl = item.getFrontUrl();
+            String backurl = item.getBackUrl();
+            int lastid = item.getLastID();
 
-            try {
-                Document connectcheck = Jsoup.connect(target + lastid).get();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            for (int i = 0; i < lastid; i++) {
-
-                String page = item.getUrl() + i;
-
+            while(true){
+                String page = fronturl + lastid + backurl;
+                lastid++;
                 Document document = Jsoup.connect(page).get();
-                // String title = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").text();
+
                 String title = document.select("div.con_area").select("thead").text();
+                if(title == "Null") {
+                    lastid--;
+                    item.setLastid(lastid);
+                    break;
+                }
                 String sublink = page;
-                // String sublink = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").select().text();
                 String date = document.select("div.con_area").select("tr.height").select("td").text();
             }
         };

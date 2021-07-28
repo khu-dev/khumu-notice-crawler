@@ -75,24 +75,24 @@ public class ScholarCrawlingConfiguration {
     @StepScope
     public ItemProcessor<WebUrl, Announcement> scholarItemProcessor() throws Exception {
         return item -> new Announcement() {
-            String target = item.getUrl();
-            Document connectcheck;
-            try {
-                connectcheck = Jsoup.connect(target + "1").get();
-            } catch (
-            IOException e) {
-                e.printStackTrace();
-            }
-            for (int i = 0; i < 10; i++) {
+            String fronturl = item.getFrontUrl();
+            String backurl = item.getBackUrl();
+            int lastid = item.getLastID();
 
-                String page = item.getUrl() + i;
-
+            while(true) {
+                String page = fronturl + lastid + backurl;
+                lastid++;
                 Document document = Jsoup.connect(page).get();
-                String title = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").text();
-                String sublink = page;
-                String date = document.select().text();
-            }
 
+                String title = document.select("tr.bo_notice").select("td.td_subject").select("div.bo_tit").text();
+                if(title == "Null") {
+                    lastid--;
+                    item.setLastid(lastid);
+                    break;
+                }
+                String sublink = page;
+                String date = document.select("[font-size:11px; font-family:]").text();
+            }
         };
     }
 
