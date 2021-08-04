@@ -74,7 +74,7 @@ public class SWBoardCrawlingConfiguration {
     @Bean
     @StepScope
     public ItemProcessor<WebUrl, Announcement> swBoardItemProcessor() throws Exception {
-        return item -> new Announcement() {
+        return item -> {
             String fronturl = item.getFrontUrl();
             String backurl = item.getBackUrl();
             int lastid = item.getLastID();
@@ -84,7 +84,7 @@ public class SWBoardCrawlingConfiguration {
                 lastid++;
                 Document document = Jsoup.connect(page).get();
 
-                String title = document.select("#bo_v_title").text();
+                String title = document.select(".bo_v_tit").text();
                 if(title == "Null") {
                     lastid--;
                     item.setLastid(lastid);
@@ -93,6 +93,8 @@ public class SWBoardCrawlingConfiguration {
                 String sublink = page;
                 String date = document.select(".if_date").text();
             }
+            Announcement announcement = new Announcement(title, page, date);
+            return announcement;
         };
     }
 

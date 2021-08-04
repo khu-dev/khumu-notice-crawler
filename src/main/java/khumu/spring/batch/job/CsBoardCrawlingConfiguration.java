@@ -31,6 +31,8 @@ public class CsBoardCrawlingConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
+
+    private int chunksize = 1;
     
     public CsBoardCrawlingConfiguration(JobBuilderFactory jobBuilderFactory,
                                         StepBuilderFactory stepBuilderFactory,
@@ -52,10 +54,7 @@ public class CsBoardCrawlingConfiguration {
     @JobScope
     public Step csBoardStep() {
         return this.stepBuilderFactory.get("csBoardStep")
-                .chunk(1)
-                .reader(this.csBoardItemReader())
-                .processor(this.csBoardItemProcessor())
-                .writer(this.csBoardItemWriter())
+                .tasklet()
                 .build();
     }
 
@@ -72,7 +71,7 @@ public class CsBoardCrawlingConfiguration {
     @Bean
     @StepScope
     public ItemProcessor<WebUrl, Announcement> csBoardItemProcessor() {
-        return item -> new Announcement(){
+        return item -> {
             String fronturl = item.getFrontUrl();
             String backurl = item.getBackUrl();
             int lastid = item.getLastID();
@@ -80,17 +79,17 @@ public class CsBoardCrawlingConfiguration {
             while(true){
                 String page = fronturl + lastid + backurl;
                 lastid++;
+
                 Document document = Jsoup.connect(page).get();
 
-                String title = document.select("div.con_area").select("thead").text();
-                if(title == "Null") {
-                    lastid--;
-                    item.setLastid(lastid);
-                    break;
-                }
-                String sublink = page;
-                String date = document.select("div.con_area").select("tr.height").select("td").text();
+                String rawdata = document.select("div.con_area").select("thead").text();
+
+                String title = rawdata.split("ㆍ")[1];
+                String date = rawdata.split("ㆍ")[3];
+
+                Announcement announcement = new Announcement(title, page, date);
             }
+            return announcement;
         };
     }
 

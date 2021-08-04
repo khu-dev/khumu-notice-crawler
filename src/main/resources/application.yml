@@ -2,3 +2,11 @@ spring:
   batch:
     job:
       names: ${job.name:NONE}
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  data:
+    rest:
+      base-path: /api
