@@ -1,5 +1,7 @@
 package khumu.spring.batch.job;
 
+import khumu.spring.batch.repository.AnnouncementRepository;
+import khumu.spring.batch.repository.WebUrlRepository;
 import khumu.spring.batch.tasklet.CsCrawling;
 import khumu.spring.batch.tasklet.SWBoardCrawling;
 import khumu.spring.batch.tasklet.ScholarCrawling;
@@ -24,6 +26,9 @@ public class KhumuCrawlingConfiguration {
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
 
+    private WebUrlRepository webUrlRepository;
+    private AnnouncementRepository announcementRepository;
+
     public KhumuCrawlingConfiguration(JobBuilderFactory jobBuilderFactory,
                                       StepBuilderFactory stepBuilderFactory,
                                       EntityManagerFactory entityManagerFactory) {
@@ -46,7 +51,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step sWBoardCrawlingStep() {
         return this.stepBuilderFactory.get("sWBoardCrawlingStep")
-                .tasklet(SWBoardCrawling.tasklet())
+                .tasklet(new CsCrawling(webUrlRepository, announcementRepository))
                 .build();
     }
 
@@ -54,7 +59,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step csCrawlingStep() {
         return this.stepBuilderFactory.get("csCrawlingStep")
-                .tasklet(CsCrawling.tasklet())
+                .tasklet(new ScholarCrawling(webUrlRepository, announcementRepository))
                 .build();
     }
 
@@ -62,7 +67,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step scholarCrawlingStep() {
         return this.stepBuilderFactory.get("scholarCrawlingStep")
-                .tasklet(ScholarCrawling.tasklet())
+                .tasklet(new SWBoardCrawling(webUrlRepository, announcementRepository))
                 .build();
     }
 }
