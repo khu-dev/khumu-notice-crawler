@@ -1,5 +1,6 @@
 package khumu.spring.batch.data.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -11,6 +12,7 @@ import java.util.List;
 @Table(name = "weburl")
 @Entity(name = "WebUrl")
 @NoArgsConstructor
+@AllArgsConstructor
 public class WebUrl {
 
     @Id
@@ -20,21 +22,22 @@ public class WebUrl {
     private String author;
     private String fronturl;
     private String backurl;
-    private int lastid;
+    private Integer lastid;
 
-    @OneToMany(mappedBy = "weburl", cascade = CascadeType.ALL)
-    private List<Announcement> pageinfo = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Announcement> announcements = new ArrayList<>();
 
     public String getFrontUrl() {
         return fronturl;
     }
     public String getBackUrl() { return backurl; }
-    public int getLastID() { return lastid; }
+    public String getAuthor() {return author; }
+    public Integer getLastID() { return lastid; }
 
     public void setLastid(int lastid) {
         this.lastid = lastid;
     }
-    public void setWebUrl(String author, String fronturl, String backurl, int lastid) {
+    public void setWebUrl(String author, String fronturl, String backurl, Integer lastid) {
         this.author = author;
         this.fronturl = fronturl;
         this.backurl = backurl;

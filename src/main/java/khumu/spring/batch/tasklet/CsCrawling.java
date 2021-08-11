@@ -15,6 +15,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Optional;
 
 @Component
 public class CsCrawling implements Tasklet {
@@ -30,8 +31,10 @@ public class CsCrawling implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
-        List<WebUrl> rawdata = webUrlRepository.findAll();
-        System.out.println(rawdata);
+        Optional<WebUrl> rawdata = webUrlRepository.findById(1l);
+        rawdata.ifPresent(selectWebUrl -> {
+            System.out.println(selectWebUrl.getFrontUrl());
+        });
 //        String fronturl = contribution.getFrontUrl();
 //        String backurl = item.getBackUrl();
 //        int lastid = item.getLastID();
