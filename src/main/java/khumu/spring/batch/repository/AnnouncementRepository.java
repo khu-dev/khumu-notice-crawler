@@ -14,11 +14,11 @@ import java.util.List;
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
     Page<Announcement> findByAuthor(Pageable pageable, String author);
 
-    Page<Announcement> findByDate(Pageable pageable, String date);
+    Page<Announcement> findByUpload_time(Pageable pageable, String date);
 
     List<Announcement> findByAuthor(@Param("author") String author);
 
-    List<Announcement> findByDate(@Param("date") String date);
+    List<Announcement> findByUpload_time(@Param("upload_time") String upload_time);
     //    List<Announcement> findByName(@Param("author") String name);
 //
 //    List<Announcement> findByNameStartsWithIgnoreCase(String name);
