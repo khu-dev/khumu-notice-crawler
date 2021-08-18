@@ -33,7 +33,7 @@ public class CsCrawling implements Tasklet {
     public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
         Optional<WebUrl> rawdata = webUrlRepository.findById(1l);
         rawdata.ifPresent(selectWebUrl -> {
-            System.out.println(selectWebUrl.getFrontUrl());
+            System.out.println(rawdata);
         });
 //        String fronturl = contribution.getFrontUrl();
 //        String backurl = item.getBackUrl();

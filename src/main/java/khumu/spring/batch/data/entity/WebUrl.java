@@ -24,7 +24,7 @@ public class WebUrl {
     private String backurl;
     private Integer lastid;
 
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "title", cascade = CascadeType.ALL)
     private List<Announcement> announcements = new ArrayList<>();
 
     public String getFrontUrl() {

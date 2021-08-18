@@ -25,21 +25,21 @@ public class Announcement {
     @Column(name = "sublink")
     private String sublink;
 
-    @Column(name= "upload_time")
-    private String upload_time;
+    @Column(name= "date")
+    private String date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author", foreignKey = @ForeignKey(name = "FK_WEBURL"))
     private WebUrl author;
 
-    public Announcement(String title, String sublink, String upload_time) {
+    public Announcement(String title, String sublink, String date) {
         this.title = title;
         this.sublink = sublink;
-        this.upload_time = upload_time;
+        this.date = date;
     }
 
     public String getAnnouncement() {
-        String retData = title + "#" + upload_time + "#" + sublink;
+        String retData = title + "#" + date + "#" + sublink;
         return retData;
     }
 }

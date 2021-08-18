@@ -9,16 +9,14 @@ import org.springframework.data.rest.webmvc.RepositoryRestController;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
-    Page<Announcement> findByAuthor(Pageable pageable, String author);
+    Optional<Announcement> findByAuthor(@Param("author") String author);
 
-    Page<Announcement> findByDate(Pageable pageable, String date);
+    Optional<Announcement> findByDate(@Param("date") String date);
 
-    List<Announcement> findByAuthor(@Param("author") String author);
-
-    List<Announcement> findByDate(@Param("date") String date);
     //    List<Announcement> findByName(@Param("author") String name);
 //
 //    List<Announcement> findByNameStartsWithIgnoreCase(String name);

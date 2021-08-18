@@ -15,7 +15,6 @@ public class WebUrlController {
 
     private WebUrlRepository webUrlRepository;
 
-    @ResponseBody
     @GetMapping("/weburl")
     public ArrayList<WebUrl> getWebUrl() {
         ArrayList<WebUrl> weburls = new ArrayList<WebUrl>();
