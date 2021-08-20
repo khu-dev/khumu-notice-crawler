@@ -37,6 +37,7 @@ public class WebUrl {
     public void setLastid(int lastid) {
         this.lastid = lastid;
     }
+
     public void setWebUrl(String author, String fronturl, String backurl, Integer lastid) {
         this.author = author;
         this.fronturl = fronturl;

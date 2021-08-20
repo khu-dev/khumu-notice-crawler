@@ -10,23 +10,19 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-@Entity
+@Entity(name = "Announcement")
 @Table(name = "announcement")
 @NoArgsConstructor
 @AllArgsConstructor
 public class Announcement {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "title")
-    private String title;
-
-    @Column(name = "sublink")
-    private String sublink;
-
-    @Column(name= "date")
-    private String date;
+     private String title;
+     private String sublink;
+     private String date;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "author", foreignKey = @ForeignKey(name = "FK_WEBURL"))

@@ -1,6 +1,7 @@
 package khumu.spring.batch.repository;
 
 import khumu.spring.batch.data.entity.Announcement;
+import khumu.spring.batch.data.entity.WebUrl;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -13,7 +14,7 @@ import java.util.Optional;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
-    Optional<Announcement> findByAuthor(@Param("author") String author);
+    Optional<Announcement> findByAuthor(@Param("author") WebUrl author);
 
     Optional<Announcement> findByDate(@Param("date") String date);
 

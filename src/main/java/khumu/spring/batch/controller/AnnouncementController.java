@@ -1,6 +1,7 @@
 package khumu.spring.batch.controller;
 
 import khumu.spring.batch.data.entity.Announcement;
+import khumu.spring.batch.data.entity.WebUrl;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,7 +18,7 @@ public class AnnouncementController {
     }
 
     @GetMapping("/{target}")
-    public Optional<Announcement> getAnnouncementByAuthor(@PathVariable String target) {
+    public Optional<Announcement> getAnnouncementByAuthor(@PathVariable WebUrl target) {
         Optional<Announcement> selectedAnnouncements = announcementRepository.findByAuthor(target);
         return selectedAnnouncements;
 //        ArrayList<Announcement> announcements = new ArrayList<Announcement>();
@@ -28,9 +29,9 @@ public class AnnouncementController {
 //        return announcements;
     }
 
-    @GetMapping("/{time}")
-    public Optional<Announcement> getAnnouncementByTime(@PathVariable String date) {
-        Optional<Announcement> selectedAnnouncements = announcementRepository.findByDate(date);
-        return selectedAnnouncements;
-    }
+//    @GetMapping("/{time}")
+//    public Optional<Announcement> getAnnouncementByTime(@PathVariable String date) {
+//        Optional<Announcement> selectedAnnouncements = announcementRepository.findByDate(date);
+//        return selectedAnnouncements;
+//    }
 }

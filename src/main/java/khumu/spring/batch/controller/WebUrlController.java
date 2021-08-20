@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(value="/api/weburl")
@@ -15,10 +16,13 @@ public class WebUrlController {
 
     private WebUrlRepository webUrlRepository;
 
-    @GetMapping("/weburl")
-    public ArrayList<WebUrl> getWebUrl() {
-        ArrayList<WebUrl> weburls = new ArrayList<WebUrl>();
+    public WebUrlController(WebUrlRepository webUrlRepository) {
+        this.webUrlRepository = webUrlRepository;
+    }
 
-        return  weburls;
+    @GetMapping("/weburl")
+    public Optional<WebUrl> getWebUrl() {
+        Optional<WebUrl> weburls = webUrlRepository.findById(1l);
+        return weburls;
     }
 }
