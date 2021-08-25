@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@StepScope
 public class ScholarCrawling implements Tasklet {
     private final WebUrlRepository webUrlRepository;
     private final AnnouncementRepository announcementRepository;
@@ -31,8 +32,14 @@ public class ScholarCrawling implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
-        Optional<WebUrl> rawdata = webUrlRepository.findById(2l);
+        WebUrl rawdata = webUrlRepository.findByLastid(2411);
         System.out.println(rawdata);
+
+//        Optional<WebUrl> rawdata = webUrlRepository.findByLastid(2l);
+//        rawdata.ifPresent(selectWebUrl -> {
+//            System.out.println(rawdata);
+//        });
+
 //        String page = fronturl + lastid + backurl;
 //        lastid++;
 //        Document document = Jsoup.connect(page).get();

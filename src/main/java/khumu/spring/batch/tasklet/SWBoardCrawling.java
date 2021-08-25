@@ -18,6 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@StepScope
 public class SWBoardCrawling implements Tasklet{
     private final WebUrlRepository webUrlRepository;
     private final AnnouncementRepository announcementRepository;
@@ -31,8 +32,14 @@ public class SWBoardCrawling implements Tasklet{
 
     @Override
     public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
-        Optional<WebUrl> rawdata = webUrlRepository.findById(3l);
+        WebUrl rawdata = webUrlRepository.findByLastid(1653);
         System.out.println(rawdata);
+
+//        Optional<WebUrl> rawdata = webUrlRepository.findByLastid(3l);
+//        rawdata.ifPresent(selectWebUrl -> {
+//            System.out.println(rawdata);
+//        });
+
 //        String fronturl = webUrlRepository.getFrontUrl();
 //        String backurl = webUrlRepository.getBackUrl();
 //        int lastid = webUrlRepository.getLastID();

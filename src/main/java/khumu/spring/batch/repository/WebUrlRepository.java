@@ -9,4 +9,5 @@ import java.util.Optional;
 
 @Repository
 public interface WebUrlRepository extends JpaRepository<WebUrl, Long> {
+    WebUrl findByLastid(Integer lastid);
 }

@@ -7,6 +7,7 @@ import khumu.spring.batch.repository.WebUrlRepository;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
@@ -18,6 +19,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Component
+@StepScope
 public class CsCrawling implements Tasklet {
     private final WebUrlRepository webUrlRepository;
     private final AnnouncementRepository announcementRepository;
@@ -31,10 +33,14 @@ public class CsCrawling implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
-        Optional<WebUrl> rawdata = webUrlRepository.findById(1l);
-        rawdata.ifPresent(selectWebUrl -> {
-            System.out.println(rawdata);
-        });
+        WebUrl rawdata = webUrlRepository.findByLastid(2330);
+        System.out.println(rawdata);
+
+//        Optional<WebUrl> rawdata = webUrlRepository.findByLastid(1l);
+//        rawdata.ifPresent(selectWebUrl -> {
+//            System.out.println(rawdata);
+//        });
+
 //        String fronturl = contribution.getFrontUrl();
 //        String backurl = item.getBackUrl();
 //        int lastid = item.getLastID();

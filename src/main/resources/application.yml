@@ -9,9 +9,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-  data:
-    rest:
-      base-path: /api
+#  data:
+#    rest:
+#      base-path: /api
   h2:
     console:
       enabled: true

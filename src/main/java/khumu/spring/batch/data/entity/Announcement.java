@@ -23,19 +23,16 @@ public class Announcement {
      private String title;
      private String sublink;
      private String date;
+     private String author;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author", foreignKey = @ForeignKey(name = "FK_WEBURL"))
-    private WebUrl author;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "webUrl", foreignKey = @ForeignKey(name = "FK_WEBURL"))
+//    private WebUrl webUrl;
 
-    public Announcement(String title, String sublink, String date) {
-        this.title = title;
-        this.sublink = sublink;
-        this.date = date;
-    }
-
-    public String getAnnouncement() {
-        String retData = title + "#" + date + "#" + sublink;
-        return retData;
-    }
+//    public Announcement(String title, String sublink, String date, String author) {
+//        this.title = title;
+//        this.sublink = sublink;
+//        this.date = date;
+//        this.author = author;
+//    }
 }

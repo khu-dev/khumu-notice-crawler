@@ -14,9 +14,9 @@ import java.util.Optional;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
-    Optional<Announcement> findByAuthor(@Param("author") WebUrl author);
+    Announcement findByAuthor(String author);
 
-    Optional<Announcement> findByDate(@Param("date") String date);
+//    Optional<Announcement> findByDate(String date);
 
     //    List<Announcement> findByName(@Param("author") String name);
 //
