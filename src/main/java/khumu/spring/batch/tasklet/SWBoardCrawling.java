@@ -1,30 +1,24 @@
 package khumu.spring.batch.tasklet;
 
-import khumu.spring.batch.data.entity.WebUrl;
+import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
-import khumu.spring.batch.repository.WebUrlRepository;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
+import khumu.spring.batch.repository.BoardRepository;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
-import java.util.Optional;
 
 @Component
 @StepScope
 public class SWBoardCrawling implements Tasklet{
-    private final WebUrlRepository webUrlRepository;
+    private final BoardRepository webUrlRepository;
     private final AnnouncementRepository announcementRepository;
 
     @Autowired
-    public SWBoardCrawling(WebUrlRepository webUrlRepository,
+    public SWBoardCrawling(BoardRepository webUrlRepository,
                            AnnouncementRepository announcementRepository) {
         this.webUrlRepository = webUrlRepository;
         this.announcementRepository = announcementRepository;
@@ -32,10 +26,10 @@ public class SWBoardCrawling implements Tasklet{
 
     @Override
     public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
-        WebUrl rawdata = webUrlRepository.findByLastid(1653);
+        Board rawdata = webUrlRepository.findByLastid(1653);
         System.out.println(rawdata);
 
-//        Optional<WebUrl> rawdata = webUrlRepository.findByLastid(3l);
+//        Optional<Board> rawdata = webUrlRepository.findByLastid(3l);
 //        rawdata.ifPresent(selectWebUrl -> {
 //            System.out.println(rawdata);
 //        });

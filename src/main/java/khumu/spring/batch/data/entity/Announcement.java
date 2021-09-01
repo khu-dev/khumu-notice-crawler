@@ -1,6 +1,5 @@
 package khumu.spring.batch.data.entity;
 
-import khumu.spring.batch.data.entity.WebUrl;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -23,11 +22,10 @@ public class Announcement {
      private String title;
      private String sublink;
      private String date;
-     private String author;
 
-//    @ManyToOne(fetch = FetchType.LAZY)
-//    @JoinColumn(name = "webUrl", foreignKey = @ForeignKey(name = "FK_WEBURL"))
-//    private WebUrl webUrl;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author", foreignKey = @ForeignKey(name = "fk_author"))
+    private Author author;
 
 //    public Announcement(String title, String sublink, String date, String author) {
 //        this.title = title;

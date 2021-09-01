@@ -16,13 +16,21 @@
 - MySql DB
 
 ## DataBase
-![[MySQL_Data_Table]](drawSQL-export-2021-07-21_18_51.png)
+![[MySQL_Data_Table]](diagramdraw.png)
 
 ## Acknowledgements
 
  - [Spring Batch Official Documents](https://docs.spring.io/spring-batch/docs/4.3.x/reference/html/)
  - [Spring Batch Official API-Doc](https://docs.spring.io/spring-batch/docs/4.3.x/api/index.html)
  - [Jsoup Official Documents](https://jsoup.org/apidocs/)
+
+## API
+
+- `/api` : 공통 API URI
+  - `/announcements` : 공지사항 관련 URI
+    - `user` : 이용자의 이름을 넣으면 팔로우한 공지사항 불러오기
+    - `author` : 공지사항 게시자 이름으로 공지사항 불러오기
+    - `date` : 공지사항 업로드 시간으로 공지사항 불러오기
 
 ## Authors
 

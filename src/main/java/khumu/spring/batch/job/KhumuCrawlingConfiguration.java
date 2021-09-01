@@ -1,13 +1,11 @@
 package khumu.spring.batch.job;
 
 import khumu.spring.batch.repository.AnnouncementRepository;
-import khumu.spring.batch.repository.WebUrlRepository;
+import khumu.spring.batch.repository.BoardRepository;
 import khumu.spring.batch.tasklet.CsCrawling;
 import khumu.spring.batch.tasklet.SWBoardCrawling;
 import khumu.spring.batch.tasklet.ScholarCrawling;
 import lombok.extern.slf4j.Slf4j;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
@@ -26,7 +24,7 @@ public class KhumuCrawlingConfiguration {
     private final StepBuilderFactory stepBuilderFactory;
     private final EntityManagerFactory entityManagerFactory;
 
-    private WebUrlRepository webUrlRepository;
+    private BoardRepository webUrlRepository;
     private AnnouncementRepository announcementRepository;
 
     public KhumuCrawlingConfiguration(JobBuilderFactory jobBuilderFactory,

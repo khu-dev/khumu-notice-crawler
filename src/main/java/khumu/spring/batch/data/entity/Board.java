@@ -3,23 +3,27 @@ package khumu.spring.batch.data.entity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.data.util.Lazy;
 
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter
-@Table(name = "weburl")
-@Entity(name = "WebUrl")
+@Table(name = "board")
+@Entity(name = "Board")
 @NoArgsConstructor
 @AllArgsConstructor
-public class WebUrl {
+public class Board {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String author;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "author", foreignKey = @ForeignKey(name = "fk_author_board"))
+    private Author author;
+
     private String fronturl;
     private String backurl;
     private Integer lastid;
