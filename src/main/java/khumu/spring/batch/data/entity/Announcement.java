@@ -23,8 +23,8 @@ public class Announcement {
      private String sublink;
      private String date;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "author", foreignKey = @ForeignKey(name = "fk_author"))
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "author_id")
     private Author author;
 
 //    public Announcement(String title, String sublink, String date, String author) {

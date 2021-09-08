@@ -9,9 +9,8 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class BoardDto {
+public class AuthorDto {
     Long id;
-    String wholelink;
-    Integer lastid;
-    AuthorDto author;
+    String authorname;
+    Boolean followed;
 }

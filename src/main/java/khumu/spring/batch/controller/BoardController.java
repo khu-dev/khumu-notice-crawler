@@ -27,7 +27,7 @@ public class BoardController {
     }
 
     @GetMapping("/{author}")
-    public Board getBoardByAuthor(@RequestParam String authorname) {
+    public List<Board> getBoardByAuthor(@RequestParam String authorname) {
         return boardService.getBoardlByAuthor(authorname);
     }
 

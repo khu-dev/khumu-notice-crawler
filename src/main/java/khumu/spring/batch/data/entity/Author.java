@@ -20,6 +20,11 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToMany(mappedBy = "authorname")
-    private List<Board> authorname = new ArrayList<Board>();
+    private String authorname;
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Board> boards = new ArrayList<Board>();
+
+    @OneToMany(fetch = FetchType.LAZY)
+    private List<Announcement> announcements = new ArrayList<Announcement>();
 }

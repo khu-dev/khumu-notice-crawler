@@ -6,6 +6,7 @@ import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -23,11 +24,15 @@ public class BoardService {
         return boardRepository.findAll();
     }
 
-    public Board getBoardlByAuthor(String authorname) {
+    public List<Board> getBoardlByAuthor(String authorname) {
+        List<Board> board = new ArrayList<>();
         List<Author> authors = authorRepository.findByAuthorname(authorname);
-        Long authorid = authors.getId();
 
-        return boardRepository.findByAuthor(authorid);
+        for(Author author : authors) {
+            board.addAll(boardRepository.findByAuthor(author.getId()));
+        }
+
+        return board;
     }
 
     public Board getBoardByLastid(Integer lastid) {
