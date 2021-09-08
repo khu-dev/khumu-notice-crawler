@@ -22,7 +22,7 @@ public class Author {
 
     private String authorname;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     private List<Board> boards = new ArrayList<Board>();
 
     @OneToMany(fetch = FetchType.LAZY)
