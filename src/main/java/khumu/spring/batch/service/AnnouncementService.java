@@ -1,6 +1,7 @@
 package khumu.spring.batch.service;
 
 import khumu.spring.batch.data.DateTime;
+import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Follow;
 import khumu.spring.batch.data.entity.User;

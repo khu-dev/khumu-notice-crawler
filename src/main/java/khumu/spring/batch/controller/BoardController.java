@@ -1,5 +1,6 @@
 package khumu.spring.batch.controller;
 
+import khumu.spring.batch.data.dto.BoardDto;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.service.BoardService;
 import org.springframework.web.bind.annotation.*;
@@ -22,17 +23,17 @@ public class BoardController {
     }
 
     @GetMapping("/all")
-    public List<Board> getAllBoards() {
+    public List<BoardDto> getAllBoards() {
         return boardService.getAllBoards();
     }
 
     @GetMapping("/{author}")
-    public List<Board> getBoardByAuthor(@RequestParam String authorname) {
+    public List<BoardDto> getBoardByAuthor(@RequestParam String authorname) {
         return boardService.getBoardlByAuthor(authorname);
     }
 
-    @GetMapping("/{lastid}")
-    public Board getBoardByLastid(@RequestParam Integer lastid) {
-        return boardService.getBoardByLastid(lastid);
-    }
+//    @GetMapping("/{lastid}")
+//    public BoardDto getBoardByLastid(@RequestParam Integer lastid) {
+//        return boardService.getBoardByLastid(lastid);
+//    }
 }
