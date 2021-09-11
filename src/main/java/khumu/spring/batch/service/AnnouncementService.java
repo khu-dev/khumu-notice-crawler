@@ -1,6 +1,5 @@
 package khumu.spring.batch.service;
 
-import khumu.spring.batch.data.DateTime;
 import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Follow;
@@ -33,8 +32,9 @@ public class AnnouncementService {
     }
 
     public List<AnnouncementDto> getAllAnnouncements() {
-        List<AnnouncementDto> announcementDtos = new ArrayList<>();
         List<Announcement> announcements = announcementRepository.findAll();
+        List<AnnouncementDto> announcementDtos = new ArrayList<>();
+
         for (Announcement announcement : announcements) {
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .id(announcement.getId())
@@ -62,12 +62,24 @@ public class AnnouncementService {
                     .build();
             announcementDtos.add(announcementDto);
         }
-
         return announcementDtos;
     }
 
     public List<AnnouncementDto> getAnnouncementByDate(String date) {
-        return announcementRepository.findByDate(date);
+        List<Announcement> announcements = announcementRepository.findByDate(date);
+        List<AnnouncementDto> announcementDtos = new ArrayList<>();
+
+        for (Announcement announcement : announcements) {
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .id(announcement.getId())
+                    .title(announcement.getTitle())
+                    .sublink(announcement.getSublink())
+                    .date(announcement.getDate())
+                    .author(announcement.getAuthor())
+                    .build();
+            announcementDtos.add(announcementDto);
+        }
+        return announcementDtos;
     }
 
     public List<AnnouncementDto> getAnnouncementByUser(String user) {
@@ -81,10 +93,22 @@ public class AnnouncementService {
         // 2단계
         // follow->followauthor == announcemnt->author 같아야 함
         List<Announcement> announcements = new ArrayList<>();
+        List<AnnouncementDto> announcementDtos = new ArrayList<>();
         for (Follow follow : followedAuthorId) {
             announcements.addAll(announcementRepository.findByAuthor(follow.getFollowauthor().getId()));
         }
 
-        return announcements;
+        for (Announcement announcement : announcements) {
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .id(announcement.getId())
+                    .title(announcement.getTitle())
+                    .sublink(announcement.getSublink())
+                    .date(announcement.getDate())
+                    .author(announcement.getAuthor())
+                    .build();
+            announcementDtos.add(announcementDto);
+        }
+
+        return announcementDtos;
     }
 }

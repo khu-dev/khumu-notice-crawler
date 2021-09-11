@@ -1,6 +1,5 @@
 package khumu.spring.batch.data.dto;
 
-import khumu.spring.batch.data.entity.Author;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,10 +9,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AnnouncementDto {
-    Long id;
-    String title;
-    String sublink;
-    String date;
-    Author author;
+public class UserDto {
+    public Long id;
+    public String username;
 }

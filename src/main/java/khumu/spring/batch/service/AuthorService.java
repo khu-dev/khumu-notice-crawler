@@ -5,6 +5,7 @@ import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -15,6 +16,16 @@ public class AuthorService {
         this.authorRepository = authorRepository;
     }
     public List<AuthorDto> getAllAuthors() {
-        return authorRepository.findAll();
+        List<Author> authors = authorRepository.findAll();
+        List<AuthorDto> authorDtos = new ArrayList<>();
+
+        for (Author author : authors) {
+            AuthorDto authorDto = AuthorDto.builder()
+                    .id(author.getId())
+                    .authorname(author.getAuthorname())
+                    .build();
+            authorDtos.add(authorDto);
+        }
+        return authorDtos;
     }
 }

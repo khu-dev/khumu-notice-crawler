@@ -35,7 +35,7 @@ public class BoardService {
                     .id(board.getId())
                     .wholelink(board.getFronturl() + "###indexpart###" + board.getBackurl())
                     .lastid(board.getLastid())
-                    .author(authorRepository.getById(board.getAuthor().getId()).get)  // 원래 BoardDto에서는 AuthorDto로 받았으나, 일단 한번 해봄. 문제 생기면 여기 수정해야됨
+                    .author(board.getAuthor())  // 원래 BoardDto에서는 AuthorDto로 받았으나, 일단 한번 해봄. 문제 생기면 여기 수정해야됨
                     .build();
             boardDtos.add(boardDto);
         }
