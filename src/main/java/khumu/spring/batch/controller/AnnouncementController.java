@@ -22,17 +22,17 @@ public class AnnouncementController {
         return announcementService.getAllAnnouncements();
     }
 
-    @GetMapping("/{authorname}")
+    @GetMapping("authorname")
     public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam Long authorname) {
         return announcementService.getAnnouncementByAuthor(authorname);
     }
 
-    @GetMapping("/{date}")
+    @GetMapping("date")
     public List<AnnouncementDto> getAnnouncementByTime(@RequestParam String date) {
         return announcementService.getAnnouncementByDate(date);
     }
 
-    @GetMapping("/{user}")
+    @GetMapping("user")
     public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user) {
         return announcementService.getAnnouncementByUser(user);
     }

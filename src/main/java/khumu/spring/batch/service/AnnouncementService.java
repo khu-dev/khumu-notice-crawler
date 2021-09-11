@@ -86,16 +86,19 @@ public class AnnouncementService {
 
         // 1단계
         // User Id 뽑아서 Follow 명단 찾기
-        User userdatas = userRepository.findByUsername(user);
-        Long follower = userdatas.getId();
-        List<Follow> followedAuthorId = followRepository.findByFollower(follower);
+        User userdata = userRepository.findByUsername(user);
+        Long userdataId = userdata.getId();
+
+        // 입력된 user에 따른 팔로우 목록 리스트
+        List<Follow> follows = followRepository.findByFollower(userdataId);
 
         // 2단계
         // follow->followauthor == announcemnt->author 같아야 함
         List<Announcement> announcements = new ArrayList<>();
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
-        for (Follow follow : followedAuthorId) {
-            announcements.addAll(announcementRepository.findByAuthor(follow.getFollowauthor().getId()));
+        for (Follow follow : follows) {
+            Long authorId = authorRepository.findById(follow.getFollowauthor())
+            announcements.addAll(authorRepository.findById(follow.getFollowauthor().getId()));
         }
 
         for (Announcement announcement : announcements) {
