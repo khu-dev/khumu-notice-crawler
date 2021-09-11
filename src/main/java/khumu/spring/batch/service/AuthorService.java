@@ -1,5 +1,6 @@
 package khumu.spring.batch.service;
 
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.repository.AuthorRepository;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,7 @@ public class AuthorService {
     public AuthorService(AuthorRepository authorRepository) {
         this.authorRepository = authorRepository;
     }
-    public List<Author> getAllAuthors() {
+    public List<AuthorDto> getAllAuthors() {
         return authorRepository.findAll();
     }
 }

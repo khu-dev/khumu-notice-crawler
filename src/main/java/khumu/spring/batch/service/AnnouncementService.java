@@ -18,30 +18,59 @@ import java.util.List;
 public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
+    private final AuthorRepository authorRepository;
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
 
     public AnnouncementService(AnnouncementRepository announcementRepository,
+                               AuthorRepository authorRepository,
                                FollowRepository followRepository,
                                UserRepository userRepository) {
         this.announcementRepository = announcementRepository;
+        this.authorRepository = authorRepository;
         this.followRepository = followRepository;
         this.userRepository = userRepository;
     }
 
-    public List<Announcement> getEveryAnnouncements() {
-        return announcementRepository.findAll();
+    public List<AnnouncementDto> getAllAnnouncements() {
+        List<AnnouncementDto> announcementDtos = new ArrayList<>();
+        List<Announcement> announcements = announcementRepository.findAll();
+        for (Announcement announcement : announcements) {
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .id(announcement.getId())
+                    .title(announcement.getTitle())
+                    .sublink(announcement.getSublink())
+                    .date(announcement.getDate())
+                    .author(announcement.getAuthor())
+                    .build();
+            announcementDtos.add(announcementDto);
+        }
+        return announcementDtos;
     }
 
-    public List<Announcement> getAnnouncementByAuthor(Long authorname) {
-        return announcementRepository.findByAuthor(authorname);
+    public List<AnnouncementDto> getAnnouncementByAuthor(Long authorname) {
+        List<Announcement> announcements = announcementRepository.findByAuthor(authorname);
+        List<AnnouncementDto> announcementDtos = new ArrayList<>();
+
+        for (Announcement announcement : announcements) {
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .id(announcement.getId())
+                    .title(announcement.getTitle())
+                    .sublink(announcement.getSublink())
+                    .date(announcement.getDate())
+                    .author(announcement.getAuthor())
+                    .build();
+            announcementDtos.add(announcementDto);
+        }
+
+        return announcementDtos;
     }
 
-    public List<Announcement> getAnnouncementByDate(String date) {
+    public List<AnnouncementDto> getAnnouncementByDate(String date) {
         return announcementRepository.findByDate(date);
     }
 
-    public List<Announcement> getAnnouncementByUser(String user) {
+    public List<AnnouncementDto> getAnnouncementByUser(String user) {
 
         // 1단계
         // User Id 뽑아서 Follow 명단 찾기

@@ -1,5 +1,6 @@
 package khumu.spring.batch.controller;
 
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.service.AuthorService;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +18,7 @@ public class AuthorController {
         this.authorService = authorService;
     }
     @GetMapping("/all")
-    public List<Author> getAllAuthors() {
+    public List<AuthorDto> getAllAuthors() {
         return authorService.getAllAuthors();
     }
 }

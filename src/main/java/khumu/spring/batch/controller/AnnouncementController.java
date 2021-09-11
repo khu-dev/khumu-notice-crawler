@@ -1,5 +1,6 @@
 package khumu.spring.batch.controller;
 
+import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.service.AnnouncementService;
 import org.springframework.web.bind.annotation.*;
@@ -17,22 +18,22 @@ public class AnnouncementController {
     }
 
     @GetMapping("/all")
-    public List<Announcement> getAnnouncementAll() {
-        return announcementService.getEveryAnnouncements();
+    public List<AnnouncementDto> getAnnouncementAll() {
+        return announcementService.getAllAnnouncements();
     }
 
     @GetMapping("/{authorname}")
-    public List<Announcement> getAnnouncementByAuthor(@RequestParam Long authorname) {
+    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam Long authorname) {
         return announcementService.getAnnouncementByAuthor(authorname);
     }
 
     @GetMapping("/{date}")
-    public List<Announcement> getAnnouncementByTime(@RequestParam String date) {
+    public List<AnnouncementDto> getAnnouncementByTime(@RequestParam String date) {
         return announcementService.getAnnouncementByDate(date);
     }
 
     @GetMapping("/{user}")
-    public List<Announcement> getAnnouncementByUser(@RequestParam String user) {
+    public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user) {
         return announcementService.getAnnouncementByUser(user);
     }
 }

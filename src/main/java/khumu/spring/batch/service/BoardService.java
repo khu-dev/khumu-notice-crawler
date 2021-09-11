@@ -1,5 +1,6 @@
 package khumu.spring.batch.service;
 
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.dto.BoardDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
@@ -24,13 +25,17 @@ public class BoardService {
     public List<BoardDto> getAllBoards() {
         List<Board> boards = new ArrayList<>();
         List<BoardDto> boardDtos = new ArrayList<>();
+        List<Author> authors = new ArrayList<>();
+        List<AuthorDto> authorDtos = new ArrayList<>();
+
         boards.addAll(boardRepository.findAll());
+
         for (Board board : boards) {
             BoardDto boardDto = BoardDto.builder()
                     .id(board.getId())
                     .wholelink(board.getFronturl() + "###indexpart###" + board.getBackurl())
                     .lastid(board.getLastid())
-                    .author(board.getAuthor())  // 원래 BoardDto에서는 AuthorDto로 받았으나, 일단 한번 해봄. 문제 생기면 여기 수정해야됨
+                    .author(authorRepository.getById(board.getAuthor().getId()).get)  // 원래 BoardDto에서는 AuthorDto로 받았으나, 일단 한번 해봄. 문제 생기면 여기 수정해야됨
                     .build();
             boardDtos.add(boardDto);
         }

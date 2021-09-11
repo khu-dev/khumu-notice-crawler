@@ -1,9 +1,11 @@
 package khumu.spring.batch.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import net.minidev.json.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,8 +25,10 @@ public class Author {
     private String authorname;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @JsonIgnoreProperties({"author"})
     private List<Board> boards = new ArrayList<Board>();
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @JsonIgnoreProperties({"author"})
     private List<Announcement> announcements = new ArrayList<Announcement>();
 }
