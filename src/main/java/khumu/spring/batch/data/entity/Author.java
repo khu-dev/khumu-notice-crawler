@@ -1,5 +1,6 @@
 package khumu.spring.batch.data.entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -25,10 +26,12 @@ public class Author {
     private String authorname;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-    @JsonIgnoreProperties({"author"})
+    @JsonBackReference
+//    @JsonIgnoreProperties({"author", "announcements"})
     private List<Board> boards = new ArrayList<Board>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
-    @JsonIgnoreProperties({"author"})
+    @JsonBackReference
+//    @JsonIgnoreProperties({"author", "boards"})
     private List<Announcement> announcements = new ArrayList<Announcement>();
 }
