@@ -1,7 +1,9 @@
 package khumu.spring.batch.service;
 
 import khumu.spring.batch.data.dto.AnnouncementDto;
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Announcement;
+import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Follow;
 import khumu.spring.batch.data.entity.User;
 import khumu.spring.batch.repository.AnnouncementRepository;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AnnouncementService {
@@ -36,12 +39,18 @@ public class AnnouncementService {
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
         for (Announcement announcement : announcements) {
+            AuthorDto authorDto = AuthorDto.builder()
+                    .id(announcement.getId())
+                    .author_name(announcement.getAuthor().getAuthorname())
+                    .followed(Boolean.FALSE)
+                    .build();
+
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .id(announcement.getId())
                     .title(announcement.getTitle())
-                    .sublink(announcement.getSublink())
+                    .sub_link(announcement.getSublink())
                     .date(announcement.getDate())
-                    .author(announcement.getAuthor())
+                    .author(authorDto)
                     .build();
             announcementDtos.add(announcementDto);
         }
@@ -53,12 +62,18 @@ public class AnnouncementService {
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
         for (Announcement announcement : announcements) {
+            AuthorDto authorDto = AuthorDto.builder()
+                    .id(announcement.getId())
+                    .author_name(announcement.getAuthor().getAuthorname())
+                    .followed(Boolean.FALSE)
+                    .build();
+
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .id(announcement.getId())
                     .title(announcement.getTitle())
-                    .sublink(announcement.getSublink())
+                    .sub_link(announcement.getSublink())
                     .date(announcement.getDate())
-                    .author(announcement.getAuthor())
+                    .author(authorDto)
                     .build();
             announcementDtos.add(announcementDto);
         }
@@ -70,12 +85,17 @@ public class AnnouncementService {
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
         for (Announcement announcement : announcements) {
+            AuthorDto authorDto = AuthorDto.builder()
+                    .id(announcement.getId())
+                    .author_name(announcement.getAuthor().getAuthorname())
+                    .followed(Boolean.FALSE)
+                    .build();
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .id(announcement.getId())
                     .title(announcement.getTitle())
-                    .sublink(announcement.getSublink())
+                    .sub_link(announcement.getSublink())
                     .date(announcement.getDate())
-                    .author(announcement.getAuthor())
+                    .author(authorDto)
                     .build();
             announcementDtos.add(announcementDto);
         }
@@ -88,6 +108,7 @@ public class AnnouncementService {
         // User Id 뽑아서 Follow 명단 찾기
         User userdata = userRepository.findByUsername(user);
         Long userdataId = userdata.getId();
+        System.out.println(userdataId);
 
         // 입력된 user에 따른 팔로우 목록 리스트
         List<Follow> follows = followRepository.findByFollower(userdataId);
@@ -96,18 +117,28 @@ public class AnnouncementService {
         // follow->followauthor == announcemnt->author 같아야 함
         List<Announcement> announcements = new ArrayList<>();
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
+
         for (Follow follow : follows) {
-            Long authorId = authorRepository.findById(follow.getFollowauthor())
-            announcements.addAll(authorRepository.findById(follow.getFollowauthor().getId()));
+            Long followauthor = follow.getFollowauthor().getId();
+            Author author = authorRepository.findById(followauthor).orElse(null);
+            Long authorId = author.getId();
+
+            List<Announcement> announcementList = announcementRepository.findByAuthor(authorId);
+            announcements.addAll(announcementList);
         }
 
         for (Announcement announcement : announcements) {
+            AuthorDto authorDto = AuthorDto.builder()
+                    .id(announcement.getId())
+                    .author_name(announcement.getAuthor().getAuthorname())
+                    .followed(Boolean.FALSE)
+                    .build();
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .id(announcement.getId())
                     .title(announcement.getTitle())
-                    .sublink(announcement.getSublink())
+                    .sub_link(announcement.getSublink())
                     .date(announcement.getDate())
-                    .author(announcement.getAuthor())
+                    .author(authorDto)
                     .build();
             announcementDtos.add(announcementDto);
         }

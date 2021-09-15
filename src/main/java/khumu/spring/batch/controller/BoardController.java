@@ -29,7 +29,7 @@ public class BoardController {
 
     @GetMapping("/{author}")
     public List<BoardDto> getBoardByAuthor(@RequestParam String authorname) {
-        return boardService.getBoardlByAuthor(authorname);
+        return boardService.getBoardByAuthor(authorname);
     }
 //    활용성이 낮음, 추후 확장 고려
 //    @GetMapping("/{lastid}")

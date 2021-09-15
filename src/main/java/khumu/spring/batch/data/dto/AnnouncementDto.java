@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 public class AnnouncementDto {
     Long id;
     String title;
-    String sublink;
+    String sub_link;
     String date;
-    Author author;
+    AuthorDto author;
 }

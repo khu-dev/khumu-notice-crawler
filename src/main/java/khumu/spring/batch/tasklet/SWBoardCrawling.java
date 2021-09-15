@@ -14,19 +14,19 @@ import org.springframework.stereotype.Component;
 @Component
 @StepScope
 public class SWBoardCrawling implements Tasklet{
-    private final BoardRepository webUrlRepository;
+    private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
 
     @Autowired
-    public SWBoardCrawling(BoardRepository webUrlRepository,
+    public SWBoardCrawling(BoardRepository boardRepository,
                            AnnouncementRepository announcementRepository) {
-        this.webUrlRepository = webUrlRepository;
+        this.boardRepository = boardRepository;
         this.announcementRepository = announcementRepository;
     }
 
     @Override
     public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
-        Board rawdata = webUrlRepository.findByLastid(1653);
+        Board rawdata = boardRepository.findByLastid(1653);
         System.out.println(rawdata);
 
 //        Optional<Board> rawdata = webUrlRepository.findByLastid(3l);

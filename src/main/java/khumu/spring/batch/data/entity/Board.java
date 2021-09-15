@@ -27,7 +27,9 @@ public class Board {
     private Author author;
 
     private String fronturl;
+
     private String backurl;
+
     private Integer lastid;
 
 //    @OneToMany(mappedBy = "title", cascade = CascadeType.ALL)

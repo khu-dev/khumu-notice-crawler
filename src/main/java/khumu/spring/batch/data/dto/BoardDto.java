@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class BoardDto {
     Long id;
-    String wholelink;
-    Integer lastid;
-    Author author;
+    String whole_link;
+    Integer last_id;
+    AuthorDto author;
 }

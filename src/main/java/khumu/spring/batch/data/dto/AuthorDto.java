@@ -11,6 +11,6 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class AuthorDto {
     Long id;
-    String authorname;
+    String author_name;
     Boolean followed;
 }
