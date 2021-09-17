@@ -36,29 +36,15 @@ public class AnnouncementService {
 
     public List<AnnouncementDto> getAllAnnouncements() {
         List<Announcement> announcements = announcementRepository.findAll();
-        List<AnnouncementDto> announcementDtos = new ArrayList<>();
-
-        for (Announcement announcement : announcements) {
-            AuthorDto authorDto = AuthorDto.builder()
-                    .id(announcement.getId())
-                    .author_name(announcement.getAuthor().getAuthorname())
-                    .followed(Boolean.FALSE)
-                    .build();
-
-            AnnouncementDto announcementDto = AnnouncementDto.builder()
-                    .id(announcement.getId())
-                    .title(announcement.getTitle())
-                    .sub_link(announcement.getSublink())
-                    .date(announcement.getDate())
-                    .author(authorDto)
-                    .build();
-            announcementDtos.add(announcementDto);
-        }
-        return announcementDtos;
+        return getAnnouncementDtos(announcements);
     }
 
     public List<AnnouncementDto> getAnnouncementByAuthor(Long authorname) {
         List<Announcement> announcements = announcementRepository.findByAuthor(authorname);
+        return getAnnouncementDtos(announcements);
+    }
+
+    private List<AnnouncementDto> getAnnouncementDtos(List<Announcement> announcements) {
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
         for (Announcement announcement : announcements) {
@@ -82,24 +68,7 @@ public class AnnouncementService {
 
     public List<AnnouncementDto> getAnnouncementByDate(String date) {
         List<Announcement> announcements = announcementRepository.findByDate(date);
-        List<AnnouncementDto> announcementDtos = new ArrayList<>();
-
-        for (Announcement announcement : announcements) {
-            AuthorDto authorDto = AuthorDto.builder()
-                    .id(announcement.getId())
-                    .author_name(announcement.getAuthor().getAuthorname())
-                    .followed(Boolean.FALSE)
-                    .build();
-            AnnouncementDto announcementDto = AnnouncementDto.builder()
-                    .id(announcement.getId())
-                    .title(announcement.getTitle())
-                    .sub_link(announcement.getSublink())
-                    .date(announcement.getDate())
-                    .author(authorDto)
-                    .build();
-            announcementDtos.add(announcementDto);
-        }
-        return announcementDtos;
+        return getAnnouncementDtos(announcements);
     }
 
     public List<AnnouncementDto> getAnnouncementByUser(String user) {
@@ -111,7 +80,7 @@ public class AnnouncementService {
         System.out.println(userdataId);
 
         // 입력된 user에 따른 팔로우 목록 리스트
-        List<Follow> follows = followRepository.findByFollower(userdataId);
+        List<Follow> follows = followRepository.findByFollower(userdata);
 
         // 2단계
         // follow->followauthor == announcemnt->author 같아야 함
