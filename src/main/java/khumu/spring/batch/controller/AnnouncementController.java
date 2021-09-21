@@ -23,7 +23,7 @@ public class AnnouncementController {
     }
 
     @GetMapping("authorname")
-    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam Long authorname) {
+    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorname) {
         return announcementService.getAnnouncementByAuthor(authorname);
     }
 

@@ -39,8 +39,9 @@ public class AnnouncementService {
         return getAnnouncementDtos(announcements);
     }
 
-    public List<AnnouncementDto> getAnnouncementByAuthor(Long authorname) {
-        List<Announcement> announcements = announcementRepository.findByAuthor(authorname);
+    public List<AnnouncementDto> getAnnouncementByAuthor(String authorname) {
+        Author author = authorRepository.findByAuthorname(authorname);
+        List<Announcement> announcements = announcementRepository.findByAuthor(author);
         return getAnnouncementDtos(announcements);
     }
 
@@ -90,9 +91,8 @@ public class AnnouncementService {
         for (Follow follow : follows) {
             Long followauthor = follow.getFollowauthor().getId();
             Author author = authorRepository.findById(followauthor).orElse(null);
-            Long authorId = author.getId();
 
-            List<Announcement> announcementList = announcementRepository.findByAuthor(authorId);
+            List<Announcement> announcementList = announcementRepository.findByAuthor(author);
             announcements.addAll(announcementList);
         }
 

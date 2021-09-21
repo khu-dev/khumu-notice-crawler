@@ -9,7 +9,7 @@ import java.util.List;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
-    List<Announcement> findByAuthor(Author authorid);
+    List<Announcement> findByAuthor(Author author);
 
     List<Announcement> findByDate(String dateTime);
 }

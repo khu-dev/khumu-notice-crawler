@@ -4,26 +4,26 @@ spring:
 #  batch:
 #    job:
 #      names: ${job.name:NONE}
-  jpa:
-    show-sql: true
-    properties:
-      hibernate:
-        format_sql: true
+#  jpa:
+#    show-sql: true
+#    properties:
+#      hibernate:
+#        format_sql: true
 #  data:
 #    rest:
 #      base-path: /api
-  h2:
-    console:
-      enabled: true
+#  h2:
+#    console:
+#      enabled: true
 ---
-spring:
-  profiles: local
-  datasource:
-    hikari:
-      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-      username: sa
-      password:
-      driver-class-name: org.h2.Driver
+#spring:
+#  profiles: local
+#  datasource:
+#    hikari:
+#      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#      username: sa
+#      password:
+#      driver-class-name: org.h2.Driver
 ---
 spring:
   profiles: mysql
@@ -34,4 +34,4 @@ spring:
       password: Janghoon1101!
       driver-class-name: com.mysql.jdbc.Driver
 server:
-  port: 8081
+  port: 8080
