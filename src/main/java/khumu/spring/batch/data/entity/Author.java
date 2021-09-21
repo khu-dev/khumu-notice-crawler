@@ -23,6 +23,9 @@ public class Author {
 
     private String authorname;
 
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "followauthor")
+    private List<Long> follow_id;
+
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     @JsonBackReference
 //    @JsonIgnoreProperties({"author", "announcements"})
