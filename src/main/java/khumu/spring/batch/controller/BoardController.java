@@ -27,9 +27,9 @@ public class BoardController {
         return boardService.getAllBoards();
     }
 
-    @GetMapping("/{author}")
-    public List<BoardDto> getBoardByAuthor(@RequestParam String authorname) {
-        return boardService.getBoardByAuthor(authorname);
+    @GetMapping("author")
+    public List<BoardDto> getBoardByAuthor(@RequestParam String authorName) {
+        return boardService.getBoardByAuthor(authorName);
     }
 //    활용성이 낮음, 추후 확장 고려
 //    @GetMapping("/{lastid}")

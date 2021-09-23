@@ -48,6 +48,10 @@ public class AnnouncementService {
     private List<AnnouncementDto> getAnnouncementDtos(List<Announcement> announcements) {
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
+        return getAnnouncementDtos(announcements, announcementDtos);
+    }
+
+    private List<AnnouncementDto> getAnnouncementDtos(List<Announcement> announcements, List<AnnouncementDto> announcementDtos) {
         for (Announcement announcement : announcements) {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(announcement.getId())
@@ -89,29 +93,13 @@ public class AnnouncementService {
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
         for (Follow follow : follows) {
-            Long followauthor = follow.getFollowauthor().getId();
-            Author author = authorRepository.findById(followauthor).orElse(null);
+            Long followAuthor = follow.getFollowauthor().getId();
+            Author author = authorRepository.findById(followAuthor).orElse(null);
 
             List<Announcement> announcementList = announcementRepository.findByAuthor(author);
             announcements.addAll(announcementList);
         }
 
-        for (Announcement announcement : announcements) {
-            AuthorDto authorDto = AuthorDto.builder()
-                    .id(announcement.getId())
-                    .author_name(announcement.getAuthor().getAuthorname())
-                    .followed(Boolean.FALSE)
-                    .build();
-            AnnouncementDto announcementDto = AnnouncementDto.builder()
-                    .id(announcement.getId())
-                    .title(announcement.getTitle())
-                    .sub_link(announcement.getSublink())
-                    .date(announcement.getDate())
-                    .author(authorDto)
-                    .build();
-            announcementDtos.add(announcementDto);
-        }
-
-        return announcementDtos;
+        return getAnnouncementDtos(announcements, announcementDtos);
     }
 }

@@ -23,8 +23,8 @@ public class AnnouncementController {
     }
 
     @GetMapping("authorname")
-    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorname) {
-        return announcementService.getAnnouncementByAuthor(authorname);
+    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorName) {
+        return announcementService.getAnnouncementByAuthor(authorName);
     }
 
     @GetMapping("date")

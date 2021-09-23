@@ -22,17 +22,14 @@ import javax.persistence.EntityManagerFactory;
 public class KhumuCrawlingConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-    private final EntityManagerFactory entityManagerFactory;
 
     private BoardRepository webUrlRepository;
     private AnnouncementRepository announcementRepository;
 
     public KhumuCrawlingConfiguration(JobBuilderFactory jobBuilderFactory,
-                                      StepBuilderFactory stepBuilderFactory,
-                                      EntityManagerFactory entityManagerFactory) {
+                                      StepBuilderFactory stepBuilderFactory) {
         this.jobBuilderFactory = jobBuilderFactory;
         this.stepBuilderFactory = stepBuilderFactory;
-        this.entityManagerFactory = entityManagerFactory;
     }
 
     @Bean

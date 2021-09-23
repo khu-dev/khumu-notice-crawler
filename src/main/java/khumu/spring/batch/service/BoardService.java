@@ -23,12 +23,11 @@ public class BoardService {
     }
 
     public List<BoardDto> getAllBoards() {
-        List<Board> boards = new ArrayList<>();
         List<BoardDto> boardDtos = new ArrayList<>();
         List<Author> authors = new ArrayList<>();
         List<AuthorDto> authorDtos = new ArrayList<>();
 
-        boards.addAll(boardRepository.findAll());
+        List<Board> boards = new ArrayList<>(boardRepository.findAll());
 
         for (Board board : boards) {
             AuthorDto authorDto = AuthorDto.builder()
@@ -48,11 +47,10 @@ public class BoardService {
     }
 
     public List<BoardDto> getBoardByAuthor(String authorname) {
-        List<Board> boards = new ArrayList<>();
         List<BoardDto> boardDtos = new ArrayList<>();
         Author authors = authorRepository.findByAuthorname(authorname);
 
-        boards.addAll((boardRepository.findByAuthor(authors.getId())));
+        List<Board> boards = new ArrayList<>((boardRepository.findByAuthor(authors.getId())));
 
 //        for(Author author : authors) {
 //            boards.addAll(boardRepository.findByAuthor(author.getId()));
