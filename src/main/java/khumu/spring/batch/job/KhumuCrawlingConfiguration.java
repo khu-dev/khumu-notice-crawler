@@ -5,6 +5,7 @@ import khumu.spring.batch.repository.BoardRepository;
 import khumu.spring.batch.tasklet.CsCrawling;
 import khumu.spring.batch.tasklet.SWBoardCrawling;
 import khumu.spring.batch.tasklet.ScholarCrawling;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -19,18 +20,12 @@ import javax.persistence.EntityManagerFactory;
 
 @Slf4j
 @Configuration
+@RequiredArgsConstructor
 public class KhumuCrawlingConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
-
-    private BoardRepository boardRepository;
-    private AnnouncementRepository announcementRepository;
-
-    public KhumuCrawlingConfiguration(JobBuilderFactory jobBuilderFactory,
-                                      StepBuilderFactory stepBuilderFactory) {
-        this.jobBuilderFactory = jobBuilderFactory;
-        this.stepBuilderFactory = stepBuilderFactory;
-    }
+    private final BoardRepository boardRepository;
+    private final AnnouncementRepository announcementRepository;
 
     @Bean
     public Job noticeUpdateJob() {
