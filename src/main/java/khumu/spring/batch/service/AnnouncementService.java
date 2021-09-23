@@ -40,7 +40,7 @@ public class AnnouncementService {
     }
 
     public List<AnnouncementDto> getAnnouncementByAuthor(String authorname) {
-        Author author = authorRepository.findByAuthorname(authorname);
+        Author author = authorRepository.findByAuthorName(authorname);
         List<Announcement> announcements = announcementRepository.findByAuthor(author);
         return getAnnouncementDtos(announcements);
     }
@@ -55,14 +55,14 @@ public class AnnouncementService {
         for (Announcement announcement : announcements) {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(announcement.getId())
-                    .author_name(announcement.getAuthor().getAuthorname())
+                    .author_name(announcement.getAuthor().getAuthorName())
                     .followed(Boolean.FALSE)
                     .build();
 
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .id(announcement.getId())
                     .title(announcement.getTitle())
-                    .sub_link(announcement.getSublink())
+                    .sub_link(announcement.getSubLink())
                     .date(announcement.getDate())
                     .author(authorDto)
                     .build();

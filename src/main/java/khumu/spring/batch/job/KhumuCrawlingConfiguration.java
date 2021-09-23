@@ -23,7 +23,7 @@ public class KhumuCrawlingConfiguration {
     private final JobBuilderFactory jobBuilderFactory;
     private final StepBuilderFactory stepBuilderFactory;
 
-    private BoardRepository webUrlRepository;
+    private BoardRepository boardRepository;
     private AnnouncementRepository announcementRepository;
 
     public KhumuCrawlingConfiguration(JobBuilderFactory jobBuilderFactory,
@@ -46,15 +46,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step sWBoardCrawlingStep() {
         return this.stepBuilderFactory.get("sWBoardCrawlingStep")
-                .tasklet(new CsCrawling(webUrlRepository, announcementRepository))
-                .build();
-    }
-
-    @Bean
-    @JobScope
-    public Step csCrawlingStep() {
-        return this.stepBuilderFactory.get("csCrawlingStep")
-                .tasklet(new ScholarCrawling(webUrlRepository, announcementRepository))
+                .tasklet(new SWBoardCrawling(boardRepository, announcementRepository))
                 .build();
     }
 
@@ -62,7 +54,14 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step scholarCrawlingStep() {
         return this.stepBuilderFactory.get("scholarCrawlingStep")
-                .tasklet(new SWBoardCrawling(webUrlRepository, announcementRepository))
+                .tasklet(new ScholarCrawling(boardRepository, announcementRepository))
+                .build();
+    }
+    @Bean
+    @JobScope
+    public Step csCrawlingStep() {
+        return this.stepBuilderFactory.get("csCrawlingStep")
+                .tasklet(new CsCrawling(boardRepository, announcementRepository))
                 .build();
     }
 }

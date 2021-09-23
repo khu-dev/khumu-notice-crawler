@@ -6,14 +6,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class WebUrlRepositoryTest {
+class boardRepositoryTest {
     @Autowired
-    private BoardRepository webUrlRepository;
+    private BoardRepository boardRepository;
 
     @Test
     void crud() {
-        webUrlRepository.save(new Board());
+        boardRepository.save(new Board());
 
-        webUrlRepository.findAll().forEach(System.out::println);
+        boardRepository.findAll().forEach(System.out::println);
     }
 }

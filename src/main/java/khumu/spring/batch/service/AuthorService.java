@@ -22,7 +22,7 @@ public class AuthorService {
         for (Author author : authors) {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(author.getId())
-                    .author_name(author.getAuthorname())
+                    .author_name(author.getAuthorName())
                     .build();
             authorDtos.add(authorDto);
         }

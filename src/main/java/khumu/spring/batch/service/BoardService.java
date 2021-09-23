@@ -32,13 +32,13 @@ public class BoardService {
         for (Board board : boards) {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(board.getAuthor().getId())
-                    .author_name(board.getAuthor().getAuthorname())
+                    .author_name(board.getAuthor().getAuthorName())
                     .followed(Boolean.FALSE)
                     .build();
             BoardDto boardDto = BoardDto.builder()
                     .id(board.getId())
-                    .whole_link(board.getFronturl() + "###indexpart###" + board.getBackurl())
-                    .last_id(board.getLastid())
+                    .whole_link(board.getFrontUrl() + "###indexpart###" + board.getBackUrl())
+                    .last_id(board.getLastId())
                     .author(authorDto)  // 원래 BoardDto에서는 AuthorDto로 받았으나, 일단 한번 해봄. 문제 생기면 여기 수정해야됨
                     .build();
             boardDtos.add(boardDto);
@@ -48,9 +48,9 @@ public class BoardService {
 
     public List<BoardDto> getBoardByAuthor(String authorname) {
         List<BoardDto> boardDtos = new ArrayList<>();
-        Author authors = authorRepository.findByAuthorname(authorname);
+        Author authors = authorRepository.findByAuthorName(authorname);
 
-        List<Board> boards = new ArrayList<>((boardRepository.findByAuthor(authors.getId())));
+        List<Board> boards = new ArrayList<>((boardRepository.findByAuthor(authors)));
 
 //        for(Author author : authors) {
 //            boards.addAll(boardRepository.findByAuthor(author.getId()));
@@ -59,13 +59,13 @@ public class BoardService {
         for (Board board : boards) {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(board.getAuthor().getId())
-                    .author_name(board.getAuthor().getAuthorname())
+                    .author_name(board.getAuthor().getAuthorName())
                     .followed(Boolean.FALSE)
                     .build();
             BoardDto boardDto = BoardDto.builder()
                     .id(board.getId())
-                    .whole_link(board.getFronturl() + board.getBackurl())
-                    .last_id(board.getLastid())
+                    .whole_link(board.getFrontUrl() + board.getBackUrl())
+                    .last_id(board.getLastId())
                     .author(authorDto)
                     .build();
             boardDtos.add(boardDto);

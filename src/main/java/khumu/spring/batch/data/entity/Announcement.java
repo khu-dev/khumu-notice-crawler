@@ -20,17 +20,16 @@ public class Announcement {
     private Long id;
 
      private String title;
-     private String sublink;
+     private String subLink;
      private String date;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
 
-//    public Announcement(String title, String sublink, String date, String author) {
-//        this.title = title;
-//        this.sublink = sublink;
-//        this.date = date;
-//        this.author = author;
-//    }
+    public Announcement(String title, String subLink, String date) {
+        this.title = title;
+        this.subLink = subLink;
+        this.date = date;
+    }
 }

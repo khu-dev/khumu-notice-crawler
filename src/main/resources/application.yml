@@ -32,9 +32,9 @@ spring:
       ddl-auto: update
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://34.64.201.199/khumu_announcement_dev?useSSL=false&characterEncoding=UTF-8&serverTimezone=UTC
+      jdbc-url: jdbc:mysql://localhost:3306/khumu
       username: root
-      password: Khu123123!@
+      password: Janghoon1101!
       driver-class-name: com.mysql.jdbc.Driver
 server:
   port: 8080

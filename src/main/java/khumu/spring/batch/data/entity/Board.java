@@ -26,11 +26,11 @@ public class Board {
     @JsonManagedReference
     private Author author;
 
-    private String fronturl;
+    private String frontUrl;
 
-    private String backurl;
+    private String backUrl;
 
-    private Integer lastid;
+    private Integer lastId;
 
 //    @OneToMany(mappedBy = "title", cascade = CascadeType.ALL)
 //    private List<Announcement> announcements = new ArrayList<>();

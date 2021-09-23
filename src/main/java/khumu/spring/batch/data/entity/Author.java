@@ -21,7 +21,7 @@ public class Author {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String authorname;
+    private String authorName;
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     @JsonBackReference
