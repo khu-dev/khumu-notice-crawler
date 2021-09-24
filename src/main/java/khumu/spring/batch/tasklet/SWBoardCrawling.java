@@ -1,9 +1,11 @@
 package khumu.spring.batch.tasklet;
 
 import khumu.spring.batch.data.entity.Announcement;
+import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.batch.core.StepContribution;
@@ -19,25 +21,20 @@ import java.util.List;
 
 @Component
 @StepScope
+@RequiredArgsConstructor
 public class SWBoardCrawling implements Tasklet{
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
 
-    @Autowired
-    public SWBoardCrawling(BoardRepository boardRepository,
-                           AnnouncementRepository announcementRepository) {
-        this.boardRepository = boardRepository;
-        this.announcementRepository = announcementRepository;
-    }
-
     @Override
-    public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
-        Board board = boardRepository.getById(3L);
+    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
+        Board board = boardRepository.findById(3L).get();
         List<Announcement> announcements = new ArrayList<>();
 
         String fronturl = board.getFrontUrl();
         String backurl = board.getBackUrl();
         Integer lastid = board.getLastId();
+        Author author = board.getAuthor();
 
         while(true) {
             String page = fronturl + lastid + backurl;
@@ -52,7 +49,12 @@ public class SWBoardCrawling implements Tasklet{
             String title = document.select(".bo_v_tit").text();
             String date = document.select(".if_date").text();
 
-            Announcement announcement = new Announcement(title, page, date);
+            Announcement announcement = Announcement.builder()
+                    .author(author)
+                    .title(title)
+                    .date(date)
+                    .subLink(page)
+                    .build();
             announcements.add(announcement);
         }
 

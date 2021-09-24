@@ -1,18 +1,22 @@
 package khumu.spring.batch.tasklet;
 
 import khumu.spring.batch.data.entity.Announcement;
+import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.hibernate.id.IncrementGenerator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -21,50 +25,59 @@ import java.util.List;
 @Component
 @StepScope
 @RequiredArgsConstructor
-public class CsCrawling implements Tasklet {
+public class CsCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
 
-//    @Autowired
-//    public CsCrawling(BoardRepository boardRepository,
-//                      AnnouncementRepository announcementRepository) {
-//        this.boardRepository = boardRepository;
-//        this.announcementRepository = announcementRepository;
-//        System.out.println("---1번안됌");
-//    }
+    private Board board = new Board();
+    private List<Announcement> announcements = new ArrayList<>();
 
     @Override
-    public RepeatStatus execute(StepContribution stepContri, ChunkContext chunkContext) throws Exception {
-        System.out.println("---2번안됌");
-        Board board = boardRepository.findById(1L).get();
-        System.out.println("---3번안됌");
-        List<Announcement> announcements = new ArrayList<>();
+    public void beforeStep(StepExecution stepExecution) {
+        board = boardRepository.findById(1L).get();
+    }
 
+    @Override
+    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
+        Author author = board.getAuthor();
 
         while(true){
             String page = frontUrl + lastId + backUrl;
-            lastId++;
+            lastId += 1;
 
             Document document = Jsoup.connect(page).get();
-
-            if(document == null) {
-                break;
-            }
 
             String rawdata = document.select("div.con_area").select("thead").text();
 
             String title = rawdata.split("ㆍ")[1];
+            title = title.substring(4);
+            if (title.isEmpty()) {
+                break;
+            }
+            System.out.println(title);
             String date = rawdata.split("ㆍ")[3];
+            date = date.substring(4);
 
-            Announcement announcement = new Announcement(title, page, date);
+            Announcement announcement = Announcement.builder()
+                    .author(author)
+                    .title(title)
+                    .date(date)
+                    .subLink(page)
+                    .build();
             announcements.add(announcement);
         }
 
-        announcementRepository.saveAllAndFlush(announcements);
+        announcementRepository.saveAll(announcements);
 
         return RepeatStatus.FINISHED;
+    }
+
+    @Override
+    public ExitStatus afterStep(StepExecution stepExecution) {
+        announcementRepository.flush();
+        return ExitStatus.COMPLETED;
     }
 }

@@ -1,9 +1,11 @@
 package khumu.spring.batch.tasklet;
 
 import khumu.spring.batch.data.entity.Announcement;
+import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.batch.core.StepContribution;
@@ -19,25 +21,20 @@ import java.util.List;
 
 @Component
 @StepScope
+@RequiredArgsConstructor
 public class ScholarCrawling implements Tasklet {
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
 
-    @Autowired
-    public ScholarCrawling(BoardRepository boardRepository,
-                           AnnouncementRepository announcementRepository) {
-        this.boardRepository = boardRepository;
-        this.announcementRepository = announcementRepository;
-    }
-
     @Override
-    public RepeatStatus execute(StepContribution contributionm, ChunkContext chunkContext) throws Exception {
-        Board board = boardRepository.getById(2L);
+    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
+        Board board = boardRepository.findById(2L).get();
         List<Announcement> announcements = new ArrayList<>();
 
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
+        Author author = board.getAuthor();
 
         while(true) {
             String page = frontUrl + lastId + backUrl;
@@ -55,11 +52,16 @@ public class ScholarCrawling implements Tasklet {
             String date = rawdata.replace(title + " 관리자 ", "");
             date = date.substring(0, 14);
 
-            Announcement announcement = new Announcement(title, page, date);
+            Announcement announcement = Announcement.builder()
+                    .author(author)
+                    .title(title)
+                    .date(date)
+                    .subLink(page)
+                    .build();
             announcements.add(announcement);
         }
 
-        announcementRepository.saveAllAndFlush(announcements);
+        announcementRepository.saveAll(announcements);
 
         return RepeatStatus.FINISHED;
     }

@@ -1,6 +1,33 @@
 spring:
   profiles:
-    active: mysql
+    active: local
+server:
+  port: 8080
+---
+spring:
+  profiles: local
+  jpa:
+    hibernate:
+      ddl-auto: update
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://localhost:3306/khumu
+      username: root
+      password: Janghoon1101!
+      driver-class-name: com.mysql.cj.jdbc.Driver
+---
+spring:
+  profiles: gcp
+  jpa:
+    hibernate:
+      ddl-auto: update
+    datasource:
+      hikari:
+        jdbc-url:
+        username:
+        pasword:
+        driver-class-name:
+---
 #  batch:
 #    job:
 #      names: ${job.name:NONE}
@@ -25,16 +52,6 @@ spring:
 #      password:
 #      driver-class-name: org.h2.Driver
 ---
-spring:
-  profiles: mysql
-  jpa:
-    hibernate:
-      ddl-auto: update
-  datasource:
-    hikari:
-      jdbc-url: jdbc:mysql://localhost:3306/khumu
-      username: root
-      password: Janghoon1101!
-      driver-class-name: com.mysql.jdbc.Driver
-server:
-  port: 8080
+
+
+

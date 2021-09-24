@@ -1,9 +1,6 @@
 package khumu.spring.batch.data.entity;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -13,6 +10,7 @@ import javax.persistence.*;
 @Table(name = "announcement")
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class Announcement {
 
     @Id
@@ -26,10 +24,4 @@ public class Announcement {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "author_id")
     private Author author;
-
-    public Announcement(String title, String subLink, String date) {
-        this.title = title;
-        this.subLink = subLink;
-        this.date = date;
-    }
 }
