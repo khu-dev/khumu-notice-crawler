@@ -47,18 +47,27 @@ public class SWBoardCrawling implements Tasklet{
             }
 
             String title = document.select(".bo_v_tit").text();
+            if (title.isEmpty()) {
+                break;
+            }
             String date = document.select(".if_date").text();
 
-            Announcement announcement = Announcement.builder()
+            announcementRepository.save(Announcement.builder()
                     .author(author)
                     .title(title)
                     .date(date)
                     .subLink(page)
-                    .build();
-            announcements.add(announcement);
+                    .build());
+//            Announcement announcement = Announcement.builder()
+//                    .author(author)
+//                    .title(title)
+//                    .date(date)
+//                    .subLink(page)
+//                    .build();
+//            announcements.add(announcement);
         }
 
-        announcementRepository.saveAllAndFlush(announcements);
+//        announcementRepository.saveAllAndFlush(announcements);
 
         return RepeatStatus.FINISHED;
     }

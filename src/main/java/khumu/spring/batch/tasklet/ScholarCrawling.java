@@ -49,20 +49,27 @@ public class ScholarCrawling implements Tasklet {
             String rawdata = document.select("[style=border-top:1px solid #B41C1B; border-bottom:1px solid #E7E7E7; background-color:#F5F5F5; clear:both; height:30px; padding:8px 7px 0 7px]").text();
 
             String title = document.select("[style=color:#b41c1b; font-size:12px; word-break:break-all;]").text();
+            if (title.isEmpty()) {
+                break;
+            }
             String date = rawdata.replace(title + " 관리자 ", "");
             date = date.substring(0, 14);
 
-            Announcement announcement = Announcement.builder()
+            announcementRepository.save(Announcement.builder()
                     .author(author)
                     .title(title)
                     .date(date)
                     .subLink(page)
-                    .build();
-            announcements.add(announcement);
+                    .build());
+//            Announcement announcement = Announcement.builder()
+//                    .author(author)
+//                    .title(title)
+//                    .date(date)
+//                    .subLink(page)
+//                    .build();
+//            announcements.add(announcement);
         }
-
-        announcementRepository.saveAll(announcements);
-
+//        announcementRepository.saveAll(announcements);
         return RepeatStatus.FINISHED;
     }
 }

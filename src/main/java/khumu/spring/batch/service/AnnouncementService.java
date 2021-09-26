@@ -11,6 +11,7 @@ import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.FollowRepository;
 import khumu.spring.batch.repository.UserRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -101,5 +102,10 @@ public class AnnouncementService {
         }
 
         return getAnnouncementDtos(announcements, announcementDtos);
+    }
+
+    @Transactional
+    public Announcement saveAnnouncement(AnnouncementDto announcementDto) {
+        return announcementRepository.save(announcementDto);
     }
 }

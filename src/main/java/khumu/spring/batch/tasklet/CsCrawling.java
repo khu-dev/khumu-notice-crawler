@@ -6,7 +6,6 @@ import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
-import org.hibernate.id.IncrementGenerator;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.batch.core.ExitStatus;
@@ -31,6 +30,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
     private Board board = new Board();
     private List<Announcement> announcements = new ArrayList<>();
+    private List<Announcement> savedAnnouncements = new ArrayList<>();
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
@@ -61,23 +61,18 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             String date = rawdata.split("ㆍ")[3];
             date = date.substring(4);
 
-            Announcement announcement = Announcement.builder()
+            announcementRepository.save(Announcement.builder()
                     .author(author)
                     .title(title)
                     .date(date)
                     .subLink(page)
-                    .build();
-            announcements.add(announcement);
+                    .build());
         }
-
-        announcementRepository.saveAll(announcements);
-
         return RepeatStatus.FINISHED;
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        announcementRepository.flush();
         return ExitStatus.COMPLETED;
     }
 }

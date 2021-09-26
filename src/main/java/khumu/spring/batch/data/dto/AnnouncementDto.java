@@ -1,5 +1,6 @@
 package khumu.spring.batch.data.dto;
 
+import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Author;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -16,4 +17,13 @@ public class AnnouncementDto {
     String sub_link;
     String date;
     AuthorDto author;
+
+    public Announcement toEntity() {
+        return Announcement.builder()
+                .title(title)
+                .date(date)
+                .subLink(sub_link)
+                .author(author)
+                .build();
+    }
 }
