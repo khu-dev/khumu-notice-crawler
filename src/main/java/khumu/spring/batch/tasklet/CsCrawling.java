@@ -1,5 +1,7 @@
 package khumu.spring.batch.tasklet;
 
+import khumu.spring.batch.data.dto.AnnouncementDto;
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
@@ -15,7 +17,10 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -61,18 +66,23 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             String date = rawdata.split("ㆍ")[3];
             date = date.substring(4);
 
-            announcementRepository.save(Announcement.builder()
-                    .author(author)
+            AnnouncementDto announcement = AnnouncementDto.builder()
                     .title(title)
+                    .author(AuthorDto.builder()
+                            .author_name(author.getAuthorName())
+                            .id(author.getId()).build())
                     .date(date)
-                    .subLink(page)
-                    .build());
+                    .sub_link(page)
+                    .build();
+
+            announcements.add(announcement.toEntity());
         }
         return RepeatStatus.FINISHED;
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
+        announcementRepository.saveAll(announcements);
         return ExitStatus.COMPLETED;
     }
 }

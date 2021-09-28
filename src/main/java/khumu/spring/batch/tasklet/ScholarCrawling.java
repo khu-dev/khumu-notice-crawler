@@ -52,6 +52,7 @@ public class ScholarCrawling implements Tasklet {
             if (title.isEmpty()) {
                 break;
             }
+            System.out.println(title);
             String date = rawdata.replace(title + " 관리자 ", "");
             date = date.substring(0, 14);
 

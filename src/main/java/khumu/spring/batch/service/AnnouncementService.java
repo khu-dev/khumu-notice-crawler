@@ -105,7 +105,7 @@ public class AnnouncementService {
     }
 
     @Transactional
-    public Announcement saveAnnouncement(AnnouncementDto announcementDto) {
-        return announcementRepository.save(announcementDto);
+    public void save(AnnouncementDto announcementDto) {
+        announcementRepository.saveAndFlush(announcementDto.toEntity());
     }
 }

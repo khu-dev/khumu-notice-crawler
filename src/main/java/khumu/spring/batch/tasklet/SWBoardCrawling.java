@@ -50,6 +50,7 @@ public class SWBoardCrawling implements Tasklet{
             if (title.isEmpty()) {
                 break;
             }
+            System.out.println(title);
             String date = document.select(".if_date").text();
 
             announcementRepository.save(Announcement.builder()

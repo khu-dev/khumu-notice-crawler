@@ -23,7 +23,7 @@ public class AnnouncementDto {
                 .title(title)
                 .date(date)
                 .subLink(sub_link)
-                .author(author)
+                .author(author.toEntity())
                 .build();
     }
 }
