@@ -7,6 +7,7 @@ import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.BoardRepository;
+import khumu.spring.batch.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -17,10 +18,7 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.repeat.RepeatStatus;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -32,10 +30,10 @@ import java.util.List;
 public class CsCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
+    private final AnnouncementService announcementService;
 
     private Board board = new Board();
-    private List<Announcement> announcements = new ArrayList<>();
-    private List<Announcement> savedAnnouncements = new ArrayList<>();
+    private final List<Announcement> announcements = new ArrayList<>();
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
@@ -74,6 +72,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                     .date(date)
                     .sub_link(page)
                     .build();
+            announcementService.saveAnnouncementDto(announcement);
 
             announcements.add(announcement.toEntity());
         }
@@ -82,7 +81,6 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-        announcementRepository.saveAll(announcements);
         return ExitStatus.COMPLETED;
     }
 }

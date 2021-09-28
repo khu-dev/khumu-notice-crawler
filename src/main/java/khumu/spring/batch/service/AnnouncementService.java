@@ -105,7 +105,26 @@ public class AnnouncementService {
     }
 
     @Transactional
-    public void save(AnnouncementDto announcementDto) {
+    public void saveAnnouncementDto(AnnouncementDto announcementDto) {
         announcementRepository.saveAndFlush(announcementDto.toEntity());
+    }
+
+    @Transactional
+    public void saveAnnouncements(List<Announcement> announcements) {
+        announcementRepository.saveAllAndFlush(announcements);
+    }
+
+    @Transactional
+    public void saveAnnouncementDtos(List<AnnouncementDto> announcementDtos) {
+        List<Announcement> announcements = new ArrayList<Announcement>();
+        for (AnnouncementDto announcementDto : announcementDtos) {
+            announcements.add(announcementDto.toEntity());
+        }
+        announcementRepository.saveAllAndFlush(announcements);
+    }
+
+    @Transactional
+    public void saveAnnouncement(Announcement announcement) {
+        announcementRepository.saveAndFlush(announcement);
     }
 }
