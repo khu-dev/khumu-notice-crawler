@@ -10,6 +10,7 @@ import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.FollowRepository;
 import khumu.spring.batch.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,22 +19,13 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
+@RequiredArgsConstructor
 public class AnnouncementService {
 
     private final AnnouncementRepository announcementRepository;
     private final AuthorRepository authorRepository;
     private final FollowRepository followRepository;
     private final UserRepository userRepository;
-
-    public AnnouncementService(AnnouncementRepository announcementRepository,
-                               AuthorRepository authorRepository,
-                               FollowRepository followRepository,
-                               UserRepository userRepository) {
-        this.announcementRepository = announcementRepository;
-        this.authorRepository = authorRepository;
-        this.followRepository = followRepository;
-        this.userRepository = userRepository;
-    }
 
     public List<AnnouncementDto> getAllAnnouncements() {
         List<Announcement> announcements = announcementRepository.findAll();

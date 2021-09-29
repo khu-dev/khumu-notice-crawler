@@ -6,21 +6,17 @@ import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class BoardService {
     private final BoardRepository boardRepository;
     private final AuthorRepository authorRepository;
-
-    public BoardService(BoardRepository boardRepository,
-                        AuthorRepository authorRepository) {
-        this.boardRepository = boardRepository;
-        this.authorRepository = authorRepository;
-    }
 
     public List<BoardDto> getAllBoards() {
         List<BoardDto> boardDtos = new ArrayList<>();
@@ -46,30 +42,37 @@ public class BoardService {
         return boardDtos;
     }
 
-    public List<BoardDto> getBoardByAuthor(String authorname) {
-        List<BoardDto> boardDtos = new ArrayList<>();
-        Author authors = authorRepository.findByAuthorName(authorname);
+    public BoardDto getBoardByAuthor(String authorname) {
+        Author author = authorRepository.findByAuthorName(authorname);
+        Board board = boardRepository.findByAuthor(author);
 
-        List<Board> boards = new ArrayList<>((boardRepository.findByAuthor(authors)));
+        BoardDto boardDtos = BoardDto.builder()
+                .id()
+                .author(author)
+                .
+                .build();
+
+
+
 
 //        for(Author author : authors) {
 //            boards.addAll(boardRepository.findByAuthor(author.getId()));
 //        }
 
-        for (Board board : boards) {
-            AuthorDto authorDto = AuthorDto.builder()
-                    .id(board.getAuthor().getId())
-                    .author_name(board.getAuthor().getAuthorName())
-                    .followed(Boolean.FALSE)
-                    .build();
-            BoardDto boardDto = BoardDto.builder()
-                    .id(board.getId())
-                    .whole_link(board.getFrontUrl() + board.getBackUrl())
-                    .last_id(board.getLastId())
-                    .author(authorDto)
-                    .build();
-            boardDtos.add(boardDto);
-        }
+//        for (Board board : boards) {
+//            AuthorDto authorDto = AuthorDto.builder()
+//                    .id(board.getAuthor().getId())
+//                    .author_name(board.getAuthor().getAuthorName())
+//                    .followed(Boolean.FALSE)
+//                    .build();
+//            BoardDto boardDto = BoardDto.builder()
+//                    .id(board.getId())
+//                    .whole_link(board.getFrontUrl() + board.getBackUrl())
+//                    .last_id(board.getLastId())
+//                    .author(authorDto)
+//                    .build();
+//            boardDtos.add(boardDto);
+//        }
 
         return boardDtos;
     }

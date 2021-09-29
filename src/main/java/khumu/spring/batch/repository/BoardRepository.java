@@ -11,5 +11,5 @@ import java.util.List;
 public interface BoardRepository extends JpaRepository<Board, Long> {
     Board findByLastId(Integer lastId);
 
-    List<Board> findByAuthor(Author Author);
+    Board findByAuthor(Author Author);
 }

@@ -6,6 +6,7 @@ import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
+import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.var;
@@ -29,13 +30,15 @@ import java.util.List;
 public class CsCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
+    private final AuthorRepository authorRepository;
 
     private Board board = new Board();
     private final List<Announcement> announcements = new ArrayList<>();
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
-        board = boardRepository.findById(1L).get();
+        Author author = authorRepository.findByAuthorName("컴퓨터공학과");
+        board = boardRepository.findByAuthor(author).get();
     }
 
     @Override
@@ -59,7 +62,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 //                break;
 //            }
             String date = rawdata.split("ㆍ")[3];
-            date = date.substring(4);
+            date = date.substring(6);
             System.out.println(title);
             System.out.println(date);
             System.out.println(page);
