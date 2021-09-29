@@ -1,9 +1,7 @@
 package khumu.spring.batch.job;
 
-import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.BoardRepository;
-import khumu.spring.batch.service.AnnouncementService;
 import khumu.spring.batch.tasklet.CsCrawling;
 import khumu.spring.batch.tasklet.SWBoardCrawling;
 import khumu.spring.batch.tasklet.ScholarCrawling;
@@ -15,11 +13,8 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.item.ItemWriter;
-import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import javax.persistence.EntityManagerFactory;
 
 @Slf4j
@@ -45,40 +40,22 @@ public class KhumuCrawlingConfiguration {
     @Bean
     @JobScope
     public Step sWBoardCrawlingStep() {
-<<<<<<< Updated upstream
         return this.stepBuilderFactory.get("sWBoardCrawlingStep")
                 .tasklet(new SWBoardCrawling(boardRepository, announcementRepository, entityManagerFactory))
-=======
-        return this.stepBuilderFactory
-                .get("sWBoardCrawlingStep")
-                .tasklet(new SWBoardCrawling(boardRepository, announcementRepository))
->>>>>>> Stashed changes
                 .build();
     }
     @Bean
     @JobScope
     public Step scholarCrawlingStep() {
-<<<<<<< Updated upstream
         return this.stepBuilderFactory.get("scholarCrawlingStep")
                 .tasklet(new ScholarCrawling(boardRepository, announcementRepository, entityManagerFactory))
-=======
-        return this.stepBuilderFactory
-                .get("scholarCrawlingStep")
-                .tasklet(new ScholarCrawling(boardRepository, announcementRepository))
->>>>>>> Stashed changes
                 .build();
     }
     @Bean
     @JobScope
     public Step csCrawlingStep() {
-<<<<<<< Updated upstream
         return this.stepBuilderFactory.get("csCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, announcementRepository, jpaItemWriter))
-=======
-        return this.stepBuilderFactory
-                .get("csCrawlingStep")
                 .tasklet(new CsCrawling(boardRepository, announcementRepository, entityManagerFactory))
->>>>>>> Stashed changes
                 .build();
     }
 }

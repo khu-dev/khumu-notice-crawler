@@ -18,17 +18,12 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
-import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
-
-<<<<<<< Updated upstream
 import javax.persistence.EntityManager;
-=======
->>>>>>> Stashed changes
 import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +46,6 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     }
 
     @Override
-    @Transactional
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();
@@ -89,11 +83,6 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             announcements.add(announcement.toEntity());
         }
         return RepeatStatus.FINISHED;
-    }
-
-    @Override
-    public JpaItemWriter jpaItemWriter() {
-        return JpaItemWriter.builder
     }
 
     @Override
