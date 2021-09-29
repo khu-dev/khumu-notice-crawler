@@ -55,12 +55,14 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
             String title = rawdata.split("ㆍ")[1];
             title = title.substring(4);
-            if (title.isEmpty()) {
-                break;
-            }
-            System.out.println(title);
+//            if (title.isEmpty()) {
+//                break;
+//            }
             String date = rawdata.split("ㆍ")[3];
             date = date.substring(4);
+            System.out.println(title);
+            System.out.println(date);
+            System.out.println(page);
 
             AnnouncementDto announcement = AnnouncementDto.builder()
                     .title(title)
@@ -74,6 +76,8 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             System.out.println(Id);
 
             announcements.add(announcement.toEntity());
+
+            break;
         }
         return RepeatStatus.FINISHED;
     }
