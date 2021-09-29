@@ -16,6 +16,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,6 +26,7 @@ import java.util.List;
 public class ScholarCrawling implements Tasklet {
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
+    private final EntityManagerFactory entityManagerFactory;
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {

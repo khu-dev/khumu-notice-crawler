@@ -27,6 +27,7 @@ public class KhumuCrawlingConfiguration {
     private final StepBuilderFactory stepBuilderFactory;
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
+    private final EntityManagerFactory entityManagerFactory;
 
     @Bean
     public Job noticeUpdateJob() {
@@ -42,21 +43,21 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step sWBoardCrawlingStep() {
         return this.stepBuilderFactory.get("sWBoardCrawlingStep")
-                .tasklet(new SWBoardCrawling(boardRepository, announcementRepository))
+                .tasklet(new SWBoardCrawling(boardRepository, announcementRepository, entityManagerFactory))
                 .build();
     }
     @Bean
     @JobScope
     public Step scholarCrawlingStep() {
         return this.stepBuilderFactory.get("scholarCrawlingStep")
-                .tasklet(new ScholarCrawling(boardRepository, announcementRepository))
+                .tasklet(new ScholarCrawling(boardRepository, announcementRepository, entityManagerFactory))
                 .build();
     }
     @Bean
     @JobScope
     public Step csCrawlingStep() {
         return this.stepBuilderFactory.get("csCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, announcementRepository))
+                .tasklet(new CsCrawling(boardRepository, announcementRepository, jpaItemWriter))
                 .build();
     }
 }

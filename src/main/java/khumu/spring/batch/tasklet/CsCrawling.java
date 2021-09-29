@@ -18,10 +18,15 @@ import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
+import org.springframework.batch.item.ItemWriter;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +36,14 @@ import java.util.List;
 public class CsCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
+    private final EntityManagerFactory entityManagerFactory;
 
     private Board board = new Board();
     private final List<Announcement> announcements = new ArrayList<>();
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
+        EntityManager entityManager = EntityManagerFactoryUtils.getTransactionalEntityManager(entityManagerFactory);
         board = boardRepository.findById(1L).get();
     }
 
@@ -78,6 +85,11 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             announcements.add(announcement.toEntity());
         }
         return RepeatStatus.FINISHED;
+    }
+
+    @Override
+    public JpaItemWriter jpaItemWriter() {
+        return JpaItemWriter.builder
     }
 
     @Override

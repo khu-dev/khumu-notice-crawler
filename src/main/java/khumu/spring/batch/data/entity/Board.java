@@ -27,29 +27,6 @@ public class Board {
     private Author author;
 
     private String frontUrl;
-
     private String backUrl;
-
-    private Integer lastId;
-
-//    @OneToMany(mappedBy = "title", cascade = CascadeType.ALL)
-//    private List<Announcement> announcements = new ArrayList<>();
-
-//    public String getFrontUrl() {
-//        return fronturl;
-//    }
-//    public String getBackUrl() { return backurl; }
-//    public String getAuthor() {return author; }
-//    public Integer getLastID() { return lastid; }
-//
-//    public void setLastid(int lastid) {
-//        this.lastid = lastid;
-//    }
-//
-//    public void setWebUrl(String author, String fronturl, String backurl, Integer lastid) {
-//        this.author = author;
-//        this.fronturl = fronturl;
-//        this.backurl = backurl;
-//        this.lastid = lastid;
-//    }
+    private Integer lastId; // 마지막으로 긁은 게시물 ID
 }
