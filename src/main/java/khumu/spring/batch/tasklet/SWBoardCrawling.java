@@ -26,8 +26,6 @@ import java.util.List;
 public class SWBoardCrawling implements Tasklet{
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
-    private final EntityManagerFactory entityManagerFactory;
-
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {

@@ -13,6 +13,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import javax.persistence.EntityManagerFactory;
@@ -25,7 +26,6 @@ public class KhumuCrawlingConfiguration {
     private final StepBuilderFactory stepBuilderFactory;
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
-    private final EntityManagerFactory entityManagerFactory;
 
     @Bean
     public Job noticeUpdateJob() {
@@ -41,21 +41,23 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step sWBoardCrawlingStep() {
         return this.stepBuilderFactory.get("sWBoardCrawlingStep")
-                .tasklet(new SWBoardCrawling(boardRepository, announcementRepository, entityManagerFactory))
+                .tasklet(new SWBoardCrawling(boardRepository, announcementRepository))
                 .build();
     }
+
     @Bean
     @JobScope
     public Step scholarCrawlingStep() {
         return this.stepBuilderFactory.get("scholarCrawlingStep")
-                .tasklet(new ScholarCrawling(boardRepository, announcementRepository, entityManagerFactory))
+                .tasklet(new ScholarCrawling(boardRepository, announcementRepository))
                 .build();
     }
+
     @Bean
     @JobScope
     public Step csCrawlingStep() {
         return this.stepBuilderFactory.get("csCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, announcementRepository, entityManagerFactory))
+                .tasklet(new CsCrawling(boardRepository, announcementRepository))
                 .build();
     }
 }
