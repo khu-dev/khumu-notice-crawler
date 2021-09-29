@@ -27,7 +27,6 @@ public class KhumuCrawlingConfiguration {
     private final StepBuilderFactory stepBuilderFactory;
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
-    private final AnnouncementService announcementService;
 
     @Bean
     public Job noticeUpdateJob() {
@@ -46,7 +45,6 @@ public class KhumuCrawlingConfiguration {
                 .tasklet(new SWBoardCrawling(boardRepository, announcementRepository))
                 .build();
     }
-
     @Bean
     @JobScope
     public Step scholarCrawlingStep() {
@@ -58,7 +56,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step csCrawlingStep() {
         return this.stepBuilderFactory.get("csCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, announcementRepository, announcementService))
+                .tasklet(new CsCrawling(boardRepository, announcementRepository))
                 .build();
     }
 }
