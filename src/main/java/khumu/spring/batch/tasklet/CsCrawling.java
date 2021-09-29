@@ -25,7 +25,10 @@ import org.springframework.orm.jpa.EntityManagerFactoryUtils;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+<<<<<<< Updated upstream
 import javax.persistence.EntityManager;
+=======
+>>>>>>> Stashed changes
 import javax.persistence.EntityManagerFactory;
 import java.util.ArrayList;
 import java.util.List;
@@ -82,6 +85,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                     .build();
             var Id = announcementRepository.save(announcement.toEntity()).getId();
             System.out.println(Id);
+
             announcements.add(announcement.toEntity());
         }
         return RepeatStatus.FINISHED;
