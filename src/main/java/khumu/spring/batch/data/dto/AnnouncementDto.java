@@ -26,6 +26,7 @@ public class AnnouncementDto {
 
     public Announcement toEntity() {
         return Announcement.builder()
+                .id(id)
                 .title(title)
                 .date(date)
                 .subLink(sub_link)

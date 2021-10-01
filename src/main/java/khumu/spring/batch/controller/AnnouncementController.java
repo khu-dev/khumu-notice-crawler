@@ -34,18 +34,18 @@ public class AnnouncementController {
         return announcementService.getAnnouncementByDate(date);
     }
 
-    @PostMapping("/test")
-    public void posttest() {
-        announcementRepository.save(Announcement.builder()
-                .title("메렁")
-                .subLink("ㅁㄴ이ㅏ럼닝ㄹ")
-                .date("2021-09-29 12:53:00")
-                .author(Author.builder()
-                        .authorName("hello")
-                        .id(1L)
-                        .build())
-                .build());
-    }
+//    @PostMapping("/test")
+//    public void posttest() {
+//        announcementRepository.save(Announcement.builder()
+//                .title("메렁")
+//                .subLink("ㅁㄴ이ㅏ럼닝ㄹ")
+//                .date("2021-09-29 12:53:00")
+//                .author(Author.builder()
+//                        .authorName("hello")
+//                        .id(1L)
+//                        .build())
+//                .build());
+//    }
 
     @GetMapping("user")
     public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user) {

@@ -72,7 +72,6 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             System.out.println(page);
 
             AnnouncementDto announcement = AnnouncementDto.builder()
-                    .id(null)
                     .title(title)
                     .author(AuthorDto.builder()
                             .author_name(author.getAuthorName())
@@ -81,7 +80,6 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                     .date(date)
                     .sub_link(page)
                     .build();
-
 
             var Id = announcementRepository.save(announcement.toEntity()).getId();
             System.out.println(Id);

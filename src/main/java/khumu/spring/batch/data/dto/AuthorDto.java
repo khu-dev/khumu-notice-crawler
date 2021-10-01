@@ -23,6 +23,7 @@ public class AuthorDto {
 
     public Author toEntity() {
         return Author.builder()
+                .id(id)
                 .authorName(author_name)
                 .build();
     }
