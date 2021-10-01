@@ -46,35 +46,17 @@ public class BoardService {
         Author author = authorRepository.findByAuthorName(authorname);
         Board board = boardRepository.findByAuthor(author);
 
-        BoardDto boardDtos = BoardDto.builder()
-                .id()
-                .author(author)
-                .
+        AuthorDto authorDto = AuthorDto.builder()
+                .id(author.getId())
+                .author_name(author.getAuthorName())
                 .build();
 
-
-
-
-//        for(Author author : authors) {
-//            boards.addAll(boardRepository.findByAuthor(author.getId()));
-//        }
-
-//        for (Board board : boards) {
-//            AuthorDto authorDto = AuthorDto.builder()
-//                    .id(board.getAuthor().getId())
-//                    .author_name(board.getAuthor().getAuthorName())
-//                    .followed(Boolean.FALSE)
-//                    .build();
-//            BoardDto boardDto = BoardDto.builder()
-//                    .id(board.getId())
-//                    .whole_link(board.getFrontUrl() + board.getBackUrl())
-//                    .last_id(board.getLastId())
-//                    .author(authorDto)
-//                    .build();
-//            boardDtos.add(boardDto);
-//        }
-
-        return boardDtos;
+        return BoardDto.builder()
+                .id(board.getId())
+                .author(authorDto)
+                .whole_link(board.getFrontUrl() + "###indexpart###" + board.getBackUrl())
+                .last_id(board.getLastId())
+                .build();
     }
 
 //    public BoardDto getBoardByLastid(Integer lastid) {

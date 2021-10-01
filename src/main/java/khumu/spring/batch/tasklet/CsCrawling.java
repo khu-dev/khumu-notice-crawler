@@ -21,6 +21,9 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
+
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,7 +41,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     @Override
     public void beforeStep(StepExecution stepExecution) {
         Author author = authorRepository.findByAuthorName("컴퓨터공학과");
-        board = boardRepository.findByAuthor(author).get();
+        board = boardRepository.findByAuthor(author);
     }
 
     @Override
@@ -47,6 +50,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
         Author author = board.getAuthor();
+        Long id;
 
         while(true){
             String page = frontUrl + lastId + backUrl;
@@ -68,13 +72,17 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             System.out.println(page);
 
             AnnouncementDto announcement = AnnouncementDto.builder()
+                    .id(4l)
                     .title(title)
                     .author(AuthorDto.builder()
                             .author_name(author.getAuthorName())
-                            .id(author.getId()).build())
+                            .id(author.getId())
+                            .build())
                     .date(date)
                     .sub_link(page)
                     .build();
+
+
             var Id = announcementRepository.save(announcement.toEntity()).getId();
             System.out.println(Id);
 

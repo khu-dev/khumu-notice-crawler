@@ -21,12 +21,12 @@ public class Author {
 
     private String authorName;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author")
     @JsonBackReference
 //    @JsonIgnoreProperties({"author", "announcements"})
     private List<Board> boards = new ArrayList<Board>();
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author")
     @JsonBackReference
 //    @JsonIgnoreProperties({"author", "boards"})
     private List<Announcement> announcements = new ArrayList<Announcement>();

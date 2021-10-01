@@ -1,6 +1,7 @@
 package khumu.spring.batch.job;
 
 import khumu.spring.batch.repository.AnnouncementRepository;
+import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import khumu.spring.batch.tasklet.CsCrawling;
 import khumu.spring.batch.tasklet.SWBoardCrawling;
@@ -26,6 +27,7 @@ public class KhumuCrawlingConfiguration {
     private final StepBuilderFactory stepBuilderFactory;
     private final BoardRepository boardRepository;
     private final AnnouncementRepository announcementRepository;
+    private final AuthorRepository authorRepository;
 
     @Bean
     public Job noticeUpdateJob() {
@@ -57,7 +59,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step csCrawlingStep() {
         return this.stepBuilderFactory.get("csCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, announcementRepository))
+                .tasklet(new CsCrawling(boardRepository, announcementRepository, authorRepository))
                 .build();
     }
 }
