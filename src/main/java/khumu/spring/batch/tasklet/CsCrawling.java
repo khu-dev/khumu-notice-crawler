@@ -72,7 +72,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             System.out.println(page);
 
             AnnouncementDto announcement = AnnouncementDto.builder()
-                    .id(4l)
+                    .id(null)
                     .title(title)
                     .author(AuthorDto.builder()
                             .author_name(author.getAuthorName())
