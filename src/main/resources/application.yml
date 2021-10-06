@@ -3,7 +3,7 @@ spring:
     jdbc:
       initialize-schema: always
   profiles:
-    active: local
+    active: gcp
 server:
   port: 8080
 ---
@@ -31,12 +31,12 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    datasource:
-      hikari:
-        jdbc-url: jdbc:mysql://34.64.100.109::3306/khumu
-        username: root
-        password: Janghoon1101!
-        driver-class-name: com.mysql.cj.jdbc.Driver
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://34.64.100.109:3306/khumu
+      username: root
+      password: Janghoon1101!
+      driver-class-name: com.mysql.cj.jdbc.Driver
 ---
 #  batch:
 #    job:

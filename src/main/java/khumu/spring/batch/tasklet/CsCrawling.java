@@ -73,6 +73,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             title = title.substring(4);
             if (title.isEmpty()) {
                 boardRepository.save(Board.builder()
+                        .id(board.getId())
                         .lastId(lastId)
                         .frontUrl(frontUrl)
                         .backUrl(backUrl)

@@ -30,14 +30,14 @@ public class SWBoardCrawling implements Tasklet{
         Board board = boardRepository.findById(3L).get();
         List<Announcement> announcements = new ArrayList<>();
 
-        String fronturl = board.getFrontUrl();
-        String backurl = board.getBackUrl();
-        Integer lastid = board.getLastId();
+        String frontUrl = board.getFrontUrl();
+        String backUrl = board.getBackUrl();
+        Integer lastId = board.getLastId();
         Author author = board.getAuthor();
 
         while(true) {
-            String page = fronturl + lastid + backurl;
-            lastid++;
+            String page = frontUrl + lastId + backUrl;
+            lastId++;
 
             Document document = Jsoup.connect(page).get();
 
@@ -47,6 +47,13 @@ public class SWBoardCrawling implements Tasklet{
 
             String title = document.select(".bo_v_tit").text();
             if (title.isEmpty()) {
+                boardRepository.save(Board.builder()
+                        .id(board.getId())
+                        .lastId(lastId)
+                        .frontUrl(frontUrl)
+                        .backUrl(backUrl)
+                        .author(author)
+                        .build());
                 break;
             }
             System.out.println(title);

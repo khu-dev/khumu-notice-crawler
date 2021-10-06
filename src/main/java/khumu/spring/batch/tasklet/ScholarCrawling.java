@@ -48,6 +48,13 @@ public class ScholarCrawling implements Tasklet {
 
             String title = document.select("[style=color:#b41c1b; font-size:12px; word-break:break-all;]").text();
             if (title.isEmpty()) {
+                boardRepository.save(Board.builder()
+                        .id(board.getId())
+                        .lastId(lastId)
+                        .frontUrl(frontUrl)
+                        .backUrl(backUrl)
+                        .author(author)
+                        .build());
                 break;
             }
             System.out.println(title);
