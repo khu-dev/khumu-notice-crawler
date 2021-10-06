@@ -1,5 +1,6 @@
 package khumu.spring.batch.tasklet;
 
+import io.micrometer.core.instrument.util.JsonUtils;
 import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Announcement;
@@ -35,22 +36,30 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     private final AnnouncementRepository announcementRepository;
     private final AuthorRepository authorRepository;
 
-    private Board board = new Board();
-    private final List<Announcement> announcements = new ArrayList<>();
+//    private Board board;
+//    private Integer lastId;
+//    private String frontUrl;
+//    private String backUrl;
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
-        Author author = authorRepository.findByAuthorName("컴퓨터공학과");
-        board = boardRepository.findByAuthor(author);
+//        Author author = authorRepository.findByAuthorName("컴퓨터공학과");
+//        System.out.println(author);
+//        board = boardRepository.findByAuthorId(author.getId());
+//        System.out.println(board);
     }
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
+        Board board = boardRepository.findById(1L).get();
+
+        System.out.println(board.toString());
+
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
         Author author = board.getAuthor();
-        Long id;
+        String authorname = board.getAuthor().getAuthorName();
 
         while(true){
             String page = frontUrl + lastId + backUrl;
@@ -63,6 +72,12 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             String title = rawdata.split("ㆍ")[1];
             title = title.substring(4);
             if (title.isEmpty()) {
+                boardRepository.save(Board.builder()
+                        .lastId(lastId)
+                        .frontUrl(frontUrl)
+                        .backUrl(backUrl)
+                        .author(author)
+                        .build());
                 break;
             }
             String date = rawdata.split("ㆍ")[3];
@@ -74,8 +89,8 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             AnnouncementDto announcement = AnnouncementDto.builder()
                     .title(title)
                     .author(AuthorDto.builder()
-                            .author_name(author.getAuthorName())
                             .id(author.getId())
+                            .author_name(authorname)
                             .build())
                     .date(date)
                     .sub_link(page)
@@ -83,14 +98,20 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
             var Id = announcementRepository.save(announcement.toEntity()).getId();
             System.out.println(Id);
-
-            announcements.add(announcement.toEntity());
         }
+
         return RepeatStatus.FINISHED;
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
+//        Board board = Board.builder()
+//                .frontUrl(frontUrl)
+//                .backUrl(backUrl)
+//                .lastId(lastId)
+//                .build();
+//        System.out.println(lastId);
+//        boardRepository.save(board);
         return ExitStatus.COMPLETED;
     }
 }

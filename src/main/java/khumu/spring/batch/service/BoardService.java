@@ -23,7 +23,7 @@ public class BoardService {
         List<Author> authors = new ArrayList<>();
         List<AuthorDto> authorDtos = new ArrayList<>();
 
-        List<Board> boards = new ArrayList<>(boardRepository.findAll());
+        List<Board> boards = boardRepository.findAll();
 
         for (Board board : boards) {
             AuthorDto authorDto = AuthorDto.builder()
@@ -44,7 +44,7 @@ public class BoardService {
 
     public BoardDto getBoardByAuthor(String authorname) {
         Author author = authorRepository.findByAuthorName(authorname);
-        Board board = boardRepository.findByAuthor(author);
+        Board board = boardRepository.findByAuthor(author).get();
 
         AuthorDto authorDto = AuthorDto.builder()
                 .id(author.getId())

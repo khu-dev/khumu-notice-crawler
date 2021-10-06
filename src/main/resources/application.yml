@@ -1,4 +1,7 @@
 spring:
+  batch:
+    jdbc:
+      initialize-schema: always
   profiles:
     active: local
 server:
@@ -18,7 +21,7 @@ spring:
     show-sql: true
   datasource:
     hikari:
-      jdbc-url: jdbc:mysql://34.64.100.109:3306/khumu
+      jdbc-url: jdbc:mysql://localhost:3306/khumu
       username: root
       password: Janghoon1101!
       driver-class-name: com.mysql.cj.jdbc.Driver
@@ -32,7 +35,7 @@ spring:
       hikari:
         jdbc-url: jdbc:mysql://34.64.100.109::3306/khumu
         username: root
-        pasword: Janghoon1101!
+        password: Janghoon1101!
         driver-class-name: com.mysql.cj.jdbc.Driver
 ---
 #  batch:

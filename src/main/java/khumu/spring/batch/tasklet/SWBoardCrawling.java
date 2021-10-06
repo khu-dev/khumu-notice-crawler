@@ -51,6 +51,7 @@ public class SWBoardCrawling implements Tasklet{
             }
             System.out.println(title);
             String date = document.select(".if_date").text();
+            date = date.substring(4);
 
             announcementRepository.save(Announcement.builder()
                     .author(author)

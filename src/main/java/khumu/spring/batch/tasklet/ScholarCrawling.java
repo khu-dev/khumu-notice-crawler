@@ -28,7 +28,6 @@ public class ScholarCrawling implements Tasklet {
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         Board board = boardRepository.findById(2L).get();
-        List<Announcement> announcements = new ArrayList<>();
 
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();
