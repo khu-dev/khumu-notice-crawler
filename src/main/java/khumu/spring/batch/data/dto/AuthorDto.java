@@ -21,9 +21,9 @@ public class AuthorDto {
     String author_name;
     Boolean followed;
 
-    public Author toEntity() {
+    public Author toEntity(Long AuthorId) {
         return Author.builder()
-                .id(id)
+                .id(AuthorId)
                 .authorName(author_name)
                 .build();
     }

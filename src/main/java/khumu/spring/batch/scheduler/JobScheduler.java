@@ -42,5 +42,4 @@ public class JobScheduler {
             log.error(e.getMessage());
         }
     }
-
 }
