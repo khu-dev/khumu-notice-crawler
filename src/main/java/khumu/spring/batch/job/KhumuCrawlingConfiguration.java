@@ -3,9 +3,7 @@ package khumu.spring.batch.job;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
-import khumu.spring.batch.tasklet.CsCrawling;
-import khumu.spring.batch.tasklet.SWBoardCrawling;
-import khumu.spring.batch.tasklet.ScholarCrawling;
+import khumu.spring.batch.tasklet.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -34,6 +32,60 @@ public class KhumuCrawlingConfiguration {
                 .start(csCrawlingStep())
                 .next(scholarCrawlingStep())
                 .next(sWBoardCrawlingStep())
+                .next(eECrawlingStep())
+                .next(eInfoCrawlingStep())
+                .next(artDesignCrawlingStep())
+                .next(foreignLangCrawlingStep())
+                .next(lINCCrawlingStep())
+                .next(sWConCrawlingStep())
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step sWConCrawlingStep() {
+        return this.stepBuilderFactory.get("sWConCrawlingStep")
+                .tasklet(new SWConCrawling(boardRepository, authorRepository, announcementRepository))
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step lINCCrawlingStep() {
+        return this.stepBuilderFactory.get("lINCCrawlingStep")
+                .tasklet(new LINCCrawling(boardRepository, authorRepository, announcementRepository))
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step foreignLangCrawlingStep() {
+        return this.stepBuilderFactory.get("foreignLangCrawlingStep")
+                .tasklet(new ForeignLangCrawling(boardRepository, authorRepository, announcementRepository))
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step artDesignCrawlingStep() {
+        return this.stepBuilderFactory.get("artDesignCrawlingStep")
+                .tasklet(new ArtDesignCrawling(boardRepository, authorRepository, announcementRepository))
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step eInfoCrawlingStep() {
+        return this.stepBuilderFactory.get("eInfoCrawlingStep")
+                .tasklet(new EInfoCrawling(boardRepository, authorRepository, announcementRepository))
+                .build();
+    }
+
+    @Bean
+    @JobScope
+    public Step eECrawlingStep() {
+        return this.stepBuilderFactory.get("eECrawlingStep")
+                .tasklet(new EECrawling(boardRepository, authorRepository, announcementRepository))
                 .build();
     }
 
@@ -41,7 +93,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step sWBoardCrawlingStep() {
         return this.stepBuilderFactory.get("sWBoardCrawlingStep")
-                .tasklet(new SWBoardCrawling(boardRepository, announcementRepository))
+                .tasklet(new SWBoardCrawling(boardRepository, authorRepository, announcementRepository))
                 .build();
     }
 
@@ -49,7 +101,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step scholarCrawlingStep() {
         return this.stepBuilderFactory.get("scholarCrawlingStep")
-                .tasklet(new ScholarCrawling(boardRepository, announcementRepository))
+                .tasklet(new ScholarCrawling(boardRepository, authorRepository, announcementRepository))
                 .build();
     }
 
@@ -57,7 +109,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step csCrawlingStep() {
         return this.stepBuilderFactory.get("csCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, announcementRepository, authorRepository))
+                .tasklet(new CsCrawling(boardRepository, authorRepository, announcementRepository))
                 .build();
     }
 }
