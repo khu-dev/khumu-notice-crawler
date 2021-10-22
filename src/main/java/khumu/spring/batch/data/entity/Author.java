@@ -23,11 +23,13 @@ public class Author {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "author")
     @JsonBackReference
-//    @JsonIgnoreProperties({"author", "announcements"})
     private List<Board> boards = new ArrayList<Board>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "author")
     @JsonBackReference
-//    @JsonIgnoreProperties({"author", "boards"})
     private List<Announcement> announcements = new ArrayList<Announcement>();
+
+    //    DTO 무한참조 방지 Json Annotation
+    //    @JsonIgnoreProperties({"author", "announcements"})
+
 }
