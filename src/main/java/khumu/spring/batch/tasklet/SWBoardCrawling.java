@@ -4,11 +4,15 @@ import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
+import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
+import org.springframework.batch.core.StepExecution;
+import org.springframework.batch.core.StepExecutionListener;
 import org.springframework.batch.core.configuration.annotation.StepScope;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -21,9 +25,13 @@ import java.util.List;
 @Component
 @StepScope
 @RequiredArgsConstructor
-public class SWBoardCrawling implements Tasklet{
+public class SWBoardCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
+    private final AuthorRepository authorRepository;
     private final AnnouncementRepository announcementRepository;
+
+    @Override
+    public void beforeStep(StepExecution stepExecution) {}
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
@@ -66,17 +74,12 @@ public class SWBoardCrawling implements Tasklet{
                     .date(date)
                     .subLink(page)
                     .build());
-//            Announcement announcement = Announcement.builder()
-//                    .author(author)
-//                    .title(title)
-//                    .date(date)
-//                    .subLink(page)
-//                    .build();
-//            announcements.add(announcement);
         }
-
-//        announcementRepository.saveAllAndFlush(announcements);
-
         return RepeatStatus.FINISHED;
+    }
+
+    @Override
+    public ExitStatus afterStep(StepExecution stepExecution) {
+        return ExitStatus.COMPLETED;
     }
 }

@@ -33,21 +33,11 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CsCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
-    private final AnnouncementRepository announcementRepository;
     private final AuthorRepository authorRepository;
-
-//    private Board board;
-//    private Integer lastId;
-//    private String frontUrl;
-//    private String backUrl;
+    private final AnnouncementRepository announcementRepository;
 
     @Override
-    public void beforeStep(StepExecution stepExecution) {
-//        Author author = authorRepository.findByAuthorName("컴퓨터공학과");
-//        System.out.println(author);
-//        board = boardRepository.findByAuthorId(author.getId());
-//        System.out.println(board);
-    }
+    public void beforeStep(StepExecution stepExecution) {}
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
@@ -67,9 +57,9 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
             Document document = Jsoup.connect(page).get();
 
-            String rawdata = document.select("div.con_area").select("thead").text();
+            String rawData = document.select("div.con_area").select("thead").text();
 
-            String title = rawdata.split("ㆍ")[1];
+            String title = rawData.split("ㆍ")[1];
             title = title.substring(4);
             if (title.isEmpty()) {
                 boardRepository.save(Board.builder()
@@ -81,7 +71,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                         .build());
                 break;
             }
-            String date = rawdata.split("ㆍ")[3];
+            String date = rawData.split("ㆍ")[3];
             date = date.substring(6);
             System.out.println(title);
             System.out.println(date);
@@ -106,13 +96,6 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
-//        Board board = Board.builder()
-//                .frontUrl(frontUrl)
-//                .backUrl(backUrl)
-//                .lastId(lastId)
-//                .build();
-//        System.out.println(lastId);
-//        boardRepository.save(board);
         return ExitStatus.COMPLETED;
     }
 }
