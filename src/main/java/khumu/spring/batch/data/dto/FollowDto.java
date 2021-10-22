@@ -9,6 +9,6 @@ import lombok.*;
 @NoArgsConstructor
 @RequiredArgsConstructor
 public class FollowDto {
-    private User follower;
-    private Author followAuthor;
+    private String follower;
+    private String followAuthor;
 }
