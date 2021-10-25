@@ -1,5 +1,7 @@
 package khumu.spring.batch.tasklet;
 
+import khumu.spring.batch.data.entity.Author;
+import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
@@ -23,7 +25,23 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
     private final AnnouncementRepository announcementRepository;
 
     @Override
-    public void beforeStep(StepExecution stepExecution) {}
+    public void beforeStep(StepExecution stepExecution) {
+
+        Author author = Author.builder()
+                .id(4L)
+                .authorName("예술디자인대학").build();
+        authorRepository.save(author);
+
+        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+
+        Board board = Board.builder()
+                .id(4L)
+                .frontUrl("http://and.khu.ac.kr/board/bbs/board.php?bo_table=05_01&wr_id=")
+                .lastId(boardLastId)
+                .author(author).build();
+
+        boardRepository.save(board);
+    }
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {

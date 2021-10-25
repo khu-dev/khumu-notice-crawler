@@ -31,7 +31,21 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
     private final AnnouncementRepository announcementRepository;
 
     @Override
-    public void beforeStep(StepExecution stepExecution) {}
+    public void beforeStep(StepExecution stepExecution) {
+        Author author = Author.builder()
+                .id(2L)
+                .authorName("학생지원센터장학").build();
+        authorRepository.save(author);
+
+        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+
+        Board board = Board.builder()
+                .id(2L)
+                .frontUrl("http://janghak.khu.ac.kr/board/bbs/board.php?bo_table=06_01&wr_id=")
+                .lastId(boardLastId).build();
+        boardRepository.save(board);
+
+    }
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {

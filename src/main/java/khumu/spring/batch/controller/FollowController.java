@@ -16,11 +16,11 @@ public class FollowController {
 
     @PostMapping("/post")
     public void postFollow(@RequestBody FollowDto requestData) {
-        postNewFollow()
+        followService.postNewFollow();
     }
 
     @GetMapping("/user")
     public List<Author> getFollowByUserName(String userName) {
-        return getFollowByUsername(userName);
+        return followService.getFollowByUserName(userName);
     }
 }

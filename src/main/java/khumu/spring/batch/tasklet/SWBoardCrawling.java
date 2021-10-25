@@ -31,7 +31,23 @@ public class SWBoardCrawling implements Tasklet, StepExecutionListener {
     private final AnnouncementRepository announcementRepository;
 
     @Override
-    public void beforeStep(StepExecution stepExecution) {}
+    public void beforeStep(StepExecution stepExecution) {
+        Author author = Author.builder()
+                .id(3L)
+                .authorName("소프트웨어중심대학사업단").build();
+
+        authorRepository.save(author);
+
+        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+
+        Board board = Board.builder()
+                .id(3L)
+                .frontUrl("http://swedu.khu.ac.kr/board5/bbs/board.php?bo_table=06_01&wr_id=")
+                .lastId(boardLastId)
+                .author(author).build();
+
+        boardRepository.save(board);
+    }
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {

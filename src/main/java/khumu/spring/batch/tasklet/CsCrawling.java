@@ -37,7 +37,25 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     private final AnnouncementRepository announcementRepository;
 
     @Override
-    public void beforeStep(StepExecution stepExecution) {}
+    public void beforeStep(StepExecution stepExecution) {
+
+        Author author = Author.builder()
+                .id(1L)
+                .authorName("컴퓨터공학과").build();
+
+        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+
+        authorRepository.save(author);
+
+        Board board = Board.builder()
+                .id(1L)
+                .frontUrl("http://ce.khu.ac.kr/index.php?hCode=BOARD&page=view&idx=")
+                .backUrl("&bo_idx=1")
+                .lastId(boardLastId)
+                .author(author).build();
+
+        boardRepository.save(board);
+    }
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
