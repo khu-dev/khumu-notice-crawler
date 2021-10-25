@@ -32,12 +32,13 @@ public class ForeignLangCrawling implements Tasklet, StepExecutionListener {
                 .authorName("외국어대학").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(5L)
                 .frontUrl("http://foreign.khu.ac.kr/contents/bbs/bbs_list.html?bbs_cls_cd=002004008")
-                .lastId(boardLastId).build();
+                .lastId(null)
+                .author(author).build();
 
         boardRepository.save(board);
     }

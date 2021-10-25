@@ -32,13 +32,14 @@ public class EECrawling implements Tasklet, StepExecutionListener {
                 .authorName("전자공학과").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(3L)
                 .frontUrl("http://ee.khu.ac.kr/index.php?hCode=BOARD&page=view&idx=")
                 .backUrl("&bo_idx=2&hCode=BOARD&bo_idx=2&sfl=&stx=")
-                .lastId(boardLastId).build();
+                .lastId(2676)
+                .author(author).build();
 
         boardRepository.save(board);
     }

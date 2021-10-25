@@ -30,14 +30,14 @@ public class KhumuCrawlingConfiguration {
         return this.jobBuilderFactory.get("noticeUpdateJob")
                 .incrementer(new RunIdIncrementer())
                 .start(csvReadingStep())
+                .next(artDesignCrawlingStep())
                 .next(csCrawlingStep())
-                .next(scholarCrawlingStep())
-                .next(sWBoardCrawlingStep())
                 .next(eECrawlingStep())
                 .next(eInfoCrawlingStep())
-                .next(artDesignCrawlingStep())
                 .next(foreignLangCrawlingStep())
                 .next(lINCCrawlingStep())
+                .next(scholarCrawlingStep())
+                .next(sWBoardCrawlingStep())
                 .next(sWConCrawlingStep())
                 .build();
     }

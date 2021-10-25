@@ -32,12 +32,13 @@ public class SWConCrawling implements Tasklet, StepExecutionListener {
                 .authorName("SW융합대학").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(9L)
                 .frontUrl("http://software.khu.ac.kr/board5/bbs/board.php?bo_table=05_01&wr_id=")
-                .lastId(boardLastId).build();
+                .lastId(331)
+                .author(author).build();
 
         boardRepository.save(board);
 

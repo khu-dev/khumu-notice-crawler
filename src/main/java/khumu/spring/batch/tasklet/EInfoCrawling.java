@@ -33,13 +33,14 @@ public class EInfoCrawling implements Tasklet, StepExecutionListener {
                 .authorName("전자정보대학").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(4L)
                 .frontUrl("http://eni.khu.ac.kr/index.php?hCode=BOARD&page=view&idx=")
                 .backUrl("&bo_idx=1&hCode=BOARD&bo_idx=1&sfl=&stx=")
-                .lastId(boardLastId).build();
+                .lastId(1232)
+                .author(author).build();
 
         boardRepository.save(board);
     }

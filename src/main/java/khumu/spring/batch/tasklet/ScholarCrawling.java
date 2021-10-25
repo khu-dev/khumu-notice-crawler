@@ -38,19 +38,21 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
                 .authorName("학생지원센터장학").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(7L)
                 .frontUrl("http://janghak.khu.ac.kr/board/bbs/board.php?bo_table=06_01&wr_id=")
-                .lastId(boardLastId).build();
+                .lastId(2415)
+                .author(author).build();
 
         boardRepository.save(board);
     }
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Board board = boardRepository.findById(2L).get();
+        Author target = authorRepository.findByAuthorName("학생지원센터장학");
+        Board board = boardRepository.findByAuthor(target).get();
 
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();

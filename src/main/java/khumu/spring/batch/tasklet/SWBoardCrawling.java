@@ -38,12 +38,12 @@ public class SWBoardCrawling implements Tasklet, StepExecutionListener {
                 .authorName("소프트웨어중심대학사업단").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(8L)
                 .frontUrl("http://swedu.khu.ac.kr/board5/bbs/board.php?bo_table=06_01&wr_id=")
-                .lastId(boardLastId)
+                .lastId(1684)
                 .author(author).build();
 
         boardRepository.save(board);
@@ -51,7 +51,9 @@ public class SWBoardCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Board board = boardRepository.findById(3L).get();
+        Author target = authorRepository.findByAuthorName("소프트웨어중심대학사업단");
+        Board board = boardRepository.findByAuthor(target).get();
+
         List<Announcement> announcements = new ArrayList<>();
 
         String frontUrl = board.getFrontUrl();

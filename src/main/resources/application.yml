@@ -31,6 +31,13 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        order_inserts: true
+        order_updates: true
+      generate-ddl: true
+      show-sql: true
   datasource:
     hikari:
       jdbc-url: jdbc:mysql://34.64.100.109:3306/khumu

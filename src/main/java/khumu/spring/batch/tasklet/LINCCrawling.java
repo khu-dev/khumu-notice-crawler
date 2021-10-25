@@ -32,12 +32,13 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
                 .authorName("LINC+ 사업단").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(6L)
                 .frontUrl("http://lincplus.khu.ac.kr/linc8/linc_notice_view.do?lbSeq=")
-                .lastId(boardLastId).build();
+                .lastId(743)
+                .author(author).build();
 
         boardRepository.save(board);
     }
