@@ -3,7 +3,7 @@ spring:
     jdbc:
       initialize-schema: always
   profiles:
-    active: gcp
+    active: local
 server:
   port: 8080
 ---

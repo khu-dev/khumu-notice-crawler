@@ -57,7 +57,7 @@ public class AnnouncementService {
                     .title(announcement.getTitle())
                     .sub_link(announcement.getSubLink())
                     .date(announcement.getDate())
-                    .author(authorDto)
+                    .authorDto(authorDto)
                     .build();
             announcementDtos.add(announcementDto);
         }
@@ -70,15 +70,14 @@ public class AnnouncementService {
     }
 
     public List<AnnouncementDto> getAnnouncementByUser(String user) {
-
         // 1단계
         // User Id 뽑아서 Follow 명단 찾기
-        User userdata = userRepository.findByUsername(user);
-        Long userdataId = userdata.getId();
-        System.out.println(userdataId);
+        User userData = userRepository.findByUsername(user);
+        Long userDataId = userData.getId();
+        System.out.println(userDataId);
 
         // 입력된 user에 따른 팔로우 목록 리스트
-        List<Follow> follows = followRepository.findByFollower(userdata);
+        List<Follow> follows = followRepository.findByFollower(userData);
 
         // 2단계
         // follow->followauthor == announcemnt->author 같아야 함
@@ -94,29 +93,5 @@ public class AnnouncementService {
         }
 
         return getAnnouncementDtos(announcements, announcementDtos);
-    }
-
-    @Transactional
-    public void saveAnnouncementDto(AnnouncementDto announcementDto) {
-        announcementRepository.saveAndFlush(announcementDto.toEntity());
-    }
-
-    @Transactional
-    public void saveAnnouncements(List<Announcement> announcements) {
-        announcementRepository.saveAllAndFlush(announcements);
-    }
-
-    @Transactional
-    public void saveAnnouncementDtos(List<AnnouncementDto> announcementDtos) {
-        List<Announcement> announcements = new ArrayList<Announcement>();
-        for (AnnouncementDto announcementDto : announcementDtos) {
-            announcements.add(announcementDto.toEntity());
-        }
-        announcementRepository.saveAllAndFlush(announcements);
-    }
-
-    @Transactional
-    public void saveAnnouncement(Announcement announcement) {
-        announcementRepository.saveAndFlush(announcement);
     }
 }

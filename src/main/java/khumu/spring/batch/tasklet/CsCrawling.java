@@ -40,15 +40,14 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     public void beforeStep(StepExecution stepExecution) {
 
         Author author = Author.builder()
-                .id(1L)
+                .id(2L)
                 .authorName("컴퓨터공학과").build();
+        authorRepository.save(author);
 
         Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
-        authorRepository.save(author);
-
         Board board = Board.builder()
-                .id(1L)
+                .id(2L)
                 .frontUrl("http://ce.khu.ac.kr/index.php?hCode=BOARD&page=view&idx=")
                 .backUrl("&bo_idx=1")
                 .lastId(boardLastId)
@@ -59,7 +58,8 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Board board = boardRepository.findById(1L).get();
+        Author target = authorRepository.findByAuthorName("컴퓨터공학과");
+        Board board = boardRepository.findByAuthor(target).get();
 
         System.out.println(board.toString());
 

@@ -31,5 +31,4 @@ public class Author {
 
     //    DTO 무한참조 방지 Json Annotation
     //    @JsonIgnoreProperties({"author", "announcements"})
-
 }

@@ -22,7 +22,7 @@ public class AnnouncementDto {
     String title;
     String sub_link;
     String date;
-    AuthorDto author;
+    AuthorDto authorDto;
 
     public Announcement toEntity() {
         return Announcement.builder()
@@ -30,7 +30,7 @@ public class AnnouncementDto {
                 .title(title)
                 .date(date)
                 .subLink(sub_link)
-                .author(author.toEntity())
+                .author(authorDto.toEntity())
                 .build();
     }
 }

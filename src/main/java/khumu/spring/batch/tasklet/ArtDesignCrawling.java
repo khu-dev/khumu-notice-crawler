@@ -28,14 +28,14 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
     public void beforeStep(StepExecution stepExecution) {
 
         Author author = Author.builder()
-                .id(4L)
+                .id(1L)
                 .authorName("예술디자인대학").build();
         authorRepository.save(author);
 
         Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
-                .id(4L)
+                .id(1L)
                 .frontUrl("http://and.khu.ac.kr/board/bbs/board.php?bo_table=05_01&wr_id=")
                 .lastId(boardLastId)
                 .author(author).build();
@@ -45,6 +45,12 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+        Author target = authorRepository.findByAuthorName("예술디자인대학");
+        Board board = boardRepository.findByAuthor(target).get();
+
+
+
+
         return RepeatStatus.FINISHED;
     }
 

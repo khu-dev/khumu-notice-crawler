@@ -7,7 +7,7 @@ import lombok.*;
 @Data
 @Builder
 @NoArgsConstructor
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class FollowDto {
     private String follower;
     private String followAuthor;
