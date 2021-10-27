@@ -42,8 +42,8 @@ public class BoardService {
         return boardDtos;
     }
 
-    public BoardDto getBoardByAuthor(String authorname) {
-        Author author = authorRepository.findByAuthorName(authorname);
+    public BoardDto getBoardByAuthor(String authorName) {
+        Author author = authorRepository.findByAuthorName(authorName);
         Board board = boardRepository.findByAuthor(author).get();
 
         AuthorDto authorDto = AuthorDto.builder()

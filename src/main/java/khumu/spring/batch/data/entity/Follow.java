@@ -24,5 +24,5 @@ public class Follow implements Serializable {
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "followauthor")
-    private Author followauthor;
+    private Author followAuthor;
 }

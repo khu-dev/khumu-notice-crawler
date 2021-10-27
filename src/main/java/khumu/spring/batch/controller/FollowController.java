@@ -12,7 +12,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/follow")
+@RequestMapping("/api/follows")
 public class FollowController {
     private final FollowService followService;
 

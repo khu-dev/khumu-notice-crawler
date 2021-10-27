@@ -32,8 +32,8 @@ public class AnnouncementService {
         return getAnnouncementDtos(announcements);
     }
 
-    public List<AnnouncementDto> getAnnouncementByAuthor(String authorname) {
-        Author author = authorRepository.findByAuthorName(authorname);
+    public List<AnnouncementDto> getAnnouncementByAuthor(String authorName) {
+        Author author = authorRepository.findByAuthorName(authorName);
         List<Announcement> announcements = announcementRepository.findByAuthor(author);
         return getAnnouncementDtos(announcements);
     }
@@ -49,7 +49,7 @@ public class AnnouncementService {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(announcement.getId())
                     .author_name(announcement.getAuthor().getAuthorName())
-                    .followed(Boolean.FALSE)
+                    .followed(Boolean.TRUE)
                     .build();
 
             AnnouncementDto announcementDto = AnnouncementDto.builder()
@@ -76,16 +76,16 @@ public class AnnouncementService {
         Long userDataId = userData.getId();
         System.out.println(userDataId);
 
-        // 입력된 user에 따른 팔로우 목록 리스트
+        // 입력된 user 팔로우 목록 리스트
         List<Follow> follows = followRepository.findByFollower(userData);
 
         // 2단계
-        // follow->followauthor == announcemnt->author 같아야 함
+        // follow->followAuthor == announcement->author 같아야 함
         List<Announcement> announcements = new ArrayList<>();
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
         for (Follow follow : follows) {
-            Long followAuthor = follow.getFollowauthor().getId();
+            Long followAuthor = follow.getFollowAuthor().getId();
             Author author = authorRepository.findById(followAuthor).orElse(null);
 
             List<Announcement> announcementList = announcementRepository.findByAuthor(author);

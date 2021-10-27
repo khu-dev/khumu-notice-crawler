@@ -26,7 +26,7 @@ public class FollowService {
         Author author = authorRepository.findByAuthorName(authorName);
 
         Follow follow = Follow.builder()
-                .followauthor(author)
+                .followAuthor(author)
                 .follower(user).build();
 
         followRepository.save(follow);
@@ -39,7 +39,7 @@ public class FollowService {
 
         for (Follow follow : follows) {
             AuthorDto authorDto = AuthorDto.builder()
-                    .author_name(follow.getFollowauthor().getAuthorName())
+                    .author_name(follow.getFollowAuthor().getAuthorName())
                     .followed(Boolean.TRUE)
                     .build();
 
