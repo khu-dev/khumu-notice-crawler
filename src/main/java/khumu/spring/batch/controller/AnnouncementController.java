@@ -38,4 +38,9 @@ public class AnnouncementController {
     public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user) {
         return announcementService.getAnnouncementByUser(user);
     }
+
+    @GetMapping("/search")
+    public List<AnnouncementDto> serachAnnouncement(@RequestParam String keyword) {
+        return announcementService.searchAnnouncement(keyword);
+    }
 }

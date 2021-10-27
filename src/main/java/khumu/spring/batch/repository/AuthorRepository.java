@@ -9,4 +9,6 @@ import java.util.List;
 @Repository
 public interface AuthorRepository extends JpaRepository<Author, Long> {
     Author findByAuthorName(String authorName);
+
+    List<Author> findByAuthorNameContaining(String authorName);
 }

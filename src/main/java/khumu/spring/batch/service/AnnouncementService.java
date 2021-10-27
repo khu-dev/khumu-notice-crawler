@@ -40,11 +40,6 @@ public class AnnouncementService {
 
     private List<AnnouncementDto> getAnnouncementDtos(List<Announcement> announcements) {
         List<AnnouncementDto> announcementDtos = new ArrayList<>();
-
-        return getAnnouncementDtos(announcements, announcementDtos);
-    }
-
-    private List<AnnouncementDto> getAnnouncementDtos(List<Announcement> announcements, List<AnnouncementDto> announcementDtos) {
         for (Announcement announcement : announcements) {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(announcement.getId())
@@ -82,7 +77,7 @@ public class AnnouncementService {
         // 2단계
         // follow->followAuthor == announcement->author 같아야 함
         List<Announcement> announcements = new ArrayList<>();
-        List<AnnouncementDto> announcementDtos = new ArrayList<>();
+//        List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
         for (Follow follow : follows) {
             Long followAuthor = follow.getFollowAuthor().getId();
@@ -92,6 +87,11 @@ public class AnnouncementService {
             announcements.addAll(announcementList);
         }
 
-        return getAnnouncementDtos(announcements, announcementDtos);
+        return getAnnouncementDtos(announcements);
+    }
+
+    public List<AnnouncementDto> searchAnnouncement(String keyword) {
+        List<Announcement> announcements = announcementRepository.findByTitleContaining(keyword);
+        return getAnnouncementDtos(announcements);
     }
 }

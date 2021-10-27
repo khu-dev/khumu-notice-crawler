@@ -13,4 +13,6 @@ public interface AnnouncementRepository extends JpaRepository<Announcement, Long
     List<Announcement> findByAuthor(Author author);
 
     List<Announcement> findByDate(String dateTime);
+
+    List<Announcement> findByTitleContaining(String keyword);
 }
