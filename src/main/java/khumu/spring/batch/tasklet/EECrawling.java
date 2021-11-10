@@ -46,6 +46,28 @@ public class EECrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+        Author target = authorRepository.findByAuthorName("전자공학과");
+        Board board = boardRepository.findByAuthor(target).get();
+
+        System.out.println(board.toString());
+
+        String frontUrl = board.getFrontUrl();
+        String backUrl = board.getBackUrl();
+        Integer lastId = board.getLastId();
+        Author author = board.getAuthor();
+        String authorName = author.getAuthorName();
+
+        while(true) {
+            String page = frontUrl + lastId + backUrl;
+            lastId += 1;
+
+
+            if() {
+                break;
+            }
+        }
+
+
 
         return RepeatStatus.FINISHED;
     }

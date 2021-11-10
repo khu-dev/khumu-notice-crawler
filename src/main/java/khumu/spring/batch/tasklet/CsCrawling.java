@@ -38,7 +38,6 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
-
         Author author = Author.builder()
                 .id(2L)
                 .authorName("컴퓨터공학과").build();
@@ -67,7 +66,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
         Author author = board.getAuthor();
-        String authorname = board.getAuthor().getAuthorName();
+        String authorName = board.getAuthor().getAuthorName();
 
         while(true){
             String page = frontUrl + lastId + backUrl;
@@ -78,6 +77,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             String rawData = document.select("div.con_area").select("thead").text();
 
             String title = rawData.split("ㆍ")[1];
+
             title = title.substring(4);
             if (title.isEmpty()) {
                 boardRepository.save(Board.builder()
@@ -89,6 +89,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                         .build());
                 break;
             }
+
             String date = rawData.split("ㆍ")[3];
             date = date.substring(6);
             System.out.println(title);
@@ -99,7 +100,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                     .title(title)
                     .authorDto(AuthorDto.builder()
                             .id(author.getId())
-                            .author_name(authorname)
+                            .author_name(authorName)
                             .build())
                     .date(date)
                     .sub_link(page)

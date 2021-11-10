@@ -1,11 +1,14 @@
 package khumu.spring.batch.tasklet;
 
+import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -48,6 +51,33 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
         Author target = authorRepository.findByAuthorName("예술디자인대학");
         Board board = boardRepository.findByAuthor(target).get();
 
+        String frontUrl = board.getFrontUrl();
+        String backUrl = board.getBackUrl();
+        Integer lastId = board.getLastId();
+        Author author = board.getAuthor();
+        String authorName = author.getAuthorName();
+
+        while(true) {
+            String page = frontUrl + lastId + backUrl;
+            lastId++;
+
+            Document document = Jsoup.connect(page).get();
+
+            String title = document.select(".bo_v_title").text();
+            String date = document.select(".bo_v_file").select("span").text();
+
+            if (title == null) {
+                boardRepository.save(Board endboard = Board.builder()
+                        .author(target)
+                        .frontUrl(frontUrl)
+                        .backUrl(backUrl)
+                        .id(board.getId()).build());
+                break;
+            }
+
+            AnnouncementDto announcementDto =
+
+        }
 
 
 
