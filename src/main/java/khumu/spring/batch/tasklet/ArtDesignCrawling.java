@@ -1,6 +1,7 @@
 package khumu.spring.batch.tasklet;
 
 import khumu.spring.batch.data.dto.AnnouncementDto;
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.repository.AnnouncementRepository;
@@ -59,23 +60,27 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
 
         while(true) {
             String page = frontUrl + lastId + backUrl;
-            lastId++;
+            lastId += 1;
 
             Document document = Jsoup.connect(page).get();
 
             String title = document.select(".bo_v_title").text();
             String date = document.select(".bo_v_file").select("span").text();
 
-            if (title == null) {
-                boardRepository.save(Board endboard = Board.builder()
+            if (title.isEmpty()) {
+                boardRepository.save(Board.builder()
+                        .id(board.getId())
                         .author(target)
                         .frontUrl(frontUrl)
                         .backUrl(backUrl)
-                        .id(board.getId()).build());
+                        .lastId(lastId).build());
                 break;
             }
 
-            AnnouncementDto announcementDto =
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .title(title)
+                    .authorDto(AuthorDto.builder()
+                            .author_name().build()).build()
 
         }
 

@@ -38,7 +38,7 @@ public class SWBoardCrawling implements Tasklet, StepExecutionListener {
                 .authorName("소프트웨어중심대학사업단").build();
         authorRepository.save(author);
 
-//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(8L)

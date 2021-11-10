@@ -45,6 +45,14 @@ public class ForeignLangCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+        Author target = authorRepository.findByAuthorName("외국어대학");
+        Board board = boardRepository.findByAuthor(target).get();
+
+        String frontUrl = board.getFrontUrl();
+        String backUrl = board.getBackUrl();
+        Integer lastId = board.getLastId();
+        Author author = board.getAuthor();
+        String authorName = author.getAuthorName();
         return RepeatStatus.FINISHED;
     }
 

@@ -6,6 +6,8 @@ import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -45,6 +47,29 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+        Author target = authorRepository.findByAuthorName("LINC+ 사업단");
+        Board board = boardRepository.findByAuthor(target).get();
+
+        String frontUrl = board.getFrontUrl();
+        String backUrl = board.getBackUrl();
+        Integer lastId = board.getLastId();
+        Author author = board.getAuthor();
+        String authorName = author.getAuthorName();
+
+        while(true) {
+            String page = frontUrl + lastId + backUrl;
+            lastId += 1;
+
+            Document document = Jsoup.connect(page).get();
+
+            String title = document.select("").text();
+
+            if(title.isEmpty()) {
+
+                break;
+            }
+        }
+
         return RepeatStatus.FINISHED;
     }
 

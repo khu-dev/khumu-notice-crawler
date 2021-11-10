@@ -38,7 +38,7 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
                 .authorName("학생지원센터장학").build();
         authorRepository.save(author);
 
-//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(7L)

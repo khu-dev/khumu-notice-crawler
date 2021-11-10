@@ -60,8 +60,6 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
         Author target = authorRepository.findByAuthorName("컴퓨터공학과");
         Board board = boardRepository.findByAuthor(target).get();
 
-        System.out.println(board.toString());
-
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
@@ -73,12 +71,11 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
             lastId += 1;
 
             Document document = Jsoup.connect(page).get();
-
             String rawData = document.select("div.con_area").select("thead").text();
 
             String title = rawData.split("ㆍ")[1];
-
             title = title.substring(4);
+
             if (title.isEmpty()) {
                 boardRepository.save(Board.builder()
                         .id(board.getId())
@@ -92,9 +89,9 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
             String date = rawData.split("ㆍ")[3];
             date = date.substring(6);
-            System.out.println(title);
-            System.out.println(date);
-            System.out.println(page);
+//            System.out.println(title);
+//            System.out.println(date);
+//            System.out.println(page);
 
             AnnouncementDto announcement = AnnouncementDto.builder()
                     .title(title)

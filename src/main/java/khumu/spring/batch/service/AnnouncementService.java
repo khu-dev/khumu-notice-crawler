@@ -11,6 +11,8 @@ import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.FollowRepository;
 import khumu.spring.batch.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -93,5 +95,11 @@ public class AnnouncementService {
     public List<AnnouncementDto> searchAnnouncement(String keyword) {
         List<Announcement> announcements = announcementRepository.findByTitleContaining(keyword);
         return getAnnouncementDtos(announcements);
+    }
+
+    public List<AnnouncementDto> getAnnouncementWithPage(Integer page) {
+        Page<Announcement> announcements = announcementRepository.findAll(PageRequest.of(page, 10));
+        List<AnnouncementDto> = announcements.getContent().stream().map(announcement ->
+                s)
     }
 }

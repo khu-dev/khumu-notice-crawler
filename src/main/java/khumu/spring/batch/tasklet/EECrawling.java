@@ -6,6 +6,8 @@ import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -32,7 +34,7 @@ public class EECrawling implements Tasklet, StepExecutionListener {
                 .authorName("전자공학과").build();
         authorRepository.save(author);
 
-//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(3L)
@@ -61,8 +63,12 @@ public class EECrawling implements Tasklet, StepExecutionListener {
             String page = frontUrl + lastId + backUrl;
             lastId += 1;
 
+            Document document = Jsoup.connect(page).get();
 
-            if() {
+            String title = document.select("").text();
+
+            if(title.isEmpty()) {
+
                 break;
             }
         }
