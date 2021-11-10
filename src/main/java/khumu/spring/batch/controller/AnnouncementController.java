@@ -40,7 +40,7 @@ public class AnnouncementController {
     }
 
     @GetMapping("/search")
-    public List<AnnouncementDto> serachAnnouncement(@RequestParam String keyword) {
+    public List<AnnouncementDto> searchAnnouncement(@RequestParam String keyword) {
         return announcementService.searchAnnouncement(keyword);
     }
 }

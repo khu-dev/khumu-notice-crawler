@@ -15,10 +15,10 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    @GetMapping("/boardTest")
-    public String boardTest() {
-        return "it's working";
-    }
+//    @GetMapping("/boardTest")
+//    public String boardTest() {
+//        return "it's working";
+//    }
 
     @GetMapping("/all")
     public List<BoardDto> getAllBoards() {

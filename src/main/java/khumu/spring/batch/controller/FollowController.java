@@ -22,4 +22,9 @@ public class FollowController {
     public List<AuthorDto> getFollowByUserName(@RequestParam String userName) {
         return followService.getFollowByUserName(userName);
     }
+
+    @DeleteMapping("/deletefollow")
+    public void deleteFollow(@RequestParam String userName, @RequestParam String authorName) {
+        followService.deleteFollow(userName, authorName);
+    }
 }

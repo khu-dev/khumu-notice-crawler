@@ -48,4 +48,15 @@ public class FollowService {
 
         return authorDtos;
     }
+
+    public void deleteFollow(String userName, String authorName) {
+        User user = userRepository.findByUsername(userName);
+        Author author = authorRepository.findByAuthorName(authorName);
+
+        Follow follow = Follow.builder()
+                .followAuthor(author)
+                .follower(user).build();
+
+        followRepository.delete(follow);
+    }
 }
