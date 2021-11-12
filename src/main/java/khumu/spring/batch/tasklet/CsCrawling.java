@@ -95,7 +95,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
             AnnouncementDto announcement = AnnouncementDto.builder()
                     .title(title)
-                    .authorDto(AuthorDto.builder()
+                    .author(AuthorDto.builder()
                             .id(author.getId())
                             .author_name(authorName)
                             .build())

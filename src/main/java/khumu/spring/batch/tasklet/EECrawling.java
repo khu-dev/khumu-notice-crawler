@@ -59,19 +59,19 @@ public class EECrawling implements Tasklet, StepExecutionListener {
         Author author = board.getAuthor();
         String authorName = author.getAuthorName();
 
-        while(true) {
-            String page = frontUrl + lastId + backUrl;
-            lastId += 1;
-
-            Document document = Jsoup.connect(page).get();
-
-            String title = document.select("").text();
-
-            if(title.isEmpty()) {
-
-                break;
-            }
-        }
+//        while(true) {
+//            String page = frontUrl + lastId + backUrl;
+//            lastId += 1;
+//
+//            Document document = Jsoup.connect(page).get();
+//
+//            String title = document.select("").text();
+//
+//            if(title.isEmpty()) {
+//
+//                break;
+//            }
+//        }
 
 
 

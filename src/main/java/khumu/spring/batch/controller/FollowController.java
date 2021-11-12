@@ -1,6 +1,7 @@
 package khumu.spring.batch.controller;
 
 import khumu.spring.batch.data.dto.AuthorDto;
+import khumu.spring.batch.data.dto.FollowDto;
 import khumu.spring.batch.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -27,4 +28,7 @@ public class FollowController {
     public void deleteFollow(@RequestParam String userName, @RequestParam String authorName) {
         followService.deleteFollow(userName, authorName);
     }
+
+//    @GetMapping("followauthor")
+//    public List<FollowDto>
 }

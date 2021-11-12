@@ -54,7 +54,7 @@ public class AnnouncementService {
                     .title(announcement.getTitle())
                     .sub_link(announcement.getSubLink())
                     .date(announcement.getDate())
-                    .authorDto(authorDto)
+                    .author(authorDto)
                     .build();
             announcementDtos.add(announcementDto);
         }
@@ -97,9 +97,9 @@ public class AnnouncementService {
         return getAnnouncementDtos(announcements);
     }
 
-    public List<AnnouncementDto> getAnnouncementWithPage(Integer page) {
-        Page<Announcement> announcements = announcementRepository.findAll(PageRequest.of(page, 10));
-        List<AnnouncementDto> = announcements.getContent().stream().map(announcement ->
-                s)
-    }
+//    public List<AnnouncementDto> getAnnouncementWithPage(Integer page) {
+//        Page<Announcement> announcements = announcementRepository.findAll(PageRequest.of(page, 10));
+//        List<AnnouncementDto> = announcements.getContent().stream().map(announcement ->
+//                s)
+//    }
 }
