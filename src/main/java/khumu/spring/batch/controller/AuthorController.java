@@ -22,8 +22,8 @@ public class AuthorController {
         return authorService.getAllAuthors();
     }
 
-    @GetMapping("/snstest")
-    public void g() {
-        ep.pubTopic();
-    }
+//    @GetMapping("/snstest")
+//    public void g() {
+//        ep.pubTopic();
+//    }
 }

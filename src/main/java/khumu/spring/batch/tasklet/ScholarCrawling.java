@@ -1,8 +1,11 @@
 package khumu.spring.batch.tasklet;
 
+import khumu.spring.batch.data.dto.AnnouncementDto;
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
+import khumu.spring.batch.publish.EventPublish;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
@@ -29,6 +32,7 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AuthorRepository authorRepository;
     private final AnnouncementRepository announcementRepository;
+    private final EventPublish eventPublish;
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
@@ -58,6 +62,7 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
         Author author = board.getAuthor();
+        String authorName = board.getAuthor().getAuthorName();
 
         while(true) {
             String page = frontUrl + lastId + backUrl;
@@ -86,12 +91,18 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
             String date = rawData.replace(title + " 관리자 ", "");
             date = date.substring(0, 14);
 
-            announcementRepository.save(Announcement.builder()
-                    .author(author)
+            AnnouncementDto announcement = AnnouncementDto.builder()
                     .title(title)
+                    .author(AuthorDto.builder()
+                            .id(author.getId())
+                            .author_name(authorName)
+                            .build())
                     .date(date)
-                    .subLink(page)
-                    .build());
+                    .sub_link(page)
+                    .build();
+            eventPublish.pubTopic(announcement);
+
+            announcementRepository.save(announcement.toEntity());
         }
         return RepeatStatus.FINISHED;
     }

@@ -2,6 +2,7 @@ package khumu.spring.batch.tasklet;
 
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
+import khumu.spring.batch.publish.EventPublish;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
@@ -25,6 +26,7 @@ public class SWConCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AuthorRepository authorRepository;
     private final AnnouncementRepository announcementRepository;
+    private final EventPublish eventPublish;
 
     @Override
     public void beforeStep(StepExecution stepExecution) {

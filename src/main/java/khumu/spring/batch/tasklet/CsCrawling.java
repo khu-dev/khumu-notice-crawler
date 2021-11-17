@@ -6,6 +6,7 @@ import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
+import khumu.spring.batch.publish.EventPublish;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
@@ -35,6 +36,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AuthorRepository authorRepository;
     private final AnnouncementRepository announcementRepository;
+    private final EventPublish eventPublish;
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
@@ -102,9 +104,12 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                     .date(date)
                     .sub_link(page)
                     .build();
+            eventPublish.pubTopic(announcement);
 
-            var Id = announcementRepository.save(announcement.toEntity()).getId();
-            System.out.println(Id);
+            announcementRepository.save(announcement.toEntity());
+//
+//            var Id = announcementRepository.save(announcement.toEntity()).getId();
+//            System.out.println(Id);
         }
 
         return RepeatStatus.FINISHED;

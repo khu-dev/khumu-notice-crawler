@@ -5,10 +5,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.dto.NewAnnouncementCrawled;
+import khumu.spring.batch.data.entity.Announcement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.regions.Region;
@@ -19,7 +18,6 @@ import software.amazon.awssdk.services.sns.model.PublishResponse;
 import software.amazon.awssdk.services.sns.model.SnsException;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 
@@ -29,7 +27,7 @@ public class EventPublish {
     @Autowired
     private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
 
-    public void pubTopic() {
+    public void pubTopic(AnnouncementDto announcementDto) {
 
         SnsClient snsClient = SnsClient.builder()
                 .region(Region.AP_NORTHEAST_2)
@@ -55,13 +53,11 @@ public class EventPublish {
             PublishRequest request = PublishRequest.builder()
                     .message(objectMapper.writeValueAsString(NewAnnouncementCrawled.builder()
                                     .announcement(AnnouncementDto.builder()
-                                            .title("2022학년도 공식 소개팅 자리 주선")
-                                            .sub_link("abcccws.com")
-                                            .date("2021-08-06")
-                                            .author(AuthorDto.builder()
-                                                    .id(1L)
-                                                    .author_name("학교 공식 e 소개팅")
-                                                    .followed(false).build()).build())
+                                            .title(announcementDto.getTitle())
+                                            .sub_link(announcementDto.getSub_link())
+                                            .date(announcementDto.getDate())
+                                            .author(announcementDto.getAuthor())
+                                            .build())
                                     .followers(stringList)
                                     .build()))
                     .topicArn("arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local")

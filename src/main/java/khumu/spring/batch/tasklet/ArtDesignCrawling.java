@@ -4,6 +4,7 @@ import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
+import khumu.spring.batch.publish.EventPublish;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
@@ -27,6 +28,7 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AuthorRepository authorRepository;
     private final AnnouncementRepository announcementRepository;
+    private final EventPublish eventPublish;
 
     @Override
     public void beforeStep(StepExecution stepExecution) {
@@ -41,6 +43,7 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
         Board board = Board.builder()
                 .id(1L)
                 .frontUrl("http://and.khu.ac.kr/board/bbs/board.php?bo_table=05_01&wr_id=")
+                .backUrl("")
                 .lastId(boardLastId)
                 .author(author).build();
 
