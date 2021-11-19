@@ -5,7 +5,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.dto.NewAnnouncementCrawled;
 import khumu.spring.batch.data.dto.UserDto;
-import khumu.spring.batch.data.entity.User;
 import khumu.spring.batch.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,7 +57,7 @@ public class EventPublish {
             NewAnnouncementCrawled newAnnouncementCrawled = NewAnnouncementCrawled.builder()
                     .announcement(AnnouncementDto.builder()
                             .title(announcementDto.getTitle())
-                            .sub_link(announcementDto.getSub_link())
+                            .subLink(announcementDto.getSubLink())
                             .date(announcementDto.getDate())
                             .author(announcementDto.getAuthor())
                             .build())

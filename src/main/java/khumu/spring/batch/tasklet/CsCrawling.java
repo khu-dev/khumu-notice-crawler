@@ -1,18 +1,14 @@
 package khumu.spring.batch.tasklet;
 
-import io.micrometer.core.instrument.util.JsonUtils;
 import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.dto.AuthorDto;
-import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
-import khumu.spring.batch.data.entity.Follow;
 import khumu.spring.batch.publish.EventPublish;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.var;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.batch.core.ExitStatus;
@@ -24,11 +20,6 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
-
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import java.util.ArrayList;
-import java.util.List;
 
 @Component
 @StepScope
@@ -103,7 +94,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                             .authorName(authorName)
                             .build())
                     .date(date)
-                    .sub_link(page)
+                    .subLink(page)
                     .build();
             eventPublish.pubTopic(announcement);
 

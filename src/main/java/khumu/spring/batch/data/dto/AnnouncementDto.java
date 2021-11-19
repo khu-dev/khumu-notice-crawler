@@ -1,7 +1,6 @@
 package khumu.spring.batch.data.dto;
 
 import khumu.spring.batch.data.entity.Announcement;
-import khumu.spring.batch.data.entity.Author;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,7 +19,7 @@ public class AnnouncementDto {
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
     String title;
-    String sub_link;
+    String subLink;
     String date;
     AuthorDto author;
 
@@ -29,7 +28,7 @@ public class AnnouncementDto {
                 .id(id)
                 .title(title)
                 .date(date)
-                .subLink(sub_link)
+                .subLink(subLink)
                 .author(author.toEntity())
                 .build();
     }
