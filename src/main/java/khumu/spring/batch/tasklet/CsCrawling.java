@@ -6,6 +6,7 @@ import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Announcement;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
+import khumu.spring.batch.data.entity.Follow;
 import khumu.spring.batch.publish.EventPublish;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.repository.AuthorRepository;
@@ -99,7 +100,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                     .title(title)
                     .author(AuthorDto.builder()
                             .id(author.getId())
-                            .author_name(authorName)
+                            .authorName(authorName)
                             .build())
                     .date(date)
                     .sub_link(page)

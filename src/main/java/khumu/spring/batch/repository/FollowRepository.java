@@ -1,5 +1,6 @@
 package khumu.spring.batch.repository;
 
+import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Follow;
 import khumu.spring.batch.data.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -10,4 +11,6 @@ import java.util.List;
 @Repository
 public interface FollowRepository extends JpaRepository<Follow, Long> {
     List<Follow> findByFollower(User follower);
+
+    List<Follow> findByFollowAuthor(Author author);
 }

@@ -28,7 +28,7 @@ public class BoardService {
         for (Board board : boards) {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(board.getAuthor().getId())
-                    .author_name(board.getAuthor().getAuthorName())
+                    .authorName(board.getAuthor().getAuthorName())
                     .followed(Boolean.FALSE)
                     .build();
             BoardDto boardDto = BoardDto.builder()
@@ -48,7 +48,7 @@ public class BoardService {
 
         AuthorDto authorDto = AuthorDto.builder()
                 .id(author.getId())
-                .author_name(author.getAuthorName())
+                .authorName(author.getAuthorName())
                 .build();
 
         return BoardDto.builder()

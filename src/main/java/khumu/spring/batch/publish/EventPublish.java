@@ -3,9 +3,10 @@ package khumu.spring.batch.publish;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import khumu.spring.batch.data.dto.AnnouncementDto;
-import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.dto.NewAnnouncementCrawled;
-import khumu.spring.batch.data.entity.Announcement;
+import khumu.spring.batch.data.dto.UserDto;
+import khumu.spring.batch.data.entity.User;
+import khumu.spring.batch.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -27,11 +28,16 @@ public class EventPublish {
     @Autowired
     private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
 
+    private final FollowService followService;
+
     public void pubTopic(AnnouncementDto announcementDto) {
 
         SnsClient snsClient = SnsClient.builder()
                 .region(Region.AP_NORTHEAST_2)
                 .build();
+
+        List<UserDto> userDtos = new ArrayList<>(followService.getUserByFollow(announcementDto.getAuthor().getAuthorName()));
+//        followService.getUserByFollow(announcementDto.getAuthor().getAuthorName()).forEach(c->userDtos.add(c));
 
         ObjectMapper objectMapper = springMvcJacksonConverter.getObjectMapper();
 
@@ -47,22 +53,25 @@ public class EventPublish {
 
             List<String> stringList = new ArrayList<>();
 
-            stringList.add("bo314");
-            stringList.add("gusrl4025");
+            userDtos.forEach(c -> stringList.add(c.getUsername()));
+
+            NewAnnouncementCrawled newAnnouncementCrawled = NewAnnouncementCrawled.builder()
+                    .announcement(AnnouncementDto.builder()
+                            .title(announcementDto.getTitle())
+                            .sub_link(announcementDto.getSub_link())
+                            .date(announcementDto.getDate())
+                            .author(announcementDto.getAuthor())
+                            .build())
+                    .followers(stringList)
+                    .build();
 
             PublishRequest request = PublishRequest.builder()
-                    .message(objectMapper.writeValueAsString(NewAnnouncementCrawled.builder()
-                                    .announcement(AnnouncementDto.builder()
-                                            .title(announcementDto.getTitle())
-                                            .sub_link(announcementDto.getSub_link())
-                                            .date(announcementDto.getDate())
-                                            .author(announcementDto.getAuthor())
-                                            .build())
-                                    .followers(stringList)
-                                    .build()))
-                    .topicArn("arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local")
+                    .message(objectMapper.writeValueAsString(newAnnouncementCrawled))
+                    .topicArn("arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev") // 설정파일로 빼서 사용 가능하도록 구축
                     .messageAttributes(hashMap)
                     .build();
+
+            System.out.println(objectMapper.writeValueAsString(newAnnouncementCrawled));
 
             PublishResponse result = snsClient.publish(request);
             System.out.println(result.messageId() + " Message sent. Status is " + result.sdkHttpResponse().statusCode());
@@ -74,5 +83,4 @@ public class EventPublish {
             System.err.println(e.awsErrorDetails().errorMessage());
         }
     }
-
 }

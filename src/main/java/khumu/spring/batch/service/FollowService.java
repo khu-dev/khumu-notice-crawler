@@ -1,6 +1,7 @@
 package khumu.spring.batch.service;
 
 import khumu.spring.batch.data.dto.AuthorDto;
+import khumu.spring.batch.data.dto.UserDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Follow;
 import khumu.spring.batch.data.entity.User;
@@ -39,7 +40,7 @@ public class FollowService {
 
         for (Follow follow : follows) {
             AuthorDto authorDto = AuthorDto.builder()
-                    .author_name(follow.getFollowAuthor().getAuthorName())
+                    .authorName(follow.getFollowAuthor().getAuthorName())
                     .followed(Boolean.TRUE)
                     .build();
 
@@ -58,5 +59,22 @@ public class FollowService {
                 .follower(user).build();
 
         followRepository.delete(follow);
+    }
+
+    public List<UserDto> getUserByFollow(String authorName) {
+        List<UserDto> userDtos = new ArrayList<>();
+        List<Follow> follows = followRepository.findByFollowAuthor(authorRepository.findByAuthorName(authorName));
+        System.out.println("Author name : " + authorName);
+        System.out.println("AuthorRepository List : " + authorRepository.findByAuthorName(authorName));
+        System.out.println("follows : " + follows);
+
+        for(Follow follow : follows) {
+            String username = follow.getFollower().getUsername();
+            userDtos.add(UserDto.builder()
+                    .username(username)
+                    .build());
+        }
+
+        return userDtos;
     }
 }

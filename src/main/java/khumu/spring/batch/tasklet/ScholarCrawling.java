@@ -95,7 +95,7 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
                     .title(title)
                     .author(AuthorDto.builder()
                             .id(author.getId())
-                            .author_name(authorName)
+                            .authorName(authorName)
                             .build())
                     .date(date)
                     .sub_link(page)

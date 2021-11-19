@@ -18,13 +18,13 @@ public class AuthorDto {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     Long id;
-    String author_name;
+    String authorName;
     Boolean followed;
 
     public Author toEntity() {
         return Author.builder()
                 .id(id)
-                .authorName(author_name)
+                .authorName(authorName)
                 .build();
     }
 }

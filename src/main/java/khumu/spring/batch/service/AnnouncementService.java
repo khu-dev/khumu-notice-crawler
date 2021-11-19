@@ -45,7 +45,7 @@ public class AnnouncementService {
         for (Announcement announcement : announcements) {
             AuthorDto authorDto = AuthorDto.builder()
                     .id(announcement.getId())
-                    .author_name(announcement.getAuthor().getAuthorName())
+                    .authorName(announcement.getAuthor().getAuthorName())
                     .followed(Boolean.TRUE)
                     .build();
 
