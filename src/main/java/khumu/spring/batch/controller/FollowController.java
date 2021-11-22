@@ -14,7 +14,7 @@ import java.util.List;
 public class FollowController {
     private final FollowService followService;
 
-    @PostMapping("/postfollow")
+    @PostMapping("/postFollow")
     public void postFollow(@RequestParam(name = "userName") String userName, @RequestParam(name = "authorName") String authorName) {
         followService.postNewFollow(userName, authorName);
     }
@@ -24,12 +24,12 @@ public class FollowController {
         return followService.getFollowByUserName(userName);
     }
 
-    @DeleteMapping("/deletefollow")
+    @DeleteMapping("/deleteFollow")
     public void deleteFollow(@RequestParam String userName, @RequestParam String authorName) {
         followService.deleteFollow(userName, authorName);
     }
 
-    @GetMapping("followauthor")
+    @GetMapping("followAuthor")
     public List<UserDto> getUserByAuthor(@RequestParam String authorName) {
         return followService.getUserByFollow(authorName);
     }
