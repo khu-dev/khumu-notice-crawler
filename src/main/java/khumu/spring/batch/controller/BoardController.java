@@ -15,11 +15,6 @@ public class BoardController {
 
     private final BoardService boardService;
 
-//    @GetMapping("/boardTest")
-//    public String boardTest() {
-//        return "it's working";
-//    }
-
     @GetMapping("/all")
     public List<BoardDto> getAllBoards() {
         return boardService.getAllBoards();
@@ -29,9 +24,4 @@ public class BoardController {
     public BoardDto getBoardByAuthor(@RequestParam String authorName) {
         return boardService.getBoardByAuthor(authorName);
     }
-//    활용성이 낮음, 추후 확장 고려
-//    @GetMapping("/{lastid}")
-//    public BoardDto getBoardByLastid(@RequestParam Integer lastid) {
-//        return boardService.getBoardByLastid(lastid);
-//    }
 }

@@ -10,6 +10,8 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 @EnableBatchProcessing
 public class KhumuNoticeCrawlerApplication {
 
+    static{System.set}
+
     public static void main(String[] args) {
         SpringApplication.run(KhumuNoticeCrawlerApplication.class, args);
     }

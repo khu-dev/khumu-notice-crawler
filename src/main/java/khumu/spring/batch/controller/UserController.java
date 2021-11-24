@@ -1,11 +1,11 @@
 package khumu.spring.batch.controller;
 
+import khumu.spring.batch.data.dto.UserDto;
 import khumu.spring.batch.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,5 +17,4 @@ public class UserController {
     public void postUser(@RequestParam String user) {
         userService.postUser(user);
     }
-
 }
