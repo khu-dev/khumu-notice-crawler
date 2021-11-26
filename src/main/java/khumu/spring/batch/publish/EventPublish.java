@@ -27,7 +27,7 @@ import java.util.List;
 public class EventPublish {
     @Autowired
     private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
-    
+
     @ConfigurationProperties(prefix = "sns.arn")
     private final String arnAddress;
 
