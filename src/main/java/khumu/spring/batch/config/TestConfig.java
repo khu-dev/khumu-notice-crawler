@@ -11,7 +11,7 @@ import java.util.List;
 @Getter
 @Setter
 @Component
-@ConfigurationProperties(prefix = "application-gcp.yml")
+
 public class TestConfig {
     private List<String> server = new ArrayList<>();
 }

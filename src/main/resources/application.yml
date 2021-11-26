@@ -69,6 +69,6 @@ spring:
 #      password:
 #      driver-class-name: org.h2.Driver
 ---
-
+sns.arn : arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
 
 

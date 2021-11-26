@@ -8,6 +8,7 @@ import khumu.spring.batch.data.dto.UserDto;
 import khumu.spring.batch.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.regions.Region;
@@ -26,6 +27,9 @@ import java.util.List;
 public class EventPublish {
     @Autowired
     private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
+    
+    @ConfigurationProperties(prefix = "sns.arn")
+    private final String arnAddress;
 
     private final FollowService followService;
 
@@ -66,7 +70,7 @@ public class EventPublish {
 
             PublishRequest request = PublishRequest.builder()
                     .message(objectMapper.writeValueAsString(newAnnouncementCrawled))
-                    .topicArn("arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev") // 설정파일로 빼서 사용 가능하도록 구축
+                    .topicArn(arnAddress) // 설정파일로 빼서 사용 가능하도록 구축
                     .messageAttributes(hashMap)
                     .build();
 
