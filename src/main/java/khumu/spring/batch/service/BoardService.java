@@ -33,8 +33,8 @@ public class BoardService {
                     .build();
             BoardDto boardDto = BoardDto.builder()
                     .id(board.getId())
-                    .whole_link(board.getFrontUrl() + "###indexpart###" + board.getBackUrl())
-                    .last_id(board.getLastId())
+                    .wholeLink(board.getFrontUrl() + "###indexpart###" + board.getBackUrl())
+                    .lastId(board.getLastId())
                     .author(authorDto)  // 원래 BoardDto에서는 AuthorDto로 받았으나, 일단 한번 해봄. 문제 생기면 여기 수정해야됨
                     .build();
             boardDtos.add(boardDto);
@@ -54,8 +54,8 @@ public class BoardService {
         return BoardDto.builder()
                 .id(board.getId())
                 .author(authorDto)
-                .whole_link(board.getFrontUrl() + "###indexpart###" + board.getBackUrl())
-                .last_id(board.getLastId())
+                .wholeLink(board.getFrontUrl() + "###indexpart###" + board.getBackUrl())
+                .lastId(board.getLastId())
                 .build();
     }
 
