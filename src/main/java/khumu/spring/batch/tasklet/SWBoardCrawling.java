@@ -43,6 +43,7 @@ public class SWBoardCrawling implements Tasklet, StepExecutionListener {
         Board board = Board.builder()
                 .id(8L)
                 .frontUrl("http://swedu.khu.ac.kr/board5/bbs/board.php?bo_table=06_01&wr_id=")
+                .backUrl("")
                 .lastId(1684)
                 .author(author).build();
 

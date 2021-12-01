@@ -43,6 +43,7 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
         Board board = Board.builder()
                 .id(7L)
                 .frontUrl("http://janghak.khu.ac.kr/board/bbs/board.php?bo_table=06_01&wr_id=")
+                .backUrl("")
                 .lastId(2415)
                 .author(author).build();
 

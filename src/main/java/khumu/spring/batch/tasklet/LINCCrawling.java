@@ -41,6 +41,7 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
         Board board = Board.builder()
                 .id(6L)
                 .frontUrl("http://lincplus.khu.ac.kr/linc8/linc_notice_view.do?lbSeq=")
+                .backUrl("")
                 .lastId(743)
                 .author(author).build();
 

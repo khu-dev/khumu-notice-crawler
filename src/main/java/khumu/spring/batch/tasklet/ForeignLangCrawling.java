@@ -39,6 +39,7 @@ public class ForeignLangCrawling implements Tasklet, StepExecutionListener {
         Board board = Board.builder()
                 .id(5L)
                 .frontUrl("http://foreign.khu.ac.kr/contents/bbs/bbs_list.html?bbs_cls_cd=002004008")
+                .backUrl("")
                 .lastId(null)
                 .author(author).build();
 
