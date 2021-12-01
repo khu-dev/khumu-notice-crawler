@@ -1,5 +1,7 @@
 package khumu.spring.batch.tasklet;
 
+import khumu.spring.batch.data.dto.AnnouncementDto;
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.publish.EventPublish;
@@ -36,13 +38,13 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
                 .authorName("LINC+ 사업단").build();
         authorRepository.save(author);
 
-//        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
+        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
 
         Board board = Board.builder()
                 .id(6L)
                 .frontUrl("http://lincplus.khu.ac.kr/linc8/linc_notice_view.do?lbSeq=")
                 .backUrl("")
-                .lastId(743)
+                .lastId(boardLastId)
                 .author(author).build();
 
         boardRepository.save(board);
@@ -59,19 +61,43 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
         Author author = board.getAuthor();
         String authorName = author.getAuthorName();
 
-//        while(true) {
-//            String page = frontUrl + lastId + backUrl;
-//            lastId += 1;
-//
-//            Document document = Jsoup.connect(page).get();
-//
-//            String title = document.select("").text();
-//
-//            if(title.isEmpty()) {
-//
-//                break;
-//            }
-//        }
+        while(true) {
+            String page = frontUrl + lastId;
+            lastId += 1;
+
+            Document document = Jsoup.connect(page).get();
+
+            String title = document.select("div.text_info").select("p.title").text();
+            String date = document.select("div.text_info").select("p.date").text();
+
+            date = date.substring(date.indexOf("2"));
+
+            if (title.isEmpty()) {
+                boardRepository.save(Board.builder()
+                        .id(board.getId())
+                        .lastId(lastId)
+                        .frontUrl(frontUrl)
+                        .backUrl(backUrl)
+                        .author(author)
+                        .build());
+                System.out.println("작업 종료");
+
+                break;
+            }
+
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .title(title)
+                    .author(AuthorDto.builder()
+                            .id(author.getId())
+                            .authorName(authorName)
+                            .build())
+                    .date(date)
+                    .subLink(page)
+                    .build();
+            eventPublish.pubTopic(announcementDto);
+
+            announcementRepository.save(announcementDto.toEntity());
+        }
 
         return RepeatStatus.FINISHED;
     }

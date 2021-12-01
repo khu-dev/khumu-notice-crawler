@@ -81,6 +81,8 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
                         .frontUrl(frontUrl)
                         .backUrl(backUrl)
                         .lastId(lastId).build());
+                System.out.println("작업 종료");
+
                 break;
             }
 

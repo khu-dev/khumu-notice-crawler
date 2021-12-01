@@ -78,6 +78,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                         .backUrl(backUrl)
                         .author(author)
                         .build());
+                System.out.println("작업 종료");
                 break;
             }
 
