@@ -50,7 +50,7 @@ public class SWConCrawling implements Tasklet, StepExecutionListener {
     }
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         Author target = authorRepository.findByAuthorName("SW융합대학");
         Board board = boardRepository.findByAuthor(target).get();
 

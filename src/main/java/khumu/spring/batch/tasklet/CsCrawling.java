@@ -58,9 +58,9 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
         Author author = board.getAuthor();
-        String authorName = board.getAuthor().getAuthorName();
+        String authorName = author.getAuthorName();
 
-        while(true){
+        while(true) {
             String page = frontUrl + lastId + backUrl;
             lastId += 1;
 
@@ -87,7 +87,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 //            System.out.println(date);
 //            System.out.println(page);
 
-            AnnouncementDto announcement = AnnouncementDto.builder()
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .title(title)
                     .author(AuthorDto.builder()
                             .id(author.getId())
@@ -96,9 +96,9 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                     .date(date)
                     .subLink(page)
                     .build();
-            eventPublish.pubTopic(announcement);
+            eventPublish.pubTopic(announcementDto);
 
-            announcementRepository.save(announcement.toEntity());
+            announcementRepository.save(announcementDto.toEntity());
 //
 //            var Id = announcementRepository.save(announcement.toEntity()).getId();
 //            System.out.println(Id);

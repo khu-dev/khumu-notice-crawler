@@ -50,7 +50,7 @@ public class EInfoCrawling implements Tasklet, StepExecutionListener {
     }
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         Author target = authorRepository.findByAuthorName("전자정보대학");
         Board board = boardRepository.findByAuthor(target).get();
 

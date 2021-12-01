@@ -30,9 +30,9 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
     private final AnnouncementRepository announcementRepository;
     private final EventPublish eventPublish;
 
+    // 멱등성을 위한 board 데이터 주입
     @Override
     public void beforeStep(StepExecution stepExecution) {
-
         Author author = Author.builder()
                 .id(1L)
                 .authorName("예술디자인대학").build();
@@ -51,7 +51,7 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
     }
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         Author target = authorRepository.findByAuthorName("예술디자인대학");
         Board board = boardRepository.findByAuthor(target).get();
 
@@ -61,33 +61,45 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
         Author author = board.getAuthor();
         String authorName = author.getAuthorName();
 
-//        while(true) {
-//            String page = frontUrl + lastId;
-//            lastId += 1;
-//
-//            Document document = Jsoup.connect(page).get();
-//
-//            String title = document.select(".bo_v_title").text();
-//            String date = document.select(".bo_v_file").select("span").text();
-//
-//            if (title.isEmpty()) {
-//                boardRepository.save(Board.builder()
-//                        .id(board.getId())
-//                        .author(target)
-//                        .frontUrl(frontUrl)
-//                        .backUrl(backUrl)
-//                        .lastId(lastId).build());
-//                break;
-//            }
-//
-//            AnnouncementDto announcementDto = AnnouncementDto.builder()
-//                    .title(title)
-//                    .authorDto(AuthorDto.builder()
-//                            .author_name().build()).build()
-//
-//        }
+        while(true) {
+            // 공지사항 URL 만들기
+            String page = frontUrl + lastId;
+            lastId += 1;
 
+            // URL 연결
+            Document document = Jsoup.connect(page).get();
 
+            // Data 긁어 오기
+            String title = document.select(".bo_v_title").text();
+            String date = document.select(".bo_v_file").select("span").text();
+
+            // 불러올 데이터가 없을 시, 멈추고 lastId Update
+            if (title.isEmpty()) {
+                boardRepository.save(Board.builder()
+                        .id(board.getId())
+                        .author(target)
+                        .frontUrl(frontUrl)
+                        .backUrl(backUrl)
+                        .lastId(lastId).build());
+                break;
+            }
+
+            // 긁은 공지사항 DTO 객체 생성
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .title(title)
+                    .author(AuthorDto.builder()
+                            .id(author.getId())
+                            .authorName(authorName)
+                            .build())
+                    .date(date)
+                    .subLink(page)
+                    .build();
+
+            // 메세지 큐 전송
+            eventPublish.pubTopic(announcementDto);
+            // DB Data Write
+            announcementRepository.save(announcementDto.toEntity());
+        }
 
         return RepeatStatus.FINISHED;
     }

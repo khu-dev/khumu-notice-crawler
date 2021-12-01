@@ -14,7 +14,7 @@ spring:
       initialize-schema: always
 
 server:
-  port: 8080
+  port: 8089
 
 --- # Local 환경
 spring:

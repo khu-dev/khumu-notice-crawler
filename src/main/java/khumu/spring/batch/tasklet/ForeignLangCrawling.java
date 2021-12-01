@@ -47,7 +47,7 @@ public class ForeignLangCrawling implements Tasklet, StepExecutionListener {
     }
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         Author target = authorRepository.findByAuthorName("외국어대학");
         Board board = boardRepository.findByAuthor(target).get();
 

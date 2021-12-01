@@ -19,6 +19,8 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
+import java.io.IOException;
+
 @Component
 @StepScope
 @RequiredArgsConstructor
@@ -49,7 +51,7 @@ public class EECrawling implements Tasklet, StepExecutionListener {
     }
 
     @Override
-    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) {
+    public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
         Author target = authorRepository.findByAuthorName("전자공학과");
         Board board = boardRepository.findByAuthor(target).get();
 
@@ -58,7 +60,7 @@ public class EECrawling implements Tasklet, StepExecutionListener {
         Integer lastId = board.getLastId();
         Author author = board.getAuthor();
         String authorName = author.getAuthorName();
-
+//
 //        while(true) {
 //            String page = frontUrl + lastId + backUrl;
 //            lastId += 1;
