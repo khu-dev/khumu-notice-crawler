@@ -12,6 +12,8 @@ spring:
   batch:
     jdbc:
       initialize-schema: always
+  jackson:
+    property-naming-strategy: SNAKE_CASE
 
 server:
   port: 8089
