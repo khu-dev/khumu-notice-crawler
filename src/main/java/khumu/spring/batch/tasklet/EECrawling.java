@@ -1,5 +1,7 @@
 package khumu.spring.batch.tasklet;
 
+import khumu.spring.batch.data.dto.AnnouncementDto;
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.publish.EventPublish;
@@ -43,8 +45,8 @@ public class EECrawling implements Tasklet, StepExecutionListener {
         Board board = Board.builder()
                 .id(3L)
                 .frontUrl("http://ee.khu.ac.kr/index.php?hCode=BOARD&page=view&idx=")
-                .backUrl("&bo_idx=2&hCode=BOARD&bo_idx=2&sfl=&stx=")
-                .lastId(2676)
+                .backUrl("&bo_idx=2")
+                .lastId(boardLastId)
                 .author(author).build();
 
         boardRepository.save(board);
@@ -60,20 +62,47 @@ public class EECrawling implements Tasklet, StepExecutionListener {
         Integer lastId = board.getLastId();
         Author author = board.getAuthor();
         String authorName = author.getAuthorName();
-//
-//        while(true) {
-//            String page = frontUrl + lastId + backUrl;
-//            lastId += 1;
-//
-//            Document document = Jsoup.connect(page).get();
-//
-//            String title = document.select("").text();
-//
-//            if(title.isEmpty()) {
-//
-//                break;
-//            }
-//        }
+
+        while(true) {
+            String page = frontUrl + lastId + backUrl;
+            lastId += 1;
+
+            Document document = Jsoup.connect(page).get();
+            String rawData = document.select("div.con_area").select("thead").text();
+
+            String title = rawData.split("ㆍ")[1];
+            title = title.substring(4);
+
+            if (title.isEmpty()) {
+                boardRepository.save(Board.builder()
+                        .id(board.getId())
+                        .lastId(lastId)
+                        .frontUrl(frontUrl)
+                        .backUrl(backUrl)
+                        .author(author)
+                        .build());
+                break;
+            }
+
+            String date = rawData.split("ㆍ")[3];
+            date = date.substring(6);
+            System.out.println(title);
+            System.out.println(date);
+            System.out.println(page);
+
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .title(title)
+                    .author(AuthorDto.builder()
+                            .id(author.getId())
+                            .authorName(authorName)
+                            .build())
+                    .date(date)
+                    .subLink(page)
+                    .build();
+            eventPublish.pubTopic(announcementDto);
+
+            announcementRepository.save(announcementDto.toEntity());
+        }
 
 
 
