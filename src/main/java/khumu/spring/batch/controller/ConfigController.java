@@ -1,8 +1,7 @@
 package khumu.spring.batch.controller;
 
-import khumu.spring.batch.config.TestConfig;
+import khumu.spring.batch.config.SnsConfig;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConfigController {
 
     @Autowired
-    private final TestConfig testConfig;
+    SnsConfig snsConfig;
 
-    @GetMapping("/getapi")
+    @GetMapping("/snsConfig")
     public String test() {
-        return testConfig.getServer().get(0) + "/" + testConfig.getServer().get(1);
+        return snsConfig.getDev() + snsConfig.getLocal();
     }
 }
