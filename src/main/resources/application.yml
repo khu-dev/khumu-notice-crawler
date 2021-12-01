@@ -1,12 +1,22 @@
 spring:
+  profiles:
+    active: dev
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver # 이거 안해주면 구동은 가능하지만, 에러메시지 몇개 뜸. 해주는게 좋음
+
+    hikari:
+      username: root
+      password: Janghoon1101!
+
   batch:
     jdbc:
       initialize-schema: always
-  profiles:
-    active: gcp
+
 server:
   port: 8080
----
+
+--- # Local 환경
 spring:
   profiles: local
   jpa:
@@ -22,12 +32,10 @@ spring:
   datasource:
     hikari:
       jdbc-url: jdbc:mysql://localhost:3306/khumu
-      username: root
-      password: Janghoon1101!
-      driver-class-name: com.mysql.cj.jdbc.Driver
----
+
+--- # Dev 환경, gcp-appengine에 연결되어있다.
 spring:
-  profiles: gcp
+  profiles: dev
   jpa:
     hibernate:
       ddl-auto: update
@@ -41,34 +49,8 @@ spring:
   datasource:
     hikari:
       jdbc-url: jdbc:mysql://34.64.100.109:3306/khumu
-      username: root
-      password: Janghoon1101!
-      driver-class-name: com.mysql.cj.jdbc.Driver
----
-#  batch:
-#    job:
-#      names: ${job.name:NONE}
-#  jpa:
-#    show-sql: true
-#    properties:
-#      hibernate:
-#        format_sql: true
-#  data:
-#    rest:
-#      base-path: /api
-#  h2:
-#    console:
-#      enabled: true
----
-#spring:
-#  profiles: local
-#  datasource:
-#    hikari:
-#      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
-#      username: sa
-#      password:
-#      driver-class-name: org.h2.Driver
----
+
+--- # 개인 설정 환경
 sns :
   dev : arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
   local : arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local

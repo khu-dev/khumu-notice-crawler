@@ -41,7 +41,6 @@ public class EventPublish {
                 .build();
 
         List<UserDto> userDtos = new ArrayList<>(followService.getUserByFollow(announcementDto.getAuthor().getAuthorName()));
-//        followService.getUserByFollow(announcementDto.getAuthor().getAuthorName()).forEach(c->userDtos.add(c));
 
         ObjectMapper objectMapper = springMvcJacksonConverter.getObjectMapper();
 
@@ -71,7 +70,7 @@ public class EventPublish {
 
             PublishRequest request = PublishRequest.builder()
                     .message(objectMapper.writeValueAsString(newAnnouncementCrawled))
-                    .topicArn(snsConfig.getDev()) // 설정파일로 빼서 사용 가능하도록 구축
+                    .topicArn(snsConfig.getLocal()) // 설정파일로 빼서 사용 가능하도록 구축
                     .messageAttributes(hashMap)
                     .build();
 
