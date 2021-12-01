@@ -12,6 +12,5 @@ import java.util.List;
 @Component
 @ConfigurationProperties(prefix = "sns")
 public class SnsConfig {
-    private String dev;
-    private String local;
+    private String address;
 }
