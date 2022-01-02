@@ -2,3 +2,5 @@ runtime: java11
 instance_class: F4
 inbound_services:
   - warmup
+includes:
+  - env_variables.yaml
