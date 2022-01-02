@@ -17,6 +17,6 @@ public class ConfigController {
 
     @GetMapping("/snsConfig")
     public String test() {
-        return snsConfig.getDev() + snsConfig.getLocal();
+        return snsConfig.getAddress();
     }
 }

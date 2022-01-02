@@ -1,13 +1,11 @@
 spring:
   profiles:
-    active: dev
+    active: local
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # 이거 안해주면 구동은 가능하지만, 에러메시지 몇개 뜸. 해주는게 좋음
-
-    hikari:
-      username: root
-      password: Janghoon1101!
+    username: root
+    password: Janghoon1101!
 
   batch:
     jdbc:
@@ -18,9 +16,9 @@ spring:
 server:
   port: 8080
 
-sns:
-  local: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
-  dev: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
+#sns:
+#  local: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
+#  dev: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
 
 --- # Local 환경
 spring:
@@ -35,9 +33,12 @@ spring:
         order_updates: true
       generate-ddl: true
     show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    hikari:
-      jdbc-url: jdbc:mysql://localhost:3306/khumu
+    url: jdbc:mysql://localhost:3306/khumu
+  sns:
+    address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
 
 --- # Dev 환경, gcp-appengine에 연결되어있다.
 spring:
@@ -52,6 +53,27 @@ spring:
         order_updates: true
       generate-ddl: true
       show-sql: true
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
   datasource:
-    hikari:
-      jdbc-url: jdbc:mysql://34.64.100.109:3306/khumu
+    url: jdbc:mysql://34.64.100.109:3306/khumu
+  sns:
+    address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
+---
+spring:
+  profiles: prd
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        order_inserts: true
+        order_updates: true
+      generate-ddl: true
+      show-sql: true
+    datasource:
+      hikari:
+        jdbc-url: jdbc:mysql://34.64.100.109:3306/khumu
+  sns:
+    address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-prd
