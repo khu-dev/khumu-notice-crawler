@@ -18,6 +18,10 @@ spring:
 server:
   port: 8080
 
+sns:
+  local: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
+  dev: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
+
 --- # Local 환경
 spring:
   profiles: local
@@ -34,8 +38,6 @@ spring:
   datasource:
     hikari:
       jdbc-url: jdbc:mysql://localhost:3306/khumu
-sns :
-  address : arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
 
 --- # Dev 환경, gcp-appengine에 연결되어있다.
 spring:
@@ -53,7 +55,3 @@ spring:
   datasource:
     hikari:
       jdbc-url: jdbc:mysql://34.64.100.109:3306/khumu
-sns :
-  address : arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
-
-

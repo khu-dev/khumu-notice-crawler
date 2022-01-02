@@ -10,5 +10,6 @@ import org.springframework.stereotype.Component;
 @Component
 @ConfigurationProperties(prefix = "sns")
 public class SnsConfig {
-    private String address;
+    private String local;
+    private String dev;
 }
