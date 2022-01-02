@@ -70,6 +70,7 @@ public class EInfoCrawling implements Tasklet, StepExecutionListener {
             String rawData = document.select("div.con_area").select("thead").text();
 
             String title = rawData.split("ㆍ")[1];
+            System.out.println(title);
             title = title.substring(4);
 
             if (title.isEmpty()) {
