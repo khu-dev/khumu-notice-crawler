@@ -80,6 +80,7 @@ public class SWBoardCrawling implements Tasklet, StepExecutionListener {
                         .backUrl(backUrl)
                         .author(author)
                         .build());
+                System.out.println("=====작업 종료=====");
                 break;
             }
             System.out.println(title);
@@ -96,7 +97,7 @@ public class SWBoardCrawling implements Tasklet, StepExecutionListener {
                     .subLink(page)
                     .build();
             eventPublish.pubTopic(announcement);
-
+            System.out.println("=====메세지 전송=====");
             announcementRepository.save(announcement.toEntity());
         }
         return RepeatStatus.FINISHED;

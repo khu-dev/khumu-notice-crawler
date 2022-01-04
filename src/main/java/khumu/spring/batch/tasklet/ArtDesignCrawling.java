@@ -81,10 +81,11 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
                         .frontUrl(frontUrl)
                         .backUrl(backUrl)
                         .lastId(lastId).build());
-                System.out.println("작업 종료");
-
+                System.out.println("=====작업 종료=====");
                 break;
             }
+
+            System.out.println(title);
 
             // 긁은 공지사항 DTO 객체 생성
             AnnouncementDto announcementDto = AnnouncementDto.builder()
@@ -99,6 +100,7 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
 
             // 메세지 큐 전송
             eventPublish.pubTopic(announcementDto);
+            System.out.println("=====메세지 전송=====");
             // DB Data Write
             announcementRepository.save(announcementDto.toEntity());
         }

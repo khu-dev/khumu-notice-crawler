@@ -1,4 +1,4 @@
-package khumu.spring.batch.job;
+package khumu.spring.batch.configuration;
 
 import khumu.spring.batch.publish.EventPublish;
 import khumu.spring.batch.repository.AnnouncementRepository;

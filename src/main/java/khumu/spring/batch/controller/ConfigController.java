@@ -1,11 +1,14 @@
 package khumu.spring.batch.controller;
 
-import khumu.spring.batch.config.SnsConfig;
+import khumu.spring.batch.configuration.SnsConfiguration;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Arrays;
 
 @RestController
 @RequiredArgsConstructor
@@ -13,10 +16,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class ConfigController {
 
     @Autowired
-    SnsConfig snsConfig;
+    SnsConfiguration snsConfiguration;
+
+    @Autowired
+    private Environment environment;
 
     @GetMapping("/snsConfig")
     public String test() {
-        return snsConfig.getAddress();
+        return Arrays.toString(environment.getActiveProfiles());
     }
 }

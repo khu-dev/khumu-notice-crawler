@@ -2,14 +2,14 @@ package khumu.spring.batch.publish;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import khumu.spring.batch.config.SnsConfig;
+import khumu.spring.batch.configuration.SnsConfiguration;
 import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.data.dto.NewAnnouncementCrawled;
 import khumu.spring.batch.data.dto.UserDto;
 import khumu.spring.batch.service.FollowService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.context.properties.ConfigurationProperties;
+import org.springframework.core.env.Environment;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.stereotype.Component;
 import software.amazon.awssdk.regions.Region;
@@ -30,7 +30,7 @@ public class EventPublish {
     private MappingJackson2HttpMessageConverter springMvcJacksonConverter;
 
     @Autowired
-    SnsConfig snsConfig;
+    SnsConfiguration snsConfiguration;
 
     private final FollowService followService;
 
@@ -70,7 +70,7 @@ public class EventPublish {
 
             PublishRequest request = PublishRequest.builder()
                     .message(objectMapper.writeValueAsString(newAnnouncementCrawled))
-                    .topicArn(snsConfig.getAddress()) // 설정파일로 빼서 사용 가능하도록 구축
+                    .topicArn(snsConfiguration.getAddress()) // 설정파일로 빼서 사용 가능하도록 구축
                     .messageAttributes(hashMap)
                     .build();
 

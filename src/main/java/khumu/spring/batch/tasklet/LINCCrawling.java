@@ -43,7 +43,7 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
         Board board = Board.builder()
                 .id(6L)
                 .frontUrl("http://lincplus.khu.ac.kr/linc8/linc_notice_view.do?lbSeq=")
-                .backUrl("")
+                .backUrl("&searchVal=&searchType=&page=&deptCd=1")
                 .lastId(boardLastId)
                 .author(author).build();
 
@@ -62,7 +62,7 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
         String authorName = author.getAuthorName();
 
         while(true) {
-            String page = frontUrl + lastId;
+            String page = frontUrl + lastId + backUrl;
             lastId += 1;
 
             Document document = Jsoup.connect(page).get();
@@ -70,9 +70,9 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
             String title = document.select("div.text_info").select("p.title").text();
             String date = document.select("div.text_info").select("p.date").text();
 
-            date = date.substring(date.indexOf("2"));
+            date = date.substring(2);
 
-            if (title.isEmpty()) {
+            if (title == "{{info.title}}") {
                 boardRepository.save(Board.builder()
                         .id(board.getId())
                         .lastId(lastId)
@@ -80,10 +80,11 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
                         .backUrl(backUrl)
                         .author(author)
                         .build());
-                System.out.println("작업 종료");
-
+                System.out.println("=====작업 종료=====");
                 break;
             }
+
+            System.out.println(title);
 
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .title(title)
@@ -95,7 +96,7 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
                     .subLink(page)
                     .build();
             eventPublish.pubTopic(announcementDto);
-
+            System.out.println("=====메세지 전송=====");
             announcementRepository.save(announcementDto.toEntity());
         }
 

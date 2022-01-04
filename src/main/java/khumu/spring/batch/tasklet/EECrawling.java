@@ -81,14 +81,14 @@ public class EECrawling implements Tasklet, StepExecutionListener {
                         .backUrl(backUrl)
                         .author(author)
                         .build());
+                System.out.println("=====작업 종료=====");
                 break;
             }
 
             String date = rawData.split("ㆍ")[3];
             date = date.substring(6);
+
             System.out.println(title);
-            System.out.println(date);
-            System.out.println(page);
 
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .title(title)
@@ -100,7 +100,7 @@ public class EECrawling implements Tasklet, StepExecutionListener {
                     .subLink(page)
                     .build();
             eventPublish.pubTopic(announcementDto);
-
+            System.out.println("=====메세지 전송=====");
             announcementRepository.save(announcementDto.toEntity());
         }
 

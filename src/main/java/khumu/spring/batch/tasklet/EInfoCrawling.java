@@ -53,56 +53,54 @@ public class EInfoCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Author target = authorRepository.findByAuthorName("전자정보대학");
-        Board board = boardRepository.findByAuthor(target).get();
-
-        String frontUrl = board.getFrontUrl();
-        String backUrl = board.getBackUrl();
-        Integer lastId = board.getLastId();
-        Author author = board.getAuthor();
-        String authorName = author.getAuthorName();
-
-        while(true) {
-            String page = frontUrl + lastId + backUrl;
-            lastId += 1;
-
-            Document document = Jsoup.connect(page).get();
-            String rawData = document.select("div.con_area").select("thead").text();
-
-            String title = rawData.split("ㆍ")[1];
-            System.out.println(title);
-            title = title.substring(4);
-
-            if (title.isEmpty()) {
-                boardRepository.save(Board.builder()
-                        .id(board.getId())
-                        .lastId(lastId)
-                        .frontUrl(frontUrl)
-                        .backUrl(backUrl)
-                        .author(author)
-                        .build());
-                break;
-            }
-
-            String date = rawData.split("ㆍ")[3];
-            date = date.substring(6);
+//        Author target = authorRepository.findByAuthorName("전자정보대학");
+//        Board board = boardRepository.findByAuthor(target).get();
+//
+//        String frontUrl = board.getFrontUrl();
+//        String backUrl = board.getBackUrl();
+//        Integer lastId = board.getLastId();
+//        Author author = board.getAuthor();
+//        String authorName = author.getAuthorName();
+//
+//        while(true) {
+//            String page = frontUrl + lastId + backUrl;
+//            lastId += 1;
+//
+//            Document document = Jsoup.connect(page).get();
+//            String rawData = document.select("div.con_area").select("thead").text();
+//
+//            String title = rawData.split("ㆍ")[1];
 //            System.out.println(title);
-//            System.out.println(date);
-//            System.out.println(page);
-
-            AnnouncementDto announcementDto = AnnouncementDto.builder()
-                    .title(title)
-                    .author(AuthorDto.builder()
-                            .id(author.getId())
-                            .authorName(authorName)
-                            .build())
-                    .date(date)
-                    .subLink(page)
-                    .build();
-            eventPublish.pubTopic(announcementDto);
-
-            announcementRepository.save(announcementDto.toEntity());
-        }
+//            title = title.substring(4);
+//
+//            if (title.isEmpty()) {
+//                boardRepository.save(Board.builder()
+//                        .id(board.getId())
+//                        .lastId(lastId)
+//                        .frontUrl(frontUrl)
+//                        .backUrl(backUrl)
+//                        .author(author)
+//                        .build());
+//                System.out.println("작업 종료");
+//                break;
+//            }
+//
+//            String date = rawData.split("ㆍ")[3];
+//            date = date.substring(6);
+//
+//            AnnouncementDto announcementDto = AnnouncementDto.builder()
+//                    .title(title)
+//                    .author(AuthorDto.builder()
+//                            .id(author.getId())
+//                            .authorName(authorName)
+//                            .build())
+//                    .date(date)
+//                    .subLink(page)
+//                    .build();
+//            eventPublish.pubTopic(announcementDto);
+//            System.out.println("메세지 전송");
+//            announcementRepository.save(announcementDto.toEntity());
+//        }
 
         return RepeatStatus.FINISHED;
     }

@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: local
+    active: dev
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # 이거 안해주면 구동은 가능하지만, 에러메시지 몇개 뜸. 해주는게 좋음
@@ -16,13 +16,11 @@ spring:
 server:
   port: 8080
 
-#sns:
-#  local: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
-#  dev: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
-
 --- # Local 환경
 spring:
-  profiles: local
+  config:
+    activate:
+      on-profile: local
   jpa:
     hibernate:
       ddl-auto: update
@@ -37,12 +35,16 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
   datasource:
     url: jdbc:mysql://localhost:3306/khumu
-  sns:
-    address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
-
+  batch:
+    job:
+      enabled: false
+sns:
+  address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
 --- # Dev 환경, gcp-appengine에 연결되어있다.
 spring:
-  profiles: dev
+  config:
+    activate:
+      on-profile: dev
   jpa:
     hibernate:
       ddl-auto: update
@@ -57,11 +59,13 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
   datasource:
     url: jdbc:mysql://34.64.100.109:3306/khumu
-  sns:
-    address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
+sns:
+  address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
 ---
 spring:
-  profiles: prd
+  config:
+    activate:
+      on-profile: prd
   jpa:
     hibernate:
       ddl-auto: update
@@ -76,5 +80,5 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
   datasource:
       url: jdbc:mysql://34.64.100.109:3306/khumu
-  sns:
-    address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-prd
+sns:
+  address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-prd

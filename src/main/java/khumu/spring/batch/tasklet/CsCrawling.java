@@ -78,15 +78,14 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                         .backUrl(backUrl)
                         .author(author)
                         .build());
-                System.out.println("작업 종료");
+                System.out.println("=====작업 종료=====");
                 break;
             }
 
             String date = rawData.split("ㆍ")[3];
             date = date.substring(6);
-//            System.out.println(title);
-//            System.out.println(date);
-//            System.out.println(page);
+
+            System.out.println(title);
 
             AnnouncementDto announcementDto = AnnouncementDto.builder()
                     .title(title)
@@ -97,12 +96,10 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
                     .date(date)
                     .subLink(page)
                     .build();
-            eventPublish.pubTopic(announcementDto);
 
+            eventPublish.pubTopic(announcementDto);
+            System.out.println("=====메세지 전송=====");
             announcementRepository.save(announcementDto.toEntity());
-//
-//            var Id = announcementRepository.save(announcement.toEntity()).getId();
-//            System.out.println(Id);
         }
 
         return RepeatStatus.FINISHED;
