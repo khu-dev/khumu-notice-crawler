@@ -67,12 +67,12 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
 
             Document document = Jsoup.connect(page).get();
 
-            String title = document.select("div.text_info").select("p.title").text();
-            String date = document.select("div.text_info").select("p.date").text();
+            String title = document.select(".text_info").select(".title").text();
+            String date = document.select(".text_info").select(".date").text();
 
             date = date.substring(2);
 
-            if (title == "{{info.title}}") {
+            if (title.equals("{{info.title}}")) {
                 boardRepository.save(Board.builder()
                         .id(board.getId())
                         .lastId(lastId)

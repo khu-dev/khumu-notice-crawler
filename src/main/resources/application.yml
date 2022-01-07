@@ -1,6 +1,6 @@
 spring:
   profiles:
-    active: dev
+    active: local
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver # 이거 안해주면 구동은 가능하지만, 에러메시지 몇개 뜸. 해주는게 좋음

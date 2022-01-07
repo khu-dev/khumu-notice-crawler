@@ -1,5 +1,7 @@
 package khumu.spring.batch.tasklet;
 
+import khumu.spring.batch.data.dto.AnnouncementDto;
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.publish.EventPublish;
@@ -60,19 +62,43 @@ public class SWConCrawling implements Tasklet, StepExecutionListener {
         Author author = board.getAuthor();
         String authorName = author.getAuthorName();
 
-//        while(true) {
-//            String page = frontUrl + lastId + backUrl;
-//            lastId += 1;
-//
-//            Document document = Jsoup.connect(page).get();
-//
-//            String title = document.select("").text();
-//
-//            if(title.isEmpty()) {
-//
-//                break;
-//            }
-//        }
+        while(true) {
+            String page = frontUrl + lastId + backUrl;
+            lastId += 1;
+
+            Document document = Jsoup.connect(page).get();
+
+            String title = document.select(".bo_v_tit").text();
+
+            if(title.isEmpty()) {
+                boardRepository.save(Board.builder()
+                        .id(board.getId())
+                        .lastId(lastId)
+                        .frontUrl(frontUrl)
+                        .backUrl(backUrl)
+                        .author(author)
+                        .build());
+                System.out.println("=====작업 종료=====");
+                break;
+            }
+
+            System.out.println(title);
+
+            String date = document.select(".if_date").text();
+
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .title(title)
+                    .author(AuthorDto.builder()
+                            .id(author.getId())
+                            .authorName(authorName)
+                            .build())
+                    .date(date)
+                    .subLink(page)
+                    .build();
+            eventPublish.pubTopic(announcementDto);
+            System.out.println("=====메세지 전송=====");
+            announcementRepository.save(announcementDto.toEntity());
+        }
 
         return RepeatStatus.FINISHED;
     }

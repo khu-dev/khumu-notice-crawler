@@ -31,8 +31,7 @@ public class KhumuCrawlingConfiguration {
     public Job noticeUpdateJob() {
         return this.jobBuilderFactory.get("noticeUpdateJob")
                 .incrementer(new RunIdIncrementer())
-                .start(csvReadingStep())
-                .next(artDesignCrawlingStep())
+                .start(artDesignCrawlingStep())
                 .next(csCrawlingStep())
                 .next(eECrawlingStep())
                 .next(eInfoCrawlingStep())
@@ -41,14 +40,6 @@ public class KhumuCrawlingConfiguration {
                 .next(scholarCrawlingStep())
                 .next(sWBoardCrawlingStep())
                 .next(sWConCrawlingStep())
-                .build();
-    }
-
-    @Bean
-    @JobScope
-    public Step csvReadingStep() {
-        return this.stepBuilderFactory.get("csvReadingStep")
-                .tasklet(new CsvReading(boardRepository))
                 .build();
     }
 
