@@ -8,6 +8,7 @@ import khumu.spring.batch.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
+import java.awt.print.Pageable;
 import java.util.List;
 import java.util.Map;
 
@@ -42,5 +43,10 @@ public class AnnouncementController {
     @GetMapping("/search")
     public List<AnnouncementDto> searchAnnouncement(@RequestParam String keyword) {
         return announcementService.searchAnnouncement(keyword);
+    }
+
+    @GetMapping("all")
+    public List<AnnouncementDto> getAnnouncementAllPageable(Pageable pageable) {
+        return announcementService.getAllAnnouncements(pageable);
     }
 }

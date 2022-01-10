@@ -13,6 +13,7 @@ import khumu.spring.batch.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +29,10 @@ public class AnnouncementService {
     public List<AnnouncementDto> getAllAnnouncements() {
         List<Announcement> announcements = announcementRepository.findAll();
         return getAnnouncementDtos(announcements);
+    }
+
+    public List<AnnouncementDto> getAllAnnouncement(Pageable pageable) {
+
     }
 
     public List<AnnouncementDto> getAnnouncementByAuthor(String authorName) {
@@ -75,7 +80,6 @@ public class AnnouncementService {
         // 2단계
         // follow->followAuthor == announcement->author 같아야 함
         List<Announcement> announcements = new ArrayList<>();
-//        List<AnnouncementDto> announcementDtos = new ArrayList<>();
 
         for (Follow follow : follows) {
             Long followAuthor = follow.getFollowAuthor().getId();
@@ -92,10 +96,4 @@ public class AnnouncementService {
         List<Announcement> announcements = announcementRepository.findByTitleContaining(keyword);
         return getAnnouncementDtos(announcements);
     }
-
-//    public List<AnnouncementDto> getAnnouncementWithPage(Integer page) {
-//        Page<Announcement> announcements = announcementRepository.findAll(PageRequest.of(page, 10));
-//        List<AnnouncementDto> = announcements.getContent().stream().map(announcement ->
-//                s)
-//    }
 }
