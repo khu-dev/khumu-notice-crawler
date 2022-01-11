@@ -4,9 +4,9 @@ import khumu.spring.batch.data.dto.AnnouncementDto;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.web.bind.annotation.*;
 
-import java.awt.print.Pageable;
 import java.util.List;
 
 @RestController
@@ -22,7 +22,7 @@ public class AnnouncementController {
         return announcementService.getAllAnnouncements();
     }
 
-    @GetMapping("/all")
+    @GetMapping("/all/pageable")
     public List<AnnouncementDto> getAnnouncementAllPageable(@RequestParam Pageable pageable) {
         return announcementService.getAllAnnouncements(pageable);
     }
@@ -32,7 +32,7 @@ public class AnnouncementController {
         return announcementService.getAnnouncementByAuthor(authorName);
     }
 
-    @GetMapping("/authorName")
+    @GetMapping("/authorName/pageable")
     public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorName, Pageable pageable) {
         return announcementService.getAnnouncementByAuthor(authorName, pageable);
     }
@@ -47,7 +47,7 @@ public class AnnouncementController {
         return announcementService.getAnnouncementByUser(user);
     }
 
-    @GetMapping("/user")
+    @GetMapping("/user/pageable")
     public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user, Pageable pageable) {
         return announcementService.getAnnouncementByUser(user, pageable);
     }
@@ -57,7 +57,7 @@ public class AnnouncementController {
         return announcementService.searchAnnouncement(keyword);
     }
 
-    @GetMapping("/search")
+    @GetMapping("/search/pageable")
     public List<AnnouncementDto> searchAnnouncement(@RequestParam String keyword, Pageable pageable) {
         return announcementService.searchAnnouncement(keyword, pageable);
     }

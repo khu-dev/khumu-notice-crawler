@@ -11,9 +11,9 @@ import khumu.spring.batch.repository.AuthorRepository;
 import khumu.spring.batch.repository.FollowRepository;
 import khumu.spring.batch.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,7 +53,7 @@ public class AnnouncementService {
     }
 
     public List<AnnouncementDto> getAllAnnouncements(Pageable pageable) {
-        List<Announcement> announcements = announcementRepository.findAll(pageable);
+        List<Announcement> announcements = announcementRepository.findAll(pageable).toList();
         return getAnnouncementDtos(announcements);
     }
 
@@ -71,6 +71,11 @@ public class AnnouncementService {
 
     public List<AnnouncementDto> getAnnouncementByDate(String date) {
         List<Announcement> announcements = announcementRepository.findByDate(date);
+        return getAnnouncementDtos(announcements);
+    }
+
+    public List<AnnouncementDto> getAnnouncementByDate(String date, Pageable pageable) {
+        List<Announcement> announcements = announcementRepository.findByDate(date, pageable);
         return getAnnouncementDtos(announcements);
     }
 
