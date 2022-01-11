@@ -10,11 +10,17 @@ import java.util.List;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
+    List<Announcement> findAll(Pageable pageable);
+
     List<Announcement> findByAuthor(Author author);
+
+    List<Announcement> findByAuthor(Author author, Pageable pageable);
 
     List<Announcement> findByDate(String dateTime);
 
+    List<Announcement> findByDate(String dateTime, Pageable pageable);
+
     List<Announcement> findByTitleContaining(String keyword);
 
-    List<Announcement> findAll(Pageable pageable);
+    List<Announcement> findByTitleContaining(String keyword, Pageable pageable);
 }

@@ -22,9 +22,19 @@ public class AnnouncementController {
         return announcementService.getAllAnnouncements();
     }
 
-    @GetMapping("authorName")
+    @GetMapping("/all")
+    public List<AnnouncementDto> getAnnouncementAllPageable(@RequestParam Pageable pageable) {
+        return announcementService.getAllAnnouncements(pageable);
+    }
+
+    @GetMapping("/authorName")
     public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorName) {
         return announcementService.getAnnouncementByAuthor(authorName);
+    }
+
+    @GetMapping("/authorName")
+    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorName, Pageable pageable) {
+        return announcementService.getAnnouncementByAuthor(authorName, pageable);
     }
 
     @GetMapping("date")
@@ -32,9 +42,14 @@ public class AnnouncementController {
         return announcementService.getAnnouncementByDate(date);
     }
 
-    @GetMapping("user")
+    @GetMapping("/user")
     public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user) {
         return announcementService.getAnnouncementByUser(user);
+    }
+
+    @GetMapping("/user")
+    public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user, Pageable pageable) {
+        return announcementService.getAnnouncementByUser(user, pageable);
     }
 
     @GetMapping("/search")
@@ -42,8 +57,8 @@ public class AnnouncementController {
         return announcementService.searchAnnouncement(keyword);
     }
 
-    @GetMapping("all")
-    public List<AnnouncementDto> getAnnouncementAllPageable(@RequestParam Pageable pageable) {
-        return announcementService.getAllAnnouncements(pageable);
+    @GetMapping("/search")
+    public List<AnnouncementDto> searchAnnouncement(@RequestParam String keyword, Pageable pageable) {
+        return announcementService.searchAnnouncement(keyword, pageable);
     }
 }
