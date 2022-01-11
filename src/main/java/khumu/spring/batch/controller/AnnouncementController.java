@@ -1,8 +1,6 @@
 package khumu.spring.batch.controller;
 
 import khumu.spring.batch.data.dto.AnnouncementDto;
-import khumu.spring.batch.data.entity.Announcement;
-import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
@@ -10,7 +8,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Pageable;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
@@ -46,7 +43,7 @@ public class AnnouncementController {
     }
 
     @GetMapping("all")
-    public List<AnnouncementDto> getAnnouncementAllPageable(Pageable pageable) {
+    public List<AnnouncementDto> getAnnouncementAllPageable(@RequestParam Pageable pageable) {
         return announcementService.getAllAnnouncements(pageable);
     }
 }

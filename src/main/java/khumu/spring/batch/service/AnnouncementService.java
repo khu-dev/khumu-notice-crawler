@@ -31,8 +31,9 @@ public class AnnouncementService {
         return getAnnouncementDtos(announcements);
     }
 
-    public List<AnnouncementDto> getAllAnnouncement(Pageable pageable) {
-
+    public List<AnnouncementDto> getAllAnnouncements(Pageable pageable) {
+        List<Announcement> announcements = announcementRepository.findAll(pageable);
+        return getAnnouncementDtos(announcements);
     }
 
     public List<AnnouncementDto> getAnnouncementByAuthor(String authorName) {
