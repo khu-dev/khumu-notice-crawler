@@ -57,7 +57,7 @@ spring:
   datasource:
     url: jdbc:mysql://34.64.100.109:3306/khumu
 sns:
-  address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-dev
+  address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
 ---
 spring:
   config:
@@ -78,4 +78,4 @@ spring:
   datasource:
       url: jdbc:mysql://34.64.100.109:3306/khumu
 sns:
-  address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-prd
+  address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
