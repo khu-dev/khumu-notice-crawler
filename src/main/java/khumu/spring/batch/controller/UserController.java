@@ -13,8 +13,8 @@ import java.util.List;
 public class UserController {
     private final UserService userService;
 
-    @PostMapping("/postuser")
-    public void postUser(@RequestParam String user) {
-        userService.postUser(user);
+    @PostMapping("/")
+    public void postUser(@RequestParam String userName) {
+        userService.postUser(userName);
     }
 }

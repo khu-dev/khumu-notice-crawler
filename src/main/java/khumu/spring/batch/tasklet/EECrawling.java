@@ -44,7 +44,7 @@ public class EECrawling implements Tasklet, StepExecutionListener {
 
         Board board = Board.builder()
                 .id(3L)
-                .frontUrl("http://ee.khu.ac.kr/index.php?hCode=BOARD&page=view&idx=")
+                .frontUrl("https://ee.khu.ac.kr/index.php?hCode=BOARD&page=view&idx=")
                 .backUrl("&bo_idx=2")
                 .lastId(boardLastId)
                 .author(author).build();

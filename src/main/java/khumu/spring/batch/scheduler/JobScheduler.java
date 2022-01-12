@@ -25,7 +25,8 @@ public class JobScheduler {
     @Autowired
     private KhumuCrawlingConfiguration jobConfiguration;
 
-    @Scheduled(initialDelay = 10000, fixedDelay = 86400000)
+//    @Scheduled(initialDelay = 10000, fixedDelay = 86400000)
+    @Scheduled(fixedRate = 3600000)
     public void runJob() {
 
         Map<String, JobParameter> confMap = new HashMap<>();

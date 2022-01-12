@@ -5,6 +5,8 @@ import khumu.spring.batch.repository.AnnouncementRepository;
 import khumu.spring.batch.service.AnnouncementService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -17,48 +19,31 @@ public class AnnouncementController {
     private final AnnouncementService announcementService;
     private final AnnouncementRepository announcementRepository;
 
+    // 공지사항 전체 조회
     @GetMapping("/all")
-    public List<AnnouncementDto> getAnnouncementAll() {
-        return announcementService.getAllAnnouncements();
-    }
-
-    @GetMapping("/all/pageable")
-    public List<AnnouncementDto> getAnnouncementAllPageable(@RequestParam Pageable pageable) {
+    public List<AnnouncementDto> getAnnouncementAllPageable(@PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
         return announcementService.getAllAnnouncements(pageable);
     }
 
+    // 공지사항 작성자로 조회
     @GetMapping("/authorName")
-    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorName) {
-        return announcementService.getAnnouncementByAuthor(authorName);
-    }
-
-    @GetMapping("/authorName/pageable")
-    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorName, Pageable pageable) {
+    public List<AnnouncementDto> getAnnouncementByAuthor(@RequestParam String authorName, @PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
         return announcementService.getAnnouncementByAuthor(authorName, pageable);
     }
 
-    @GetMapping("date")
-    public List<AnnouncementDto> getAnnouncementByTime(@RequestParam String date) {
-        return announcementService.getAnnouncementByDate(date);
-    }
+//    @GetMapping("/user")
+//    public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user) {
+//        return announcementService.getAnnouncementByUser(user);
+//    }
 
+    //
     @GetMapping("/user")
-    public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user) {
-        return announcementService.getAnnouncementByUser(user);
-    }
-
-    @GetMapping("/user/pageable")
-    public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user, Pageable pageable) {
-        return announcementService.getAnnouncementByUser(user, pageable);
+    public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String userName, @PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
+        return announcementService.getAnnouncementByUser(userName, pageable);
     }
 
     @GetMapping("/search")
-    public List<AnnouncementDto> searchAnnouncement(@RequestParam String keyword) {
-        return announcementService.searchAnnouncement(keyword);
-    }
-
-    @GetMapping("/search/pageable")
-    public List<AnnouncementDto> searchAnnouncement(@RequestParam String keyword, Pageable pageable) {
+    public List<AnnouncementDto> searchAnnouncement(@RequestParam String keyword, @PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
         return announcementService.searchAnnouncement(keyword, pageable);
     }
 }

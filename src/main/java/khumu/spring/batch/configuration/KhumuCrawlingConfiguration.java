@@ -33,7 +33,7 @@ public class KhumuCrawlingConfiguration {
                 .incrementer(new RunIdIncrementer())
                 .start(artDesignCrawlingStep())
                 .next(csCrawlingStep())
-                .next(eECrawlingStep())
+//                .next(eECrawlingStep())
                 .next(eInfoCrawlingStep())
                 .next(foreignLangCrawlingStep())
                 .next(lINCCrawlingStep())
