@@ -99,7 +99,7 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
                     .build();
 
             // 메세지 큐 전송
-            eventPublish.pubTopic(announcementDto);
+//            eventPublish.pubTopic(announcementDto);
             System.out.println("=====메세지 전송=====");
             // DB Data Write
             announcementRepository.save(announcementDto.toEntity());

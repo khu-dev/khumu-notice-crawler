@@ -100,7 +100,7 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
                     .date(date)
                     .subLink(page)
                     .build();
-            eventPublish.pubTopic(announcement);
+//            eventPublish.pubTopic(announcement);
             System.out.println("=====메세지 전송=====");
             announcementRepository.save(announcement.toEntity());
         }

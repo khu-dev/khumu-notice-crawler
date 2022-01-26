@@ -99,7 +99,7 @@ public class EECrawling implements Tasklet, StepExecutionListener {
                     .date(date)
                     .subLink(page)
                     .build();
-            eventPublish.pubTopic(announcementDto);
+//            eventPublish.pubTopic(announcementDto);
             System.out.println("=====메세지 전송=====");
             announcementRepository.save(announcementDto.toEntity());
         }
