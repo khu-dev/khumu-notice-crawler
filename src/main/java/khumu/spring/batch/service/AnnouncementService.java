@@ -82,10 +82,12 @@ public class AnnouncementService {
         }
 
         for (Announcement announcement : announcements) {
+            Boolean isFollowed = authorIds.contains(announcement.getAuthor().getId());
+
             AuthorDto authorDto = AuthorDto.builder()
                     .id(announcement.getId())
                     .authorName(announcement.getAuthor().getAuthorName())
-                    .followed(Boolean.FALSE)
+                    .followed(isFollowed)
                     .build();
 
             AnnouncementDto announcementDto = AnnouncementDto.builder()
