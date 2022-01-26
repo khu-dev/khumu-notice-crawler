@@ -15,7 +15,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -135,7 +134,6 @@ public class AnnouncementService {
 //    }
 
     public List<AnnouncementDto> getAnnouncementByUser(String userName, Pageable pageable) {
-        // 1단계
         // User Id 뽑아서 Follow 명단 찾기
         User userData = userRepository.findByUsername(userName).get();
         Long userDataId = userData.getId();

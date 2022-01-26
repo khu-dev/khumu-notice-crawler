@@ -18,10 +18,9 @@ public class AnnouncementController {
 
     private final AnnouncementService announcementService;
     private final AnnouncementRepository announcementRepository;
-
     // 공지사항 전체 조회
     @GetMapping("/all")
-    public List<AnnouncementDto> getAnnouncementAllPageable(@RequestParam String userName, @PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
+    public List<AnnouncementDto> getAnnouncementAllPageable(@RequestParam(required = false, defaultValue="gusrl4025") String userName, @PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
         return announcementService.getAllAnnouncements(userName, pageable);
     }
 
