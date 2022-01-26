@@ -21,8 +21,8 @@ public class AnnouncementController {
 
     // 공지사항 전체 조회
     @GetMapping("/all")
-    public List<AnnouncementDto> getAnnouncementAllPageable(@PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
-        return announcementService.getAllAnnouncements(pageable);
+    public List<AnnouncementDto> getAnnouncementAllPageable(@RequestParam String userName, @PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
+        return announcementService.getAllAnnouncements(userName, pageable);
     }
 
     // 공지사항 작성자로 조회
@@ -31,12 +31,7 @@ public class AnnouncementController {
         return announcementService.getAnnouncementByAuthor(authorName, pageable);
     }
 
-//    @GetMapping("/user")
-//    public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String user) {
-//        return announcementService.getAnnouncementByUser(user);
-//    }
-
-    //
+    // 사용자가 follow한 공지사항만 조회
     @GetMapping("/user")
     public List<AnnouncementDto> getAnnouncementByUser(@RequestParam String userName, @PageableDefault(size = 10, sort="date", direction = Sort.Direction.DESC) Pageable pageable) {
         return announcementService.getAnnouncementByUser(userName, pageable);

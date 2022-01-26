@@ -34,7 +34,7 @@ public class AuthorService {
     }
 
     public AuthorFollower getAuthorFollower(String authorName) {
-        Author author = authorRepository.findByAuthorName(authorName);
+        Author author = authorRepository.findByAuthorName(authorName).get();
         List<Follow> follows = followRepository.findByFollowAuthor(author);
         List<String> followedNameList = new ArrayList<>();
 

@@ -16,7 +16,7 @@ public class UserService {
     public void postUser(String userName) {
 
         User user = new User();
-        if (userRepository.findByUsername(userName) != null) {
+        if (null == userRepository.findByUsername(userName)) {
             user = User.builder()
                     .username(userName).build();
             System.out.println("새로운 row 생성");

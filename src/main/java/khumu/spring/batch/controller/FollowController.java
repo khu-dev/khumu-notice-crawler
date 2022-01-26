@@ -4,6 +4,7 @@ import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.dto.UserDto;
 import khumu.spring.batch.service.FollowService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -12,6 +13,7 @@ import java.util.List;
 @RequiredArgsConstructor
 @RequestMapping("/api/follows")
 public class FollowController {
+    @Autowired
     private final FollowService followService;
 
     @PostMapping("/postFollow")
@@ -25,8 +27,8 @@ public class FollowController {
     }
 
     @DeleteMapping("/deleteFollow")
-    public void deleteFollow(@RequestParam String userName, @RequestParam String authorName) {
-        followService.deleteFollow(userName, authorName);
+    public String deleteFollow(@RequestParam String userName, @RequestParam String authorName) {
+        return followService.deleteFollow(userName, authorName);
     }
 
     @GetMapping("followAuthor")

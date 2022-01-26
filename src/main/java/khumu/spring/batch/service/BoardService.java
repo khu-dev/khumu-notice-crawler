@@ -43,7 +43,7 @@ public class BoardService {
     }
 
     public BoardDto getBoardByAuthor(String authorName) {
-        Author author = authorRepository.findByAuthorName(authorName);
+        Author author = authorRepository.findByAuthorName(authorName).get();
         Board board = boardRepository.findByAuthor(author).get();
 
         AuthorDto authorDto = AuthorDto.builder()
@@ -58,8 +58,4 @@ public class BoardService {
                 .lastId(board.getLastId())
                 .build();
     }
-
-//    public BoardDto getBoardByLastid(Integer lastid) {
-//        return boardRepository.findByLastid(lastid);
-//    }
 }

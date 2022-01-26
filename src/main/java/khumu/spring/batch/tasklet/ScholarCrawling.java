@@ -52,7 +52,7 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Author target = authorRepository.findByAuthorName("학생지원센터장학");
+        Author target = authorRepository.findByAuthorName("학생지원센터장학").get();
         Board board = boardRepository.findByAuthor(target).get();
 
         String frontUrl = board.getFrontUrl();

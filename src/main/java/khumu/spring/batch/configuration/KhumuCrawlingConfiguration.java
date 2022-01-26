@@ -30,7 +30,7 @@ public class KhumuCrawlingConfiguration {
     @Bean
     public Job noticeUpdateJob() {
         return this.jobBuilderFactory.get("noticeUpdateJob")
-                .incrementer(new RunIdIncrementer())
+//                .incrementer(new RunIdIncrementer())
                 .start(artDesignCrawlingStep())
                 .next(csCrawlingStep())
 //                .next(eECrawlingStep())

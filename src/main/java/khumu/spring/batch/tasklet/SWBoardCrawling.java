@@ -52,7 +52,7 @@ public class SWBoardCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Author target = authorRepository.findByAuthorName("소프트웨어중심대학사업단");
+        Author target = authorRepository.findByAuthorName("소프트웨어중심대학사업단").get();
         Board board = boardRepository.findByAuthor(target).get();
 
         String frontUrl = board.getFrontUrl();

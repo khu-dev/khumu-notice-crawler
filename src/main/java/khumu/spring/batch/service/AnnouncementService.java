@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -69,13 +70,39 @@ public class AnnouncementService {
         return announcementDtos;
     }
 
-    public List<AnnouncementDto> getAllAnnouncements(Pageable pageable) {
+    public List<AnnouncementDto> getAllAnnouncements(String userName, Pageable pageable) {
         List<Announcement> announcements = announcementRepository.findAll(pageable).toList();
-        return getAnnouncementDtos(announcements);
+        List<AnnouncementDto> announcementDtos = new ArrayList<>();
+        List<Follow> follows = followRepository.findByFollower(userRepository.findByUsername(userName).get());
+
+        ArrayList<Long> authorIds = new ArrayList<>();
+
+        for (Follow follow : follows) {
+            authorIds.add(follow.getFollowAuthor().getId());
+        }
+
+        for (Announcement announcement : announcements) {
+            AuthorDto authorDto = AuthorDto.builder()
+                    .id(announcement.getId())
+                    .authorName(announcement.getAuthor().getAuthorName())
+                    .followed(Boolean.FALSE)
+                    .build();
+
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .id(announcement.getId())
+                    .title(announcement.getTitle())
+                    .subLink(announcement.getSubLink())
+                    .date(announcement.getDate())
+                    .author(authorDto)
+                    .build();
+            announcementDtos.add(announcementDto);
+        }
+
+        return announcementDtos;
     }
 
     public List<AnnouncementDto> getAnnouncementByAuthor(String authorName, Pageable pageable) {
-        Author author = authorRepository.findByAuthorName(authorName);
+        Author author = authorRepository.findByAuthorName(authorName).get();
         List<Announcement> announcements = announcementRepository.findByAuthor(author, pageable);
         return getAnnouncementDtos(announcements);
     }
@@ -108,7 +135,7 @@ public class AnnouncementService {
     public List<AnnouncementDto> getAnnouncementByUser(String userName, Pageable pageable) {
         // 1단계
         // User Id 뽑아서 Follow 명단 찾기
-        User userData = userRepository.findByUsername(userName);
+        User userData = userRepository.findByUsername(userName).get();
         Long userDataId = userData.getId();
         System.out.println(userDataId);
 
