@@ -9,6 +9,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -27,11 +28,17 @@ public class UserController {
 //    public String test() {
 //
 //        String target = "http://and.khu.ac.kr/board/bbs/board.php?bo_table=05_01";
-//        Document document = Jsoup.connect(target).get();
+//        Document document = null;
+//        try{
+//            document = Jsoup.connect(target).get();
+//        }catch(IOException e){
+//            System.out.println(e);
+//            return "연결 실패";
+//        }
 //
 //        Elements elements = document.select("td_subject");
 //
-//        Iterator<Element> ie1 = elements.select()
+//        String titles = elements.text();
 //
 //        return titles;
 //    }
