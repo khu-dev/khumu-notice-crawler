@@ -61,44 +61,44 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
         Author author = board.getAuthor();
         String authorName = author.getAuthorName();
 
-        while(true) {
-            String page = frontUrl + lastId + backUrl;
-            lastId += 1;
-
-            Document document = Jsoup.connect(page).get();
-
-            String title = document.select(".text_info").select(".title").text();
-            String date = document.select(".text_info").select(".date").text();
-
-            date = date.substring(2);
-
-            if (title.equals("{{info.title}}")) {
-                boardRepository.save(Board.builder()
-                        .id(board.getId())
-                        .lastId(lastId)
-                        .frontUrl(frontUrl)
-                        .backUrl(backUrl)
-                        .author(author)
-                        .build());
-                System.out.println("=====작업 종료=====");
-                break;
-            }
-
-            System.out.println(title);
-
-            AnnouncementDto announcementDto = AnnouncementDto.builder()
-                    .title(title)
-                    .author(AuthorDto.builder()
-                            .id(author.getId())
-                            .authorName(authorName)
-                            .build())
-                    .date(date)
-                    .subLink(page)
-                    .build();
-//            eventPublish.pubTopic(announcementDto);
-            System.out.println("=====메세지 전송=====");
-            announcementRepository.save(announcementDto.toEntity());
-        }
+//        while(true) {
+//            String page = frontUrl + lastId + backUrl;
+//            lastId += 1;
+//
+//            Document document = Jsoup.connect(page).get();
+//
+//            String title = document.select(".text_info").select(".title").text();
+//            String date = document.select(".text_info").select(".date").text();
+//
+//            date = date.substring(2);
+//
+//            if (title.equals("{{info.title}}")) {
+//                boardRepository.save(Board.builder()
+//                        .id(board.getId())
+//                        .lastId(lastId)
+//                        .frontUrl(frontUrl)
+//                        .backUrl(backUrl)
+//                        .author(author)
+//                        .build());
+//                System.out.println("=====작업 종료=====");
+//                break;
+//            }
+//
+//            System.out.println(title);
+//
+//            AnnouncementDto announcementDto = AnnouncementDto.builder()
+//                    .title(title)
+//                    .author(AuthorDto.builder()
+//                            .id(author.getId())
+//                            .authorName(authorName)
+//                            .build())
+//                    .date(date)
+//                    .subLink(page)
+//                    .build();
+////            eventPublish.pubTopic(announcementDto);
+//            System.out.println("=====메세지 전송=====");
+//            announcementRepository.save(announcementDto.toEntity());
+//        }
 
         return RepeatStatus.FINISHED;
     }
