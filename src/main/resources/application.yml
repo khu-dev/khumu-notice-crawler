@@ -35,8 +35,6 @@ spring:
   batch:
     job:
       enabled: false
-  rest:
-    ignore_ssl: true
 sns:
   address: arn:aws:sns:ap-northeast-2:590304977225:khumu-messaging-local
 --- # Dev 환경, gcp-appengine에 연결되어있다.

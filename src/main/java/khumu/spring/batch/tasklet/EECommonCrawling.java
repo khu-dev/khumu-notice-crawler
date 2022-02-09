@@ -24,7 +24,6 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -33,7 +32,7 @@ import static khumu.spring.batch.configuration.HttpClientConfig.setSSL;
 @Component
 @StepScope
 @RequiredArgsConstructor
-public class CsCrawling implements Tasklet, StepExecutionListener {
+public class EECommonCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AuthorRepository authorRepository;
     private final AnnouncementRepository announcementRepository;
@@ -43,13 +42,13 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     public void beforeStep(StepExecution stepExecution) {
 
         Author author = Author.builder()
-                .id(2L)
-                .authorName("컴퓨터공학과학사공지").build();
+                .id(6L)
+                .authorName("전자공학과일반공지").build();
         authorRepository.save(author);
 
         Board board = Board.builder()
-                .id(2L)
-                .frontUrl("http://ce.khu.ac.kr/index.php?hCode=BOARD&bo_idx=2")
+                .id(6L)
+                .frontUrl("https://ee.khu.ac.kr/ee/user/bbs/BMSR00044/list.do?menuNo=1900036")
                 .backUrl(null)
                 .lastId(null)
                 .author(author).build();
@@ -58,7 +57,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Author target = authorRepository.findByAuthorName("컴퓨터공학과학사공지").get();
+        Author target = authorRepository.findByAuthorName("전자공학과일반공지").get();
         Board board = boardRepository.findByAuthor(target).get();
 
         String frontUrl = board.getFrontUrl();

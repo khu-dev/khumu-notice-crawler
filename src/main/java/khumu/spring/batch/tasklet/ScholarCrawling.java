@@ -11,6 +11,8 @@ import khumu.spring.batch.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 import org.springframework.batch.core.ExitStatus;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.StepExecution;
@@ -20,6 +22,12 @@ import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Iterator;
+
+import static khumu.spring.batch.configuration.HttpClientConfig.setSSL;
 
 @Component
 @StepScope
@@ -34,76 +42,101 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
     public void beforeStep(StepExecution stepExecution) {
 
         Author author = Author.builder()
-                .id(7L)
-                .authorName("학생지원센터장학").build();
+                .id(13L)
+                .authorName("학생지원센터(장학)").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
-
         Board board = Board.builder()
-                .id(7L)
-                .frontUrl("http://janghak.khu.ac.kr/board/bbs/board.php?bo_table=06_01&wr_id=")
-                .backUrl("")
-                .lastId(2415)
+                .id(13L)
+                .frontUrl("http://janghak.khu.ac.kr/board/bbs/board.php?bo_table=06_01")
+                .backUrl(null)
+                .lastId(null)
                 .author(author).build();
-
         boardRepository.save(board);
     }
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Author target = authorRepository.findByAuthorName("학생지원센터장학").get();
+        Author target = authorRepository.findByAuthorName("학생지원센터(장학)").get();
         Board board = boardRepository.findByAuthor(target).get();
 
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
-        Author author = board.getAuthor();
-        String authorName = board.getAuthor().getAuthorName();
+        String authorName = target.getAuthorName();
 
-//        while(true) {
-//            String page = frontUrl + lastId + backUrl;
-//            lastId++;
-//
-//            Document document = Jsoup.connect(page).get();
-//
-//            if(document == null) {
-//                break;
-//            }
-//
-//            String rawData = document.select("[style=border-top:1px solid #B41C1B; border-bottom:1px solid #E7E7E7; background-color:#F5F5F5; clear:both; height:30px; padding:8px 7px 0 7px]").text();
-//            String title = document.select("[style=color:#b41c1b; font-size:12px; word-break:break-all;]").text();
-//
-//            if (title.isEmpty()) {
-//                boardRepository.save(Board.builder()
-//                        .id(board.getId())
-//                        .lastId(lastId)
-//                        .frontUrl(frontUrl)
-//                        .backUrl(backUrl)
-//                        .author(author)
-//                        .build());
-//                System.out.println("=====작업 종료=====");
-//                break;
-//            }
-//
-//            System.out.println(title);
-//
-//            String date = rawData.replace(title + " 관리자 ", "");
-//            date = date.substring(0, 14);
-//
-//            AnnouncementDto announcement = AnnouncementDto.builder()
-//                    .title(title)
-//                    .author(AuthorDto.builder()
-//                            .id(author.getId())
-//                            .authorName(authorName)
-//                            .build())
-//                    .date(date)
-//                    .subLink(page)
-//                    .build();
-////            eventPublish.pubTopic(announcement);
-//            System.out.println("=====메세지 전송=====");
-//            announcementRepository.save(announcement.toEntity());
-//        }
+        String page = frontUrl;
+
+        String title = null;
+        String date = null;
+        String subLink = null;
+        ArrayList<Element> titleList = new ArrayList<>();
+        ArrayList<Element> dateList = new ArrayList<>();
+        ArrayList<String> subLinkList = new ArrayList<>();
+
+        String lastAnnouncement = null;
+
+        // ssl 우회 설정
+        setSSL();
+        // URL 연결
+        Document document = null;
+        try {
+            document = Jsoup.connect(page).get();
+            System.out.println("연결 성공");
+        } catch (IOException e) {
+            System.out.println("연결 실패");
+            e.printStackTrace();
+        }
+
+        // css selector
+        // 제목과 date 긁기
+        Elements elements = document.select("#board_list").select("tbody").select("tr");
+        for (Element element : elements) {
+            titleList.add(element.select("td").get(1));
+            dateList.add(element.select("td").get(4));
+            subLinkList.add(element.select("td").get(1).select("a").attr("href"));
+        }
+        Iterator<Element> titleIterator = titleList.iterator();
+        Iterator<Element> dateIterator = dateList.iterator();
+        Iterator<String> subLinkIterator = subLinkList.iterator();
+
+        while(titleIterator.hasNext()) {
+            title = titleIterator.next().text();
+            date = dateIterator.next().text();
+            subLink = subLinkIterator.next();
+
+            System.out.println("=====긁어온 데이터=====" + "\n제목 : " + title + "\n날짜 : " + date + "\n링크 : " + subLink);
+
+            try {
+                lastAnnouncement = announcementRepository.findByTitle(title).getTitle();
+                System.out.println(lastAnnouncement);
+            } catch(NullPointerException e) {
+//                e.printStackTrace();
+                System.out.println("동일한 공지 사항 없음\nDB기록 실시");
+            }
+
+            if (title.equals(lastAnnouncement)) {
+                System.out.println("이미 존재하는 공지사항 발견\n새로운 공지사항 없음\n크롤링 조기종료");
+                break;
+            }
+
+            // 공지사항 DTO 객체 생성
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .title(title)
+                    .author(AuthorDto.builder()
+                            .id(target.getId())
+                            .authorName(authorName)
+                            .build())
+                    .date(date)
+                    .subLink(subLink)
+                    .build();
+
+            // 푸시 알림 보내기
+//            eventPublish.pubTopic(announcementDto);
+
+            // DB Data write
+            announcementRepository.save(announcementDto.toEntity());
+        }
         return RepeatStatus.FINISHED;
     }
 

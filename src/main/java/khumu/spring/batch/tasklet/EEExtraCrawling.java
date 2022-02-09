@@ -24,7 +24,6 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -33,7 +32,7 @@ import static khumu.spring.batch.configuration.HttpClientConfig.setSSL;
 @Component
 @StepScope
 @RequiredArgsConstructor
-public class CsCrawling implements Tasklet, StepExecutionListener {
+public class EEExtraCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AuthorRepository authorRepository;
     private final AnnouncementRepository announcementRepository;
@@ -43,13 +42,13 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     public void beforeStep(StepExecution stepExecution) {
 
         Author author = Author.builder()
-                .id(2L)
-                .authorName("컴퓨터공학과학사공지").build();
+                .id(8L)
+                .authorName("전자공학과학사공지").build();
         authorRepository.save(author);
 
         Board board = Board.builder()
-                .id(2L)
-                .frontUrl("http://ce.khu.ac.kr/index.php?hCode=BOARD&bo_idx=2")
+                .id(8L)
+                .frontUrl("https://ee.khu.ac.kr/ee/user/bbs/BMSR00040/list.do?menuNo=1900039")
                 .backUrl(null)
                 .lastId(null)
                 .author(author).build();

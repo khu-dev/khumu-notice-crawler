@@ -24,7 +24,6 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -33,7 +32,7 @@ import static khumu.spring.batch.configuration.HttpClientConfig.setSSL;
 @Component
 @StepScope
 @RequiredArgsConstructor
-public class CsCrawling implements Tasklet, StepExecutionListener {
+public class ForeignLangCommonCrawling implements Tasklet, StepExecutionListener {
     private final BoardRepository boardRepository;
     private final AuthorRepository authorRepository;
     private final AnnouncementRepository announcementRepository;
@@ -43,13 +42,13 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
     public void beforeStep(StepExecution stepExecution) {
 
         Author author = Author.builder()
-                .id(2L)
-                .authorName("컴퓨터공학과학사공지").build();
+                .id(10L)
+                .authorName("외국어대학일반공지").build();
         authorRepository.save(author);
 
         Board board = Board.builder()
-                .id(2L)
-                .frontUrl("http://ce.khu.ac.kr/index.php?hCode=BOARD&bo_idx=2")
+                .id(10L)
+                .frontUrl("http://foreign.khu.ac.kr/contents/bbs/bbs_list.html?bbs_cls_cd=002004014")
                 .backUrl(null)
                 .lastId(null)
                 .author(author).build();
@@ -58,7 +57,7 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Author target = authorRepository.findByAuthorName("컴퓨터공학과학사공지").get();
+        Author target = authorRepository.findByAuthorName("외국어대학일반공지").get();
         Board board = boardRepository.findByAuthor(target).get();
 
         String frontUrl = board.getFrontUrl();
@@ -91,11 +90,11 @@ public class CsCrawling implements Tasklet, StepExecutionListener {
 
         // css selector
         // 제목과 date 긁기
-        Elements elements = document.select("#board_list").select("tbody").select("tr");
+        Elements elements = document.select("tr.row");
         for (Element element : elements) {
-            titleList.add(element.select("td").get(1));
-            dateList.add(element.select("td").get(4));
-            subLinkList.add(element.select("td").get(1).select("a").attr("href"));
+            titleList.add(element.select("td").get(3));
+            dateList.add(element.select("td").get(5));
+            subLinkList.add(element.select("td").get(3).select("a").attr("href"));
         }
         Iterator<Element> titleIterator = titleList.iterator();
         Iterator<Element> dateIterator = dateList.iterator();

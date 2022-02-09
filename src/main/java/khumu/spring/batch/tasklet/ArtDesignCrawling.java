@@ -1,5 +1,7 @@
 package khumu.spring.batch.tasklet;
 
+import khumu.spring.batch.data.dto.AnnouncementDto;
+import khumu.spring.batch.data.dto.AuthorDto;
 import khumu.spring.batch.data.entity.Author;
 import khumu.spring.batch.data.entity.Board;
 import khumu.spring.batch.publish.EventPublish;
@@ -22,6 +24,7 @@ import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Iterator;
 
 import static khumu.spring.batch.configuration.HttpClientConfig.setSSL;
@@ -38,20 +41,18 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
     // 멱등성을 위한 board 데이터 주입
     @Override
     public void beforeStep(StepExecution stepExecution) {
+
         Author author = Author.builder()
                 .id(1L)
                 .authorName("예술디자인대학").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
-
         Board board = Board.builder()
                 .id(1L)
-                .frontUrl("http://and.khu.ac.kr/board/bbs/board.php?bo_table=05_01")
-                .backUrl("&page=1")
-                .lastId(boardLastId)
+                .frontUrl("http://and.khu.ac.kr/board/bbs/board.php?bo_table=05_01&page=1")
+                .backUrl(null)
+                .lastId(null)
                 .author(author).build();
-
         boardRepository.save(board);
     }
 
@@ -63,13 +64,16 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
         String frontUrl = board.getFrontUrl();
         String backUrl = board.getBackUrl();
         Integer lastId = board.getLastId();
-        Author author = board.getAuthor();
-        String authorName = author.getAuthorName();
+        String authorName = target.getAuthorName();
 
         String page = frontUrl + backUrl;
 
         String title = null;
         String date = null;
+        String subLink = null;
+        ArrayList<String> subLinkList = new ArrayList<>();
+
+        String lastAnnouncement = null;
 
         // ssl 우회 설정
         setSSL();
@@ -84,63 +88,60 @@ public class ArtDesignCrawling implements Tasklet, StepExecutionListener {
         }
 
         // css selector
+        // 제목과 date 긁기
         Elements elements = document.select("tr.bo_notice");
-
         Iterator<Element> titleIterator = elements.select(".td_subject").iterator();
         Iterator<Element> dateIterator = elements.select(".td_date").iterator();
+
+        // css selector
+        // href 추출
+        Elements subLinkElements = document.select("td.td_subject a");
+        for (Element element : subLinkElements) {subLinkList.add(element.attr("href"));}
+        Iterator<String> subLinkIterator = subLinkList.iterator();
 
         while(titleIterator.hasNext()) {
             title = titleIterator.next().text();
             date = dateIterator.next().text();
-            System.out.println("긁어온 데이터 : "  + title + "\t" + date);
+            subLink = subLinkIterator.next();
+
+            System.out.println("=====긁어온 데이터=====" + "\n제목 : " + title + "\n날짜 : " + date + "\n링크 : " + subLink);
+
+            try {
+                lastAnnouncement = announcementRepository.findByTitle(title).getTitle();
+                System.out.println(lastAnnouncement);
+            } catch(NullPointerException e) {
+//                e.printStackTrace();
+                System.out.println("동일한 공지 사항 없음\nDB기록 실시");
+            }
+
+            if (title.equals(lastAnnouncement)) {
+                System.out.println("이미 존재하는 공지사항 발견\n새로운 공지사항 없음\n크롤링 조기종료");
+                break;
+            }
+
+            // 공지사항 DTO 객체 생성
+            AnnouncementDto announcementDto = AnnouncementDto.builder()
+                    .title(title)
+                    .author(AuthorDto.builder()
+                            .id(target.getId())
+                            .authorName(authorName)
+                            .build())
+                    .date(date)
+                    .subLink(subLink)
+                    .build();
 
             // 푸시 알림 보내기
+//            eventPublish.pubTopic(announcementDto);
+
+            // DB Data write
+            announcementRepository.save(announcementDto.toEntity());
         }
-
-
-
-//        while(title.hasNext()) {
-
-//            // Data 긁어 오기
-//            String title = document.select(".bo_v_title").text();
-//            String date = document.select(".bo_v_file").select("span").text();
-
-//            // 불러올 데이터가 없을 시, 멈추고 lastId Update
-//            if (title.isEmpty()) {
-//                boardRepository.save(Board.builder()
-//                        .id(board.getId())
-//                        .author(target)
-//                        .frontUrl(frontUrl)
-//                        .backUrl(backUrl)
-//                        .lastId(lastId).build());
-//                System.out.println("=====작업 종료=====");
-//                break;
-//            }
-//
-//            System.out.println(title);
-//
-//            // 긁은 공지사항 DTO 객체 생성
-//            AnnouncementDto announcementDto = AnnouncementDto.builder()
-//                    .title(title)
-//                    .author(AuthorDto.builder()
-//                            .id(author.getId())
-//                            .authorName(authorName)
-//                            .build())
-//                    .date(date)
-//                    .subLink(page)
-//                    .build();
-//
-//            // 메세지 큐 전송
-////            eventPublish.pubTopic(announcementDto);
-//            System.out.println("=====메세지 전송=====");
-//            // DB Data Write
-//            announcementRepository.save(announcementDto.toEntity());
-
         return RepeatStatus.FINISHED;
     }
 
     @Override
     public ExitStatus afterStep(StepExecution stepExecution) {
+        System.out.println("예술 디자인 대학 크롤링 종료");
         return ExitStatus.COMPLETED;
     }
 }

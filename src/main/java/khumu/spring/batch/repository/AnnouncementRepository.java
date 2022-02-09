@@ -10,6 +10,8 @@ import java.util.List;
 
 @Repository
 public interface AnnouncementRepository extends JpaRepository<Announcement, Long> {
+    Announcement findByTitle(String title);
+
     List<Announcement> findByAuthor(Author author, Pageable pageable);
 
     List<Announcement> findByAuthorIn(List<Author> authors, Pageable pageable);

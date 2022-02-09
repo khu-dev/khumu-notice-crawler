@@ -36,25 +36,22 @@ public class EECrawling implements Tasklet, StepExecutionListener {
     public void beforeStep(StepExecution stepExecution) {
 
         Author author = Author.builder()
-                .id(3L)
-                .authorName("전자공학과").build();
+                .id(5L)
+                .authorName("전자공학과학사공지").build();
         authorRepository.save(author);
 
-        Integer boardLastId = boardRepository.findByAuthorId(author.getId()).getLastId();
-
         Board board = Board.builder()
-                .id(3L)
-                .frontUrl("https://ee.khu.ac.kr/index.php?hCode=BOARD&page=view&idx=")
-                .backUrl("&bo_idx=2")
-                .lastId(boardLastId)
+                .id(5L)
+                .frontUrl("https://ee.khu.ac.kr/ee/user/bbs/BMSR00040/list.do?menuNo=1900037")
+                .backUrl(null)
+                .lastId(null)
                 .author(author).build();
-
         boardRepository.save(board);
     }
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Author target = authorRepository.findByAuthorName("전자공학과").get();
+        Author target = authorRepository.findByAuthorName("전자공학과학사공지").get();
         Board board = boardRepository.findByAuthor(target).get();
 
         String frontUrl = board.getFrontUrl();

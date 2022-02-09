@@ -8,6 +8,17 @@
 - [Acknowledgements](#acknowledgements)
 - [Author](#authors)
 
+## Crawling List
+
+- 경희대 예술 디자인 대학
+- 경희대 컴퓨터공학과
+- 경희대 전자공학과
+- 경희대 전자정보대학
+- 경희대 외국어 대학
+- 경희대 LINC+ 사업단
+- 경희대 학생지원센터(장학)
+- 경희대 SW중심대학사업단
+
 ## Technologies
 
 - Java Version 8
