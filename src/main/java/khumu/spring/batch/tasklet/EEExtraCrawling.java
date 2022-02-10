@@ -43,7 +43,7 @@ public class EEExtraCrawling implements Tasklet, StepExecutionListener {
 
         Author author = Author.builder()
                 .id(8L)
-                .authorName("전자공학과학사공지").build();
+                .authorName("전자공학과대외활동공지").build();
         authorRepository.save(author);
 
         Board board = Board.builder()
@@ -57,7 +57,7 @@ public class EEExtraCrawling implements Tasklet, StepExecutionListener {
 
     @Override
     public RepeatStatus execute(StepContribution stepContribution, ChunkContext chunkContext) throws Exception {
-        Author target = authorRepository.findByAuthorName("컴퓨터공학과학사공지").get();
+        Author target = authorRepository.findByAuthorName("전자공학과대외활동공지").get();
         Board board = boardRepository.findByAuthor(target).get();
 
         String frontUrl = board.getFrontUrl();
@@ -90,10 +90,10 @@ public class EEExtraCrawling implements Tasklet, StepExecutionListener {
 
         // css selector
         // 제목과 date 긁기
-        Elements elements = document.select("#board_list").select("tbody").select("tr");
+        Elements elements = document.select("div.bbs_tb1-st1").select("tbody").select("tr");
         for (Element element : elements) {
             titleList.add(element.select("td").get(1));
-            dateList.add(element.select("td").get(4));
+            dateList.add(element.select("td").get(3));
             subLinkList.add(element.select("td").get(1).select("a").attr("href"));
         }
         Iterator<Element> titleIterator = titleList.iterator();
@@ -103,7 +103,7 @@ public class EEExtraCrawling implements Tasklet, StepExecutionListener {
         while(titleIterator.hasNext()) {
             title = titleIterator.next().text();
             date = dateIterator.next().text();
-            subLink = subLinkIterator.next();
+            subLink = page + subLinkIterator.next();
 
             System.out.println("=====긁어온 데이터=====" + "\n제목 : " + title + "\n날짜 : " + date + "\n링크 : " + subLink);
 

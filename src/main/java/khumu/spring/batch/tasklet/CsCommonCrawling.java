@@ -90,12 +90,13 @@ public class CsCommonCrawling implements Tasklet, StepExecutionListener {
 
         // css selector
         // 제목과 date 긁기
-        Elements elements = document.select("#board_list").select("tbody").select("tr");
+        Elements elements = document.select("#gallery_list").select("tbody").select("tr").select("td");
         for (Element element : elements) {
-            titleList.add(element.select("td").get(1));
-            dateList.add(element.select("td").get(4));
-            subLinkList.add(element.select("td").get(1).select("a").attr("href"));
+            titleList.addAll(element.select("dt"));
+            dateList.addAll(element.select("dd"));
+            subLinkList.add(element.select("a").attr("href"));
         }
+        subLinkList.removeIf(String::isEmpty);
         Iterator<Element> titleIterator = titleList.iterator();
         Iterator<Element> dateIterator = dateList.iterator();
         Iterator<String> subLinkIterator = subLinkList.iterator();
@@ -103,7 +104,7 @@ public class CsCommonCrawling implements Tasklet, StepExecutionListener {
         while(titleIterator.hasNext()) {
             title = titleIterator.next().text();
             date = dateIterator.next().text();
-            subLink = subLinkIterator.next();
+            subLink = page + subLinkIterator.next();
 
             System.out.println("=====긁어온 데이터=====" + "\n제목 : " + title + "\n날짜 : " + date + "\n링크 : " + subLink);
 

@@ -90,11 +90,11 @@ public class ScholarCrawling implements Tasklet, StepExecutionListener {
 
         // css selector
         // 제목과 date 긁기
-        Elements elements = document.select("#board_list").select("tbody").select("tr");
+        Elements elements = document.select("table.board_list").select("tbody").select("tr");
         for (Element element : elements) {
-            titleList.add(element.select("td").get(1));
-            dateList.add(element.select("td").get(4));
-            subLinkList.add(element.select("td").get(1).select("a").attr("href"));
+            titleList.addAll(element.select("td.subject").select("span.notice"));
+            dateList.addAll(element.select("td.datetime"));
+            subLinkList.add(element.select("td.subject").select("a").attr("href"));
         }
         Iterator<Element> titleIterator = titleList.iterator();
         Iterator<Element> dateIterator = dateList.iterator();

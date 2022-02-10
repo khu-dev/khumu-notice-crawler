@@ -99,7 +99,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step foreignLangCommonCrawlingStep() {
         return this.stepBuilderFactory.get("foreignLangCommonCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
+                .tasklet(new ForeignLangCommonCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
                 .build();
     }
 
@@ -107,7 +107,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step foreignLangCareerCrawlingStep() {
         return this.stepBuilderFactory.get("foreignLangCareerCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
+                .tasklet(new ForeignLangCareerCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
                 .build();
     }
 
@@ -115,7 +115,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step csCareerCrawlingStep() {
         return this.stepBuilderFactory.get("csCareerCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
+                .tasklet(new CsCareerCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
                 .build();
     }
 
@@ -123,7 +123,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step csCommonCrawlingStep() {
         return this.stepBuilderFactory.get("csCommonCrawlingStep")
-                .tasklet(new CsCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
+                .tasklet(new CsCommonCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
                 .build();
     }
 
@@ -131,7 +131,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step eECommonCrawlingStep() {
         return this.stepBuilderFactory.get("eECommonCrawlingStep")
-                .tasklet(new EECrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
+                .tasklet(new EECommonCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
                 .build();
     }
 
@@ -139,7 +139,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step eECareerCrawlingStep() {
         return this.stepBuilderFactory.get("eECareerCrawlingStep")
-                .tasklet(new EECrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
+                .tasklet(new EECareerCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
                 .build();
     }
 
@@ -147,7 +147,7 @@ public class KhumuCrawlingConfiguration {
     @JobScope
     public Step eEExtraCrawlingStep() {
         return this.stepBuilderFactory.get("eEExtraCrawlingStep")
-                .tasklet(new EECrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
+                .tasklet(new EEExtraCrawling(boardRepository, authorRepository, announcementRepository, eventPublish))
                 .build();
     }
 }
