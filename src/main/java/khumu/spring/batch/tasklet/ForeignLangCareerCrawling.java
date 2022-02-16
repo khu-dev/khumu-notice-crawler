@@ -103,7 +103,7 @@ public class ForeignLangCareerCrawling implements Tasklet, StepExecutionListener
         while(titleIterator.hasNext()) {
             title = titleIterator.next().text();
             date = dateIterator.next().text();
-            subLink = subLinkIterator.next();
+            subLink = page + subLinkIterator.next();
 
             System.out.println("=====긁어온 데이터=====" + "\n제목 : " + title + "\n날짜 : " + date + "\n링크 : " + subLink);
 

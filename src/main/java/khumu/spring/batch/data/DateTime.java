@@ -1,18 +1,18 @@
 package khumu.spring.batch.data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 public class DateTime {
 
-    private final LocalDateTime localDateTime;
-    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd hh:mm:ss");
+    private final LocalDate localDate;
+    DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
-    public DateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public DateTime(LocalDate localDate) {
+        this.localDate = localDate;
     }
 
     public String getDateTime() {
-        return localDateTime.format(dateTimeFormatter);
+        return localDate.format(dateTimeFormatter);
     }
 }
