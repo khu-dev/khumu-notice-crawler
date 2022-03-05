@@ -93,7 +93,7 @@ public class ForeignLangCareerCrawling implements Tasklet, StepExecutionListener
         Elements elements = document.select("tr.row");
         for (Element element : elements) {
             titleList.add(element.select("td").get(2));
-            dateList.add(element.select("td").get(5));
+            dateList.add(element.select("td").get(4));
             subLinkList.add(element.select("td").get(2).select("a").attr("href"));
         }
         Iterator<Element> titleIterator = titleList.iterator();
