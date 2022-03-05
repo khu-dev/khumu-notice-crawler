@@ -92,9 +92,9 @@ public class ForeignLangCareerCrawling implements Tasklet, StepExecutionListener
         // 제목과 date 긁기
         Elements elements = document.select("tr.row");
         for (Element element : elements) {
-            titleList.add(element.select("td").get(3));
+            titleList.add(element.select("td").get(2));
             dateList.add(element.select("td").get(5));
-            subLinkList.add(element.select("td").get(3).select("a").attr("href"));
+            subLinkList.add(element.select("td").get(2).select("a").attr("href"));
         }
         Iterator<Element> titleIterator = titleList.iterator();
         Iterator<Element> dateIterator = dateList.iterator();

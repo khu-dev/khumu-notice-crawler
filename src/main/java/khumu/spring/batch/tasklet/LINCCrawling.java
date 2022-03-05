@@ -90,11 +90,12 @@ public class LINCCrawling implements Tasklet, StepExecutionListener {
 
         // css selector
         // 제목과 date 긁기
-        Elements elements = document.select("table.brd_view_tb1").select("tbody").select("tr");
+        Elements elements = document.select("ul.brd_list hidden-x").select("li");
         for (Element element : elements) {
-            titleList.add(element.select("td").get(1));
-            dateList.add(element.select("td").get(5));
-            subLinkList.add(element.select("td").get(1).select("a").attr("href"));
+            titleList.add(element.select("p.title").get(0));
+            dateList.add(element.select("p.write_info").get(1));
+            subLinkList.add(page);
+//            subLinkList.add(element.select("td").get(1).select("a").attr("href"));
         }
         Iterator<Element> titleIterator = titleList.iterator();
         Iterator<Element> dateIterator = dateList.iterator();

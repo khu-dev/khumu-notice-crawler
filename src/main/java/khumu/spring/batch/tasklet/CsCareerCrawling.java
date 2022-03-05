@@ -48,7 +48,7 @@ public class CsCareerCrawling implements Tasklet, StepExecutionListener {
 
         Board board = Board.builder()
                 .id(4L)
-                .frontUrl("http://ce.khu.ac.kr/index.php?hCode=BOARD&bo_idx=3")
+                .frontUrl("https://ce.khu.ac.kr/ce/user/bbs/BMSR00040/list.do?menuNo=1600046")
                 .backUrl(null)
                 .lastId(null)
                 .author(author).build();
@@ -90,11 +90,12 @@ public class CsCareerCrawling implements Tasklet, StepExecutionListener {
 
         // css selector
         // 제목과 date 긁기
-        Elements elements = document.select("#board_list").select("tbody").select("tr");
+        Elements elements = document.select(".bbs_tbl-st1").select("tbody").select("tr");
         for (Element element : elements) {
             titleList.add(element.select("td").get(1));
-            dateList.add(element.select("td").get(4));
-            subLinkList.add(element.select("td").get(1).select("a").attr("href"));
+            dateList.add(element.select("td").get(3));
+            subLinkList.add(page);
+//            subLinkList.add(element.select("td").get(1).select("a").attr("href"));
         }
         Iterator<Element> titleIterator = titleList.iterator();
         Iterator<Element> dateIterator = dateList.iterator();

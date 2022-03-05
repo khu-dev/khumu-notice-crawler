@@ -48,7 +48,7 @@ public class CsCommonCrawling implements Tasklet, StepExecutionListener {
 
         Board board = Board.builder()
                 .id(3L)
-                .frontUrl("http://ce.khu.ac.kr/index.php?hCode=BOARD&bo_idx=1")
+                .frontUrl("https://ce.khu.ac.kr/ce/user/bbs/BMSR00045/list.do?menuNo=1600044")
                 .backUrl(null)
                 .lastId(null)
                 .author(author).build();
@@ -90,11 +90,12 @@ public class CsCommonCrawling implements Tasklet, StepExecutionListener {
 
         // css selector
         // 제목과 date 긁기
-        Elements elements = document.select("#gallery_list").select("tbody").select("tr").select("td");
+        Elements elements = document.select("ul.clearfix").select("li.item");
         for (Element element : elements) {
-            titleList.addAll(element.select("dt"));
-            dateList.addAll(element.select("dd"));
-            subLinkList.add(element.select("a").attr("href"));
+            titleList.addAll(element.select(".t"));
+            dateList.addAll(element.select(".date"));
+            subLinkList.add(page);
+//            subLinkList.add(element.select("a").attr("href"));
         }
         subLinkList.removeIf(String::isEmpty);
         Iterator<Element> titleIterator = titleList.iterator();
