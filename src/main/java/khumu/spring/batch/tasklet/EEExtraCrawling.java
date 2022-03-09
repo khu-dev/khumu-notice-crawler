@@ -90,7 +90,7 @@ public class EEExtraCrawling implements Tasklet, StepExecutionListener {
 
         // css selector
         // 제목과 date 긁기
-        Elements elements = document.select("div.bbs_tb1-st1").select("tbody").select("tr");
+        Elements elements = document.select("div.bbs_tbl-st1").select("tbody").select("tr");
         for (Element element : elements) {
             titleList.add(element.select("td").get(1));
             dateList.add(element.select("td").get(3));
