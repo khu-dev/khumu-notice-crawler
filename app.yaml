@@ -1,6 +1,7 @@
 runtime: java11
 instance_class: F4
-inbound_services:
-  - warmup
 includes:
   - env_variables.yaml
+automatic_scaling:
+  min_instances: 1
+  min_idle_instances: 1
